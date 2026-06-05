@@ -1,0 +1,594 @@
+{
+  "version": "v2-full",
+  "library": {
+    "30002": {
+      "read": true,
+      "overall": "loved",
+      "art": 5,
+      "story": 5,
+      "characters": 5,
+      "pacing": 5,
+      "note": ""
+    },
+    "30007": {
+      "read": true,
+      "overall": "liked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "30012": {
+      "read": true,
+      "overall": "liked",
+      "art": 3,
+      "story": 4,
+      "characters": 4,
+      "pacing": null,
+      "note": ""
+    },
+    "30013": {
+      "read": true,
+      "overall": "meh",
+      "art": null,
+      "story": 2,
+      "characters": 3,
+      "pacing": 1,
+      "note": ""
+    },
+    "30021": {
+      "read": true,
+      "overall": "loved",
+      "art": 5,
+      "story": 5,
+      "characters": 5,
+      "pacing": 5,
+      "note": ""
+    },
+    "30042": {
+      "read": true,
+      "overall": "liked",
+      "art": 4,
+      "story": 5,
+      "characters": 5,
+      "pacing": 3,
+      "note": ""
+    },
+    "30102": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "30401": {
+      "read": true,
+      "overall": "liked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "30564": {
+      "read": true,
+      "overall": "liked",
+      "art": 5,
+      "story": 3,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "30583": {
+      "read": true,
+      "overall": "loved",
+      "art": 5,
+      "story": 5,
+      "characters": 5,
+      "pacing": 5,
+      "note": ""
+    },
+    "30642": {
+      "read": true,
+      "overall": "loved",
+      "art": 5,
+      "story": 5,
+      "characters": 5,
+      "pacing": 5,
+      "note": ""
+    },
+    "30656": {
+      "read": true,
+      "overall": "liked",
+      "art": 4,
+      "story": null,
+      "characters": 4,
+      "pacing": null,
+      "note": ""
+    },
+    "30658": {
+      "read": true,
+      "overall": "loved",
+      "art": 2,
+      "story": 5,
+      "characters": 5,
+      "pacing": 4,
+      "note": ""
+    },
+    "30970": {
+      "read": true,
+      "overall": "liked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "33986": {
+      "read": true,
+      "overall": null,
+      "art": 4,
+      "story": 4,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "34611": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "53390": {
+      "read": true,
+      "overall": "loved",
+      "art": 5,
+      "story": 4,
+      "characters": 4,
+      "pacing": 4,
+      "note": ""
+    },
+    "67563": {
+      "read": true,
+      "overall": null,
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "74347": {
+      "read": true,
+      "overall": null,
+      "art": 4,
+      "story": 2,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "79865": {
+      "read": true,
+      "overall": "liked",
+      "art": 4,
+      "story": 3,
+      "characters": null,
+      "pacing": 1,
+      "note": ""
+    },
+    "85143": {
+      "read": true,
+      "overall": null,
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "85486": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "85976": {
+      "read": true,
+      "overall": null,
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "86365": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "86508": {
+      "read": true,
+      "overall": "liked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "86551": {
+      "read": true,
+      "overall": "disliked",
+      "art": 1,
+      "story": 3,
+      "characters": 1,
+      "pacing": 1,
+      "note": ""
+    },
+    "86559": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "87170": {
+      "read": true,
+      "overall": "liked",
+      "art": 5,
+      "story": 4,
+      "characters": 4,
+      "pacing": 4,
+      "note": ""
+    },
+    "87216": {
+      "read": true,
+      "overall": "liked",
+      "art": 3,
+      "story": 3,
+      "characters": 4,
+      "pacing": 4,
+      "note": ""
+    },
+    "87321": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "87459": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "96834": {
+      "read": true,
+      "overall": null,
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "100954": {
+      "read": true,
+      "overall": "liked",
+      "art": 5,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "100994": {
+      "read": true,
+      "overall": "loved",
+      "art": 4,
+      "story": 3,
+      "characters": 4,
+      "pacing": 3,
+      "note": ""
+    },
+    "101517": {
+      "read": true,
+      "overall": "liked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "103156": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "105398": {
+      "read": true,
+      "overall": "loved",
+      "art": 5,
+      "story": 5,
+      "characters": 5,
+      "pacing": 5,
+      "note": ""
+    },
+    "109957": {
+      "read": true,
+      "overall": "liked",
+      "art": 4,
+      "story": 3,
+      "characters": 2,
+      "pacing": 1,
+      "note": ""
+    },
+    "111189": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "117460": {
+      "read": true,
+      "overall": "loved",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "118424": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "119257": {
+      "read": true,
+      "overall": "liked",
+      "art": 3,
+      "story": 5,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "120980": {
+      "read": true,
+      "overall": "disliked",
+      "art": 4,
+      "story": 2,
+      "characters": 1,
+      "pacing": null,
+      "note": ""
+    },
+    "124846": {
+      "read": true,
+      "overall": null,
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "125816": {
+      "read": true,
+      "overall": "liked",
+      "art": null,
+      "story": 5,
+      "characters": 4,
+      "pacing": null,
+      "note": ""
+    },
+    "126297": {
+      "read": true,
+      "overall": "meh",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "128067": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": 1,
+      "characters": 1,
+      "pacing": null,
+      "note": ""
+    },
+    "129918": {
+      "read": true,
+      "overall": "liked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "136220": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "137280": {
+      "read": true,
+      "overall": "disliked",
+      "art": 3,
+      "story": 3,
+      "characters": 1,
+      "pacing": null,
+      "note": ""
+    },
+    "139572": {
+      "read": true,
+      "overall": "liked",
+      "art": null,
+      "story": null,
+      "characters": 1,
+      "pacing": null,
+      "note": ""
+    },
+    "140407": {
+      "read": true,
+      "overall": "meh",
+      "art": null,
+      "story": 3,
+      "characters": null,
+      "pacing": 2,
+      "note": ""
+    },
+    "141076": {
+      "read": true,
+      "overall": "loved",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "144079": {
+      "read": true,
+      "overall": null,
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "144957": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "151460": {
+      "read": true,
+      "overall": "disliked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "159441": {
+      "read": true,
+      "overall": "loved",
+      "art": null,
+      "story": 4,
+      "characters": 4,
+      "pacing": 3,
+      "note": ""
+    },
+    "164857": {
+      "read": true,
+      "overall": "liked",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    },
+    "177706": {
+      "read": true,
+      "overall": "loved",
+      "art": null,
+      "story": null,
+      "characters": null,
+      "pacing": null,
+      "note": ""
+    }
+  },
+  "tagVotes": {
+    "3": "like",
+    "17": "like",
+    "22": "like",
+    "28": "like",
+    "34": "like",
+    "42": "like",
+    "43": "like",
+    "44": "like",
+    "46": "like",
+    "48": "dislike",
+    "50": "love",
+    "57": "like",
+    "59": "like",
+    "69": "like",
+    "73": "dislike",
+    "84": "hate",
+    "86": "dislike",
+    "88": "like",
+    "89": "like",
+    "90": "like",
+    "97": "love",
+    "99": "love",
+    "102": "like",
+    "110": "like",
+    "117": "like",
+    "119": "hate",
+    "122": "like",
+    "124": "hate",
+    "125": "love",
+    "130": "like",
+    "139": "like",
+    "140": "dislike",
+    "148": "like",
+    "156": "dislike",
+    "160": "love",
+    "162": "hate",
+    "170": "like",
+    "172": "like",
+    "177": "love",
+    "181": "love",
+    "185": "dislike",
+    "188": "like",
+    "191": "like",
+    "192": "like",
+    "195": "like",
+    "196": "like",
+    "206": "like",
+    "207": "love",
+    "210": "like",
+    "211": "like",
+    "215": "like",
+    "217": "like",
+    "219": "like",
+    "220": "love",
+    "224": "like",
+    "229": "like"
+  }
+}

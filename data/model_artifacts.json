@@ -1,0 +1,824 @@
+{
+  "feat_cols": [
+    "4-koma",
+    "Achronological Order",
+    "Acting",
+    "Adoption",
+    "Afterlife",
+    "Age Gap",
+    "Age Regression",
+    "Agender",
+    "Agriculture",
+    "Aliens",
+    "Alternate Universe",
+    "Amnesia",
+    "Anachronism",
+    "Anal Sex",
+    "Angels",
+    "Animals",
+    "Anthropomorphism",
+    "Anti-Hero",
+    "Archery",
+    "Arranged Marriage",
+    "Artificial Intelligence",
+    "Asexual",
+    "Assassins",
+    "Athletics",
+    "Band",
+    "Baseball",
+    "Battle Royale",
+    "Bisexual",
+    "Body Horror",
+    "Body Swapping",
+    "Boxing",
+    "Boys' Love",
+    "Bullying",
+    "Butler",
+    "Cannibalism",
+    "Chibi",
+    "Chimera",
+    "Class Struggle",
+    "Clone",
+    "Coastal",
+    "Cohabitation",
+    "College",
+    "Coming of Age",
+    "Conspiracy",
+    "Cosmic Horror",
+    "Cosplay",
+    "Crime",
+    "Criminal Organization",
+    "Crossdressing",
+    "Cult",
+    "Cultivation",
+    "Cunnilingus",
+    "Curses",
+    "Cute Boys Doing Cute Things",
+    "Cute Girls Doing Cute Things",
+    "Cyberpunk",
+    "Cyborg",
+    "Death Game",
+    "Delinquents",
+    "Demons",
+    "Denpa",
+    "Desert",
+    "Detective",
+    "Disability",
+    "Dissociative Identities",
+    "Dragons",
+    "Drawing",
+    "Drugs",
+    "Dungeon",
+    "Dystopian",
+    "Economics",
+    "Educational",
+    "Elf",
+    "Ensemble Cast",
+    "Environmental",
+    "Episodic",
+    "Espionage",
+    "Estranged Family",
+    "Exorcism",
+    "Fake Relationship",
+    "Family Life",
+    "Fashion",
+    "Fellatio",
+    "Female Harem",
+    "Female Protagonist",
+    "Femboy",
+    "Food",
+    "Foreign",
+    "Found Family",
+    "Fugitive",
+    "Full Color",
+    "Gambling",
+    "Gangs",
+    "Gender Bending",
+    "Ghost",
+    "Goblin",
+    "Gods",
+    "Gore",
+    "Group Sex",
+    "Guns",
+    "Gyaru",
+    "Henshin",
+    "Heterosexual",
+    "Hikikomori",
+    "Historical",
+    "Idol",
+    "Incest",
+    "Isekai",
+    "Iyashikei",
+    "Josei",
+    "Kaiju",
+    "Kemonomimi",
+    "Kingdom Management",
+    "Kuudere",
+    "LGBTQ+ Themes",
+    "Language Barrier",
+    "Large Breasts",
+    "Long Strip",
+    "Lost Civilization",
+    "Love Triangle",
+    "MILF",
+    "Mafia",
+    "Magic",
+    "Maids",
+    "Male Harem",
+    "Male Protagonist",
+    "Marriage",
+    "Martial Arts",
+    "Masturbation",
+    "Medicine",
+    "Medieval",
+    "Memory Manipulation",
+    "Meta",
+    "Military",
+    "Monster Boy",
+    "Monster Girl",
+    "Motorcycles",
+    "Mythology",
+    "Nakadashi",
+    "Necromancy",
+    "Nekomimi",
+    "Netorare",
+    "Ninja",
+    "Nudity",
+    "Nun",
+    "Office",
+    "Office Lady",
+    "Ojou-sama",
+    "Orphan",
+    "Otaku Culture",
+    "Pandemic",
+    "Parenthood",
+    "Parody",
+    "Philosophy",
+    "Photography",
+    "Police",
+    "Politics",
+    "Polyamorous",
+    "Post-Apocalyptic",
+    "Pregnancy",
+    "Primarily Adult Cast",
+    "Primarily Child Cast",
+    "Primarily Female Cast",
+    "Primarily Male Cast",
+    "Primarily Teen Cast",
+    "Prison",
+    "Prostitution",
+    "Psychosexual",
+    "Rape",
+    "Rehabilitation",
+    "Reincarnation",
+    "Religion",
+    "Revenge",
+    "Robots",
+    "Royal Affairs",
+    "Rural",
+    "Sadism",
+    "Samurai",
+    "Satire",
+    "School",
+    "School Club",
+    "Seinen",
+    "Shapeshifting",
+    "Ships",
+    "Shoujo",
+    "Shounen",
+    "Skeleton",
+    "Slapstick",
+    "Slavery",
+    "Space",
+    "Succubus",
+    "Suicide",
+    "Super Power",
+    "Superhero",
+    "Surreal Comedy",
+    "Survival",
+    "Swordplay",
+    "Tanned Skin",
+    "Teacher",
+    "Terrorism",
+    "Threesome",
+    "Time Loop",
+    "Time Manipulation",
+    "Time Skip",
+    "Tokusatsu",
+    "Tomboy",
+    "Torture",
+    "Tragedy",
+    "Trains",
+    "Transgender",
+    "Travel",
+    "Tsundere",
+    "Twins",
+    "Unrequited Love",
+    "Urban",
+    "Urban Fantasy",
+    "Vampire",
+    "Video Games",
+    "Villainess",
+    "Virtual World",
+    "War",
+    "Witch",
+    "Work",
+    "Writing",
+    "Wuxia",
+    "Yakuza",
+    "Yandere",
+    "Youkai",
+    "Yuri",
+    "Zombie",
+    "demo::Josei",
+    "demo::Kids",
+    "demo::Seinen",
+    "demo::Shoujo",
+    "demo::Shounen",
+    "genre::Action",
+    "genre::Adventure",
+    "genre::Comedy",
+    "genre::Drama",
+    "genre::Ecchi",
+    "genre::Fantasy",
+    "genre::Hentai",
+    "genre::Horror",
+    "genre::Mahou Shoujo",
+    "genre::Mecha",
+    "genre::Music",
+    "genre::Mystery",
+    "genre::Psychological",
+    "genre::Romance",
+    "genre::Sci-Fi",
+    "genre::Slice of Life",
+    "genre::Sports",
+    "genre::Supernatural",
+    "genre::Thriller"
+  ],
+  "n_features": 254,
+  "n_titles": 2007,
+  "min_freq": 0.01,
+  "fit_labels": {
+    "n": 48,
+    "pos": 31,
+    "neg": 17
+  },
+  "logistic": {
+    "C": 0.003,
+    "loo_auc": 0.6698292220113852,
+    "loo_acc": 0.5833333333333334,
+    "C_grid": [
+      0.003,
+      0.01,
+      0.03,
+      0.1,
+      0.3,
+      1.0,
+      3.0,
+      10.0
+    ]
+  },
+  "nsc": {
+    "loo_auc": 0.6793168880455407,
+    "loo_acc": 0.6875
+  },
+  "pc1_top": [
+    [
+      "genre::Action",
+      0.4225807210051646
+    ],
+    [
+      "genre::Fantasy",
+      0.36794176756420877
+    ],
+    [
+      "genre::Romance",
+      -0.35843248624173124
+    ],
+    [
+      "genre::Adventure",
+      0.3054547293433307
+    ],
+    [
+      "genre::Slice of Life",
+      -0.2397406241831401
+    ],
+    [
+      "genre::Comedy",
+      -0.2141572713036724
+    ],
+    [
+      "Female Protagonist",
+      -0.20455122061007833
+    ],
+    [
+      "School",
+      -0.19760440855620678
+    ],
+    [
+      "Heterosexual",
+      -0.18460432199224744
+    ],
+    [
+      "Magic",
+      0.15049857954523554
+    ]
+  ],
+  "pc2_top": [
+    [
+      "demo::Seinen",
+      0.33931258747573173
+    ],
+    [
+      "genre::Drama",
+      0.3292573977339863
+    ],
+    [
+      "genre::Comedy",
+      -0.2989799915594194
+    ],
+    [
+      "Seinen",
+      0.2851671796750413
+    ],
+    [
+      "genre::Psychological",
+      0.2754466496047006
+    ],
+    [
+      "Tragedy",
+      0.2670572277890593
+    ],
+    [
+      "genre::Romance",
+      -0.23745942073421838
+    ],
+    [
+      "genre::Fantasy",
+      -0.23191725543264577
+    ],
+    [
+      "demo::Shounen",
+      -0.15901467110349418
+    ],
+    [
+      "Philosophy",
+      0.15818672716783314
+    ]
+  ],
+  "modes": {
+    "2": {
+      "members": {
+        "1": [
+          "Berserk",
+          "Bleach",
+          "Death Note",
+          "Parasyte",
+          "Gantz",
+          "Claymore",
+          "Vinland Saga",
+          "Vagabond",
+          "Blade of the Immortal",
+          "Attack on Titan",
+          "Ajin: Demi-Human",
+          "Fire Punch",
+          "Demon Slayer: Kimetsu no Yaiba",
+          "Sweet Home",
+          "Hell\u2019s Paradise: Jigokuraku",
+          "Jujutsu Kaisen"
+        ],
+        "0": [
+          "Hajime no Ippo: Fighting Spirit!",
+          "Dragon Ball",
+          "The Drifting Classroom",
+          "Dragon Ball Super",
+          "Solo Leveling",
+          "Second Life Ranker",
+          "Overgeared",
+          "Omniscient Reader",
+          "Taming Master",
+          "Mystic Musketeer",
+          "The Lone Necromancer",
+          "Murim RPG Simulation",
+          "Pick Me Up",
+          "Surviving the Game as a Barbarian",
+          "The Knight Only Lives Today"
+        ]
+      },
+      "inertia": 284.4507320833334,
+      "ids": [
+        30002,
+        30007,
+        30012,
+        30021,
+        30042,
+        30401,
+        30564,
+        30583,
+        30642,
+        30656,
+        30658,
+        30970,
+        53390,
+        79865,
+        86508,
+        87170,
+        87216,
+        100954,
+        100994,
+        101517,
+        105398,
+        109957,
+        117460,
+        119257,
+        125816,
+        129918,
+        139572,
+        141076,
+        159441,
+        164857,
+        177706
+      ],
+      "labels": [
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "3": {
+      "members": {
+        "1": [
+          "Berserk",
+          "Attack on Titan",
+          "Fire Punch"
+        ],
+        "2": [
+          "Hajime no Ippo: Fighting Spirit!",
+          "Bleach",
+          "Death Note",
+          "Dragon Ball",
+          "Parasyte",
+          "Gantz",
+          "Claymore",
+          "Vinland Saga",
+          "Vagabond",
+          "Blade of the Immortal",
+          "The Drifting Classroom",
+          "Ajin: Demi-Human",
+          "Demon Slayer: Kimetsu no Yaiba",
+          "Sweet Home",
+          "Hell\u2019s Paradise: Jigokuraku",
+          "Jujutsu Kaisen"
+        ],
+        "0": [
+          "Dragon Ball Super",
+          "Solo Leveling",
+          "Second Life Ranker",
+          "Overgeared",
+          "Omniscient Reader",
+          "Taming Master",
+          "Mystic Musketeer",
+          "The Lone Necromancer",
+          "Murim RPG Simulation",
+          "Pick Me Up",
+          "Surviving the Game as a Barbarian",
+          "The Knight Only Lives Today"
+        ]
+      },
+      "inertia": 257.8712541666667,
+      "ids": [
+        30002,
+        30007,
+        30012,
+        30021,
+        30042,
+        30401,
+        30564,
+        30583,
+        30642,
+        30656,
+        30658,
+        30970,
+        53390,
+        79865,
+        86508,
+        87170,
+        87216,
+        100954,
+        100994,
+        101517,
+        105398,
+        109957,
+        117460,
+        119257,
+        125816,
+        129918,
+        139572,
+        141076,
+        159441,
+        164857,
+        177706
+      ],
+      "labels": [
+        1,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        2,
+        1,
+        2,
+        0,
+        1,
+        2,
+        2,
+        2,
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "mode_nn": {
+    "0": [
+      {
+        "id": 151457,
+        "title": "The Overpowered Newbie",
+        "country": "KR",
+        "sim": 0.7926492624345514
+      },
+      {
+        "id": 137969,
+        "title": "Ranker's Return",
+        "country": "KR",
+        "sim": 0.7899010524338359
+      },
+      {
+        "id": 114605,
+        "title": "Latna Saga: Survival of a Sword King",
+        "country": "KR",
+        "sim": 0.7857466805353512
+      },
+      {
+        "id": 143059,
+        "title": "Leveling Beyond the Max",
+        "country": "KR",
+        "sim": 0.7846302047909095
+      },
+      {
+        "id": 146017,
+        "title": "The Hero Returns",
+        "country": "KR",
+        "sim": 0.7817300118613467
+      },
+      {
+        "id": 165287,
+        "title": NaN,
+        "country": "KR",
+        "sim": 0.7806195451200868
+      },
+      {
+        "id": 130870,
+        "title": "The Frozen Player Returns",
+        "country": "KR",
+        "sim": 0.7785514139339624
+      },
+      {
+        "id": 178379,
+        "title": "Blink Master of the Magic Academy",
+        "country": "KR",
+        "sim": 0.7723886578420209
+      },
+      {
+        "id": 140896,
+        "title": "Seoul Station's Necromancer",
+        "country": "KR",
+        "sim": 0.7709495740473913
+      },
+      {
+        "id": 151212,
+        "title": "The Holy Power of Modern Medicine",
+        "country": "KR",
+        "sim": 0.7706876269983123
+      },
+      {
+        "id": 159439,
+        "title": "Boundless Ascension",
+        "country": "KR",
+        "sim": 0.7665596285138666
+      },
+      {
+        "id": 139381,
+        "title": "My Life as a Player",
+        "country": "KR",
+        "sim": 0.7662608982288287
+      },
+      {
+        "id": 164996,
+        "title": "F-Rank Fortune Hunter",
+        "country": "KR",
+        "sim": 0.7644575229312063
+      },
+      {
+        "id": 111590,
+        "title": NaN,
+        "country": "KR",
+        "sim": 0.761686363113975
+      },
+      {
+        "id": 119276,
+        "title": "The Advanced Player of the Tutorial Tower",
+        "country": "KR",
+        "sim": 0.7612165597055321
+      }
+    ],
+    "1": [
+      {
+        "id": 98328,
+        "title": "Jagaaan",
+        "country": "JP",
+        "sim": 0.7032481262105
+      },
+      {
+        "id": 85611,
+        "title": "Tokyo Ghoul:re",
+        "country": "JP",
+        "sim": 0.6984716321908478
+      },
+      {
+        "id": 33868,
+        "title": NaN,
+        "country": "JP",
+        "sim": 0.6839687870593973
+      },
+      {
+        "id": 31474,
+        "title": "Devilman",
+        "country": "JP",
+        "sim": 0.6767051222622145
+      },
+      {
+        "id": 63327,
+        "title": "Tokyo Ghoul",
+        "country": "JP",
+        "sim": 0.6764890875756899
+      },
+      {
+        "id": 63031,
+        "title": "Alice in Borderland",
+        "country": "JP",
+        "sim": 0.6621903406278551
+      },
+      {
+        "id": 105778,
+        "title": "Chainsaw Man",
+        "country": "JP",
+        "sim": 0.6590022355229072
+      },
+      {
+        "id": 31706,
+        "title": "JoJo's Bizarre Adventure: Part 7\u2013Steel Ball Run",
+        "country": "JP",
+        "sim": 0.6532978006006007
+      },
+      {
+        "id": 30933,
+        "title": "Elfen Lied",
+        "country": "JP",
+        "sim": 0.648561136417697
+      },
+      {
+        "id": 119968,
+        "title": "Tougen Anki: Legend of the Cursed Blood",
+        "country": "JP",
+        "sim": 0.6455903009643826
+      },
+      {
+        "id": 33986,
+        "title": "Deadman Wonderland",
+        "country": "JP",
+        "sim": 0.6387150466003906
+      },
+      {
+        "id": 40552,
+        "title": "Lucifer and the Biscuit Hammer",
+        "country": "JP",
+        "sim": 0.6282587908430896
+      },
+      {
+        "id": 97830,
+        "title": "To Your Eternity",
+        "country": "JP",
+        "sim": 0.6275108614039852
+      },
+      {
+        "id": 30025,
+        "title": "Fullmetal Alchemist",
+        "country": "JP",
+        "sim": 0.6272557940431812
+      },
+      {
+        "id": 85307,
+        "title": "Bungo Stray Dogs",
+        "country": "JP",
+        "sim": 0.6267734240972069
+      }
+    ]
+  },
+  "mod_pos_check": [
+    {
+      "title": "Tower of God",
+      "id": 85143,
+      "score": 0.5050966680658298,
+      "above_median": true
+    },
+    {
+      "title": "Terra Formars",
+      "id": 67563,
+      "score": 0.5754546284251639,
+      "above_median": true
+    },
+    {
+      "title": "I\u2019m the Max-Level Newbie",
+      "id": 137280,
+      "score": 0.4781833402540284,
+      "above_median": true
+    },
+    {
+      "title": "The Skeleton Soldier Failed to Defend the Dungeon",
+      "id": 103156,
+      "score": 0.45924370824040567,
+      "above_median": false
+    },
+    {
+      "title": "The Greatest Estate Developer",
+      "id": 140407,
+      "score": 0.5305072757982199,
+      "above_median": true
+    },
+    {
+      "title": "Taming Master",
+      "id": 125816,
+      "score": 0.4875598799623812,
+      "above_median": true
+    },
+    {
+      "title": "Mystic Musketeer",
+      "id": 129918,
+      "score": 0.4962777106280521,
+      "above_median": true
+    },
+    {
+      "title": "Demon Devourer",
+      "id": 144079,
+      "score": 0.484078072702949,
+      "above_median": true
+    }
+  ],
+  "mod_pos_n_above": 7,
+  "median_score": 0.46340765816744683,
+  "berserk_id": 30002
+}

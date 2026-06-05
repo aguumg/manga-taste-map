@@ -1,0 +1,42 @@
+group,label,query,expected_country,approx_year,hint,resolved,id,matched_romaji,matched_english,matched_country,matched_year,popularity,reason,n_candidates
+STRONG_POS,1.0,Berserk,JP,1989,Miura seinen,True,30002,Berserk,Berserk,JP,1989,236455,ok,10
+STRONG_POS,1.0,Vinland Saga,JP,2005,Yukimura,True,30642,Vinland Saga,Vinland Saga,JP,2005,133739,ok,2
+STRONG_POS,1.0,Claymore,JP,2001,Yagi,True,30583,CLAYMORE,Claymore,JP,2001,63803,ok,2
+STRONG_POS,1.0,Mugen no Juunin,JP,1993,Blade of the Immortal,True,30658,Mugen no Juunin,Blade of the Immortal,JP,1993,31329,ok,3
+STRONG_POS,1.0,Shingeki no Kyojin,JP,2009,Attack on Titan,True,53390,Shingeki no Kyojin,Attack on Titan,JP,2009,222739,ok,10
+STRONG_POS,1.0,Solo Leveling,KR,2018,Na Honjaman Level-Up,True,105398,Na Honjaman Level Up,Solo Leveling,KR,2018,276107,ok,3
+STRONG_POS,1.0,Jigokuraku,JP,2018,Hell's Paradise,True,100994,Jigokuraku,Hell’s Paradise: Jigokuraku,JP,2018,95346,ok,10
+STRONG_POS,1.0,Overgeared,KR,2017,Korean RPG,True,117460,Temppal,Overgeared,KR,2020,36249,ok,2
+STRONG_POS,1.0,Pick Me Up,KR,2022,Infinite Gacha,True,159441,Pick Me Up!,Pick Me Up,KR,2022,39895,ok,2
+STRONG_POS,1.0,Murim RPG Simulation,KR,2022,murim rpg,True,141076,Cheonmayukseong,Murim RPG Simulation,KR,2021,11340,ok,1
+STRONG_POS,1.0,Surviving the Game as a Barbarian,KR,2022,barbarian,True,164857,Game Sok Babarian-euro Saranamgi,Surviving the Game as a Barbarian,KR,2023,18090,ok,1
+STRONG_POS,1.0,Eternally Regressing Knight,KR,2020,regressing knight,True,177706,Oneulman Saneun Gisa,The Knight Only Lives Today,KR,2024,22813,ok,1
+NEG,0.0,Hai to Gensou no Grimgar,JP,2013,Grimgar,True,86365,Hai to Gensou no Grimgar,Grimgar of Fantasy and Ash,JP,2013,7525,ok,2
+NEG,0.0,Goblin Slayer,JP,2016,goblin slayer,True,87321,Goblin Slayer,Goblin Slayer,JP,2016,30377,ok,9
+NEG,0.0,Jormungand,JP,2006,Takahashi,True,34611,Jormungand,Jormungand,JP,2006,5665,ok,1
+NEG,0.0,Omniscient Reader,KR,2020,ORV,True,119257,Jeonjijeok Dokja Sijeom,Omniscient Reader,KR,2020,125351,ok,1
+NEG,0.0,Golden Kamuy,JP,2014,golden kamuy,True,86559,Golden Kamuy,Golden Kamuy,JP,2014,49918,ok,2
+NEG,0.0,Made in Abyss,JP,2012,made in abyss,True,86551,Made in Abyss,Made in Abyss,JP,2012,56224,ok,2
+NEG,0.0,Nano Machine,KR,2020,nano machine,True,120980,Nano Machine,Nano Machine,KR,2020,44727,ok,1
+NEG,0.0,Absolute Sword Sense,KR,2022,absolute sword sense,True,151460,Jeoldaegeomgam,Absolute Sword Sense,KR,2022,14659,ok,1
+NEG,0.0,The Lone Necromancer,KR,2021,lone necromancer,True,139572,Na Honja Necromancer,The Lone Necromancer,KR,2021,15975,ok,1
+NEG,0.0,Second Life Ranker,KR,2019,second life ranker,True,109957,Dubeon Saneun Ranker,Second Life Ranker,KR,2019,43010,ok,1
+NEG,0.0,SSS-Class Suicide Hunter,KR,2020,sss-class suicide hunter,True,128067,SSS-geup Jugeoya Saneun Hunter,SSS-Class Revival Hunter,KR,2020,63096,ok,1
+MOD_POS,,Tower of God,KR,2010,ToG,True,85143,Sinui Tap,Tower of God,KR,2010,97305,ok,3
+MOD_POS,,Terra ForMars,JP,2011,terraformars,True,67563,Terra Formars,Terra Formars,JP,2011,14363,ok,9
+MOD_POS,,Solo Max-Level Newbie,KR,2021,max level newbie,True,137280,Na Honja Mallep Newbie,I’m the Max-Level Newbie,KR,2021,47281,ok,1
+MOD_POS,,Skeleton Soldier Couldn't Protect the Dungeon,KR,2018,skeleton soldier,True,103156,Haegolbyeongsaneun Dungeon-eul Jikiji Motaetda,The Skeleton Soldier Failed to Defend the Dungeon,KR,2018,24425,ok,1
+MOD_POS,,The Greatest Estate Developer,KR,2021,estate developer,True,140407,Yeokdaegeum Yeongji Seolgyesa,The Greatest Estate Developer,KR,2021,61038,ok,1
+MOD_POS,,Taming Master,KR,2017,taming master,True,125816,Taming Master,Taming Master,KR,2020,12057,ok,4
+MOD_POS,,Arcane Sniper,KR,2021,arcane sniper,True,129918,Matan-ui Sasu,Mystic Musketeer,KR,2021,12571,ok,1
+MOD_POS,,Talent-Swallowing Magician,KR,2021,talent swallowing,True,144079,Jaeneung Samkin Mabeopsa,Demon Devourer,KR,2021,16860,ok,1
+EXCLUDE,,Overlord,JP,2012,,True,85976,Overlord,Overlord,JP,2012,17405,ok,10
+EXCLUDE,,Arifureta,JP,2016,,True,96834,Arifureta Shokugyou de Sekai Saikyou,Arifureta: From Commonplace to World’s Strongest,JP,2016,22113,ok,10
+EXCLUDE,,Jujutsu Kaisen,JP,2018,,True,101517,Jujutsu Kaisen,Jujutsu Kaisen,JP,2018,244477,ok,7
+EXCLUDE,,Memorize,KR,2017,,True,124846,MEMORIZE,MEMORIZE,KR,2020,12939,ok,1
+EXCLUDE,,Disastrous Necromancer,KR,2022,,False,167372,Siling Fashi! Wo Ji Shi Tianzai,"Necromancer, the Ultimate Scourge!",CN,2023,9984,no candidate in countries {'KR'}; fell back to top hit,1
+EXCLUDE,,Reincarnation of the Suicidal Battle God,KR,2021,,True,136220,Tusinjeonsaenggi,Doom Breaker,KR,2021,38588,ok,1
+EXCLUDE,,The Novel's Extra,KR,2017,,True,207769,Soseol Sok Extra,,KR,2020,57,ok,3
+EXCLUDE,,Bowblade Spirit,KR,2016,,True,125076,Gunggwigeomsin 1-bu,,KR,2020,4652,ok,1
+EXCLUDE,,Lord Marksman and Vanadis,JP,2011,Madan no Ou,True,73391,Madan no Ou to Vanadis,Lord Marksman and Vanadis,JP,2011,3255,ok,1
+EXCLUDE,,Tsurune,JP,2016,,True,102830,Tsurune: Kazemai Koukou Kyuudou-bu,,JP,2016,566,ok,1

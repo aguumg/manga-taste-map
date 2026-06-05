@@ -1,0 +1,21 @@
+# secrets — supply your own
+comicvine_key.env
+
+# huge / regenerable data (see README "Run it yourself")
+grand_comics_database/
+data/gcd.sqlite
+data/corpus.csv
+data/staff_raw.json
+data/western_raw_detail.json
+data/western_search_cache.json
+data/*.PREV.json
+data/*.log
+
+# personal raw browser dumps
+taste_localstorage_backup.json
+
+# env
+.venv/
+__pycache__/
+*.pyc
+.DS_Store

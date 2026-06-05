@@ -1,0 +1,457 @@
+{
+  "Peter Panzerfaust": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["War", 1.0], ["Military", 0.8], ["Historical", 0.9], ["Tragedy", 0.6], ["Found Family", 0.6], ["Coming of Age", 0.5], ["Foreign", 0.5], ["Guns", 0.5], ["Survival", 0.5], ["Revenge", 0.4]],
+    "note": "WWII Nazi-occupied France reimagining of Peter Pan; resistance fighters, real on-screen combat deaths and casualties. War tone, not horror.",
+    "source": "GCD-broad"
+  },
+  "Powers": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 1.0], ["Detective", 0.9], ["Superhero", 0.7], ["Police", 0.7], ["Anti-Hero", 0.5], ["Conspiracy", 0.4], ["Gore", 0.5], ["Urban", 0.5], ["Revenge", 0.3], ["Primarily Adult Cast", 0.4], ["Assassins", 0.3]],
+    "note": "Bendis homicide-detectives-in-a-superhero-world noir; graphic on-page murders of powered people, blood, autopsies. Mature crime, not all-ages cape.",
+    "source": "GCD-broad"
+  },
+  "Wasteland": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Post-Apocalyptic", 1.0], ["Survival", 0.9], ["Dystopian", 0.7], ["Travel", 0.5], ["Tragedy", 0.5], ["Gore", 0.5], ["Lost Civilization", 0.3], ["Religion", 0.4], ["Conspiracy", 0.4], ["Desert", 0.4]],
+    "note": "Oni far-future post-apocalyptic epic; mutants, raiders, on-screen killings and bloodshed across a ruined Earth.",
+    "source": "GCD-broad"
+  },
+  "Warlord of Mars": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Space", 0.6], ["Swordplay", 0.9], ["Aliens", 0.8], ["War", 0.7], ["Gore", 0.7], ["Travel", 0.6], ["Magic", 0.4], ["Slavery", 0.4], ["Nudity", 0.4], ["Revenge", 0.3]],
+    "note": "Dynamite Barsoom (John Carter) adaptation; explicit sword combat, beheadings, impalings, blood. Planetary-romance sword-war, graphic.",
+    "source": "GCD-broad"
+  },
+  "Punisher War Journal": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 0.9], ["Anti-Hero", 1.0], ["Guns", 0.9], ["Revenge", 0.8], ["Gore", 0.6], ["Criminal Organization", 0.6], ["Assassins", 0.4], ["Military", 0.4], ["Urban", 0.5], ["Tragedy", 0.4]],
+    "note": "Frank Castle mass-murders criminals on-page with firearms; explicit gun deaths, beatings, blood. Mature vigilante action.",
+    "source": "GCD-broad"
+  },
+  "Airboy": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["War", 0.8], ["Historical", 0.7], ["Travel", 0.6], ["Guns", 0.6], ["Military", 0.5], ["Gore", 0.4], ["Tragedy", 0.4], ["Revenge", 0.4], ["Survival", 0.4], ["Anti-Hero", 0.3]],
+    "note": "Eclipse 1980s revival of the WWII aviator pulp; real wartime killing, on-screen combat deaths, mature violence (Dixon/Truman era).",
+    "source": "GCD-broad"
+  },
+  "Savage Tales": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["War", 0.9], ["Military", 0.7], ["Historical", 0.6], ["Guns", 0.6], ["Gore", 0.5], ["Survival", 0.5], ["Tragedy", 0.4], ["Crime", 0.3], ["Foreign", 0.4], ["Revenge", 0.3]],
+    "note": "Marvel mature black-and-white war/adventure magazine; explicit combat killings (e.g. The 'Nam-adjacent and WWII jungle warfare), blood, non-code violence.",
+    "source": "GCD-broad"
+  },
+  "Scout": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Post-Apocalyptic", 0.8], ["Survival", 0.7], ["Dystopian", 0.6], ["Guns", 0.6], ["Anti-Hero", 0.6], ["Revenge", 0.5], ["Gore", 0.5], ["Politics", 0.4], ["Mythology", 0.4], ["Military", 0.4]],
+    "note": "Tim Truman near-future collapsed-America saga; Apache ex-soldier hunts monsters/men, graphic gun and knife killings. Mature post-apoc action.",
+    "source": "GCD-broad"
+  },
+  "Tales of the Witchblade": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Magic", 0.7], ["Historical", 0.6], ["Crime", 0.5], ["Gore", 0.5], ["Female Protagonist", 0.6], ["Tragedy", 0.5], ["Rape", 0.4], ["Revenge", 0.4], ["Curses", 0.4], ["Swordplay", 0.3]],
+    "note": "Top Cow Witchblade spin-off; bloody supernatural-weapon kills, on-page assault and graphic violence. Mature dark fantasy.",
+    "source": "GCD-broad"
+  },
+  "The Demon": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Demons", 0.9], ["Magic", 0.6], ["Gore", 0.7], ["Curses", 0.5], ["Tragedy", 0.5], ["Anti-Hero", 0.6], ["Revenge", 0.4], ["Urban Fantasy", 0.5], ["Exorcism", 0.4], ["Torture", 0.4]],
+    "note": "Etrigan the rhyming demon (Ennis-era run especially); Hell, torture, decapitations and graphic supernatural slaughter. Dark fantasy/horror action.",
+    "source": "GCD-broad"
+  },
+  "The Chronicles of Conan": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Swordplay", 1.0], ["Magic", 0.6], ["Travel", 0.6], ["Gore", 0.7], ["Mythology", 0.5], ["Demons", 0.4], ["Anti-Hero", 0.4], ["Medieval", 0.4], ["Survival", 0.4], ["Slavery", 0.3]],
+    "note": "Reprints of Marvel's Conan the Barbarian; explicit sword decapitations, impalings, bloody sorcery-creature kills. Classic violent sword-and-sorcery.",
+    "source": "GCD-broad"
+  },
+  "Robert E. Howard's Savage Sword": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Swordplay", 1.0], ["Magic", 0.5], ["Gore", 0.8], ["Travel", 0.6], ["Mythology", 0.5], ["Demons", 0.4], ["Anti-Hero", 0.4], ["Historical", 0.3], ["Survival", 0.3], ["Revenge", 0.3]],
+    "note": "Dark Horse mature black-and-white S&S magazine (Conan, Solomon Kane, etc.); heavy graphic bloodshed, decapitations, gore by design.",
+    "source": "GCD-broad"
+  },
+  "Gantz": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Death Game", 1.0], ["Gore", 1.0], ["Aliens", 0.7], ["Survival", 0.8], ["Guns", 0.6], ["Tragedy", 0.6], ["Battle Royale", 0.5], ["Psychosexual", 0.3], ["Nudity", 0.3], ["Anti-Hero", 0.3]],
+    "note": "Oku's notoriously gory sci-fi death-game; humans forced to hunt aliens, extreme graphic dismemberment and on-page deaths.",
+    "source": "GCD-broad"
+  },
+  "Lazarus": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Dystopian", 0.9], ["Politics", 0.7], ["Class Struggle", 0.7], ["Female Protagonist", 0.6], ["Guns", 0.6], ["Gore", 0.5], ["War", 0.5], ["Conspiracy", 0.5], ["Anti-Hero", 0.4], ["Survival", 0.4]],
+    "note": "Rucka feudal-corporate dystopia; the family enforcer 'Lazarus' kills graphically on-page, sword and gunfights, war and executions. Sci-fi action with explicit violence.",
+    "source": "GCD-broad"
+  },
+  "I, Zombie [iZombie]": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Zombie", 0.9], ["Detective", 0.6], ["Urban Fantasy", 0.6], ["Female Protagonist", 0.6], ["Ghost", 0.4], ["Gore", 0.5], ["Curses", 0.4], ["Crime", 0.4], ["Tragedy", 0.3], ["Memory Manipulation", 0.3]],
+    "note": "Roberson/Allred gravedigger-zombie eats brains, solves murders; on-page brain-eating, monster kills and bloodshed in a supernatural-noir.",
+    "source": "GCD-broad"
+  },
+  "Gunsmith Cats": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 0.8], ["Guns", 1.0], ["Detective", 0.6], ["Female Protagonist", 0.6], ["Anti-Hero", 0.4], ["Gore", 0.4], ["Criminal Organization", 0.5], ["Motorcycles", 0.4], ["Urban", 0.5], ["Revenge", 0.3]],
+    "note": "Sonoda Chicago bounty-hunter gunfight manga; explicit firearm shootouts, killings, car chases. Crime-action, graphic.",
+    "source": "GCD-broad"
+  },
+  "Jonah Hex": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 0.6], ["Guns", 0.9], ["Anti-Hero", 0.9], ["Revenge", 0.7], ["Gore", 0.7], ["Survival", 0.5], ["Tragedy", 0.5], ["Fugitive", 0.4], ["Assassins", 0.4], ["Historical", 0.5]],
+    "note": "Palmiotti/Gray Western bounty hunter; brutal on-page shootings, hangings, scalping and gore. Mature violent Western (frontier setting, no AniList Western tag).",
+    "source": "GCD-broad"
+  },
+  "All Star Western": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 0.6], ["Guns", 0.9], ["Anti-Hero", 0.9], ["Detective", 0.5], ["Gore", 0.6], ["Revenge", 0.6], ["Historical", 0.5], ["Survival", 0.4], ["Urban", 0.3], ["Fugitive", 0.3]],
+    "note": "New-52 Jonah Hex in frontier Gotham; same Palmiotti/Gray brutality — graphic gunfights, killings, gore. Violent Western-noir.",
+    "source": "GCD-broad"
+  },
+  "Zorro": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Swordplay", 0.9], ["Historical", 0.7], ["Travel", 0.6], ["Anti-Hero", 0.4], ["Revenge", 0.6], ["Guns", 0.4], ["Gore", 0.3], ["Class Struggle", 0.4], ["Politics", 0.3], ["Foreign", 0.4]],
+    "note": "Wagner's Dynamite Zorro; on-page sword killings, soldiers run through, frontier-California oppression and bloodshed. Swashbuckling action with real deaths.",
+    "source": "GCD-broad"
+  },
+  "Lost Marvels": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["War", 0.7], ["Gore", 0.7], ["Historical", 0.6], ["Curses", 0.4], ["Tragedy", 0.5], ["Crime", 0.5], ["Swordplay", 0.4], ["Survival", 0.4], ["Revenge", 0.3], ["Demons", 0.3]],
+    "note": "Fantagraphics EC-style anthology of war/horror/crime tales; explicit period bloodshed, killings and curses in the classic graphic tradition.",
+    "source": "GCD-broad"
+  },
+  "The War That Time Forgot": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["War", 0.9], ["Military", 0.6], ["Survival", 0.7], ["Guns", 0.6], ["Lost Civilization", 0.5], ["Gore", 0.4], ["Tragedy", 0.4], ["Time Manipulation", 0.3], ["Animals", 0.3], ["Travel", 0.3]],
+    "note": "DC soldiers stranded among dinosaurs across eras; on-page combat deaths, soldiers killed by dinosaurs and enemy fire. War-adventure with casualties.",
+    "source": "GCD-broad"
+  },
+  "Sledgehammer 44": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["War", 0.9], ["Military", 0.6], ["Super Power", 0.6], ["Guns", 0.6], ["Historical", 0.6], ["Gore", 0.4], ["Robots", 0.4], ["Cosmic Horror", 0.3], ["Survival", 0.3], ["Tragedy", 0.3]],
+    "note": "Mignola/Arcudi WWII powered-armor soldier vs Nazis (Hellboy universe); on-page combat deaths, Nazi soldiers killed, explosions and blood.",
+    "source": "GCD-broad"
+  },
+  "Xerxes: The Fall of the House of Darius and the Rise of Alexander": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["War", 1.0], ["Historical", 0.8], ["Swordplay", 0.8], ["Gore", 0.8], ["Military", 0.6], ["Politics", 0.5], ["Tragedy", 0.4], ["Revenge", 0.3], ["Survival", 0.3], ["Royal Affairs", 0.3]],
+    "note": "Frank Miller's '300' follow-up; stylized graphic battlefield slaughter, beheadings, impalings and blood. Ultra-violent historical war.",
+    "source": "GCD-broad"
+  },
+  "Aliens": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Aliens", 1.0], ["Space", 0.6], ["Survival", 0.8], ["Military", 0.7], ["Gore", 0.8], ["Cosmic Horror", 0.4], ["Guns", 0.6], ["Tragedy", 0.5], ["Body Horror", 0.5], ["Ships", 0.3]],
+    "note": "Dark Horse Aliens; xenomorphs graphically slaughter marines/colonists, chestbursters, acid-blood gore. Sci-fi horror-action with explicit kills.",
+    "source": "GCD-broad"
+  },
+  "John Byrne's Next Men": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Super Power", 0.7], ["Conspiracy", 0.6], ["Fugitive", 0.5], ["Gore", 0.5], ["Tragedy", 0.5], ["Survival", 0.4], ["Clone", 0.3], ["Anti-Hero", 0.3], ["Politics", 0.4], ["Guns", 0.4]],
+    "note": "Byrne's mature creator-owned super-people-on-the-run; notably graphic for its time — impalement, on-page killings, blood (cover-controversy era).",
+    "source": "GCD-broad"
+  },
+  "Sandman Mystery Theatre": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 0.9], ["Detective", 0.9], ["Historical", 0.7], ["Gore", 0.5], ["Conspiracy", 0.4], ["Anti-Hero", 0.4], ["Tragedy", 0.4], ["Urban", 0.5], ["Revenge", 0.3], ["Psychosexual", 0.3]],
+    "note": "Wagner/Seagle 1930s pulp-noir vigilante; serial killers, graphic murders and disturbing on-page violence. Mature crime-thriller.",
+    "source": "GCD-broad"
+  },
+  "Wetworks": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Military", 0.8], ["Super Power", 0.6], ["Guns", 0.7], ["Gore", 0.7], ["Vampire", 0.5], ["War", 0.5], ["Survival", 0.5], ["Demons", 0.4], ["Anti-Hero", 0.4], ["Conspiracy", 0.4]],
+    "note": "WildStorm black-ops team vs vampires/symbiote-armor horrors; heavy gunfire, monster-kills and gore. Military-sci-fi-horror action.",
+    "source": "GCD-broad"
+  },
+  "Conan": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Swordplay", 1.0], ["Magic", 0.6], ["Travel", 0.6], ["Gore", 0.7], ["Mythology", 0.5], ["Anti-Hero", 0.4], ["Survival", 0.4], ["Demons", 0.3], ["Medieval", 0.3], ["Slavery", 0.3]],
+    "note": "Dark Horse Busiek/Nord Conan; on-page sword decapitations, impalements, bloody sorcery monsters. Graphic sword-and-sorcery.",
+    "source": "GCD-broad"
+  },
+  "Gotham Central": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 1.0], ["Detective", 0.9], ["Police", 0.9], ["Gore", 0.5], ["Conspiracy", 0.4], ["Tragedy", 0.5], ["Urban", 0.6], ["Anti-Hero", 0.3], ["Ensemble Cast", 0.4], ["Revenge", 0.3]],
+    "note": "Brubaker/Rucka GCPD procedural; Joker guns down cops on-page, graphic murders, mob killings. Mature crime-noir in a cape city.",
+    "source": "GCD-broad"
+  },
+  "Area 88": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["War", 1.0], ["Military", 0.9], ["Guns", 0.6], ["Tragedy", 0.7], ["Survival", 0.6], ["Anti-Hero", 0.4], ["Foreign", 0.5], ["Revenge", 0.3], ["Politics", 0.3], ["Ensemble Cast", 0.3]],
+    "note": "Kawaguchi mercenary-fighter-pilot war manga; pilots and ground troops die on-page in dogfights and strafing runs. War-tragedy with real casualties.",
+    "source": "GCD-broad"
+  },
+  "The Legend of Kamui": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Ninja", 1.0], ["Historical", 0.7], ["Martial Arts", 0.7], ["Gore", 0.6], ["Class Struggle", 0.6], ["Tragedy", 0.5], ["Swordplay", 0.6], ["Survival", 0.5], ["Anti-Hero", 0.4], ["Revenge", 0.4]],
+    "note": "Shirato's feudal-Japan ninja epic; graphic on-page killings, dismemberment, class-war bloodshed. Gekiga violence.",
+    "source": "GCD-broad"
+  },
+  "Incorruptible": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Superhero", 0.7], ["Anti-Hero", 0.8], ["Crime", 0.6], ["Post-Apocalyptic", 0.4], ["Gore", 0.5], ["Rehabilitation", 0.4], ["Tragedy", 0.4], ["Revenge", 0.4], ["Criminal Organization", 0.4], ["Guns", 0.4]],
+    "note": "Waid's 'Irredeemable' companion — a reformed supervillain in a world wrecked by a genocidal hero; on-page graphic deaths, mass-murder aftermath. Mature cape deconstruction.",
+    "source": "GCD-broad"
+  },
+  "Green Hornet": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 0.9], ["Martial Arts", 0.8], ["Anti-Hero", 0.5], ["Guns", 0.6], ["Gore", 0.4], ["Criminal Organization", 0.6], ["Revenge", 0.5], ["Urban", 0.5], ["Mafia", 0.3], ["Assassins", 0.3]],
+    "note": "Dynamite (Kevin Smith) masked vigilante vs organized crime; on-page killings, gunfights, brutal beatdowns. Crime-action.",
+    "source": "GCD-broad"
+  },
+  "American Vampire": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Vampire", 1.0], ["Historical", 0.7], ["Gore", 0.8], ["Tragedy", 0.5], ["Revenge", 0.5], ["Anti-Hero", 0.5], ["Crime", 0.4], ["Survival", 0.4], ["Curses", 0.3], ["Body Horror", 0.4]],
+    "note": "Snyder/Albuquerque vampire saga across American history; savage on-page vampire kills, blood, body-horror transformations. Graphic horror-action.",
+    "source": "GCD-broad"
+  },
+  "Vampirella": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Vampire", 1.0], ["Demons", 0.6], ["Gore", 0.7], ["Female Protagonist", 0.6], ["Cosmic Horror", 0.4], ["Curses", 0.4], ["Anti-Hero", 0.4], ["Nudity", 0.4], ["Exorcism", 0.3], ["Tragedy", 0.3]],
+    "note": "Dynamite Vampirella; graphic vampire/demon slaying, blood, gore. Mature horror-action.",
+    "source": "GCD-broad"
+  },
+  "Warlord of Mars: Dejah Thoris": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Swordplay", 0.8], ["Aliens", 0.7], ["War", 0.6], ["Gore", 0.6], ["Space", 0.6], ["Female Protagonist", 0.6], ["Magic", 0.4], ["Nudity", 0.5], ["Slavery", 0.3], ["Revenge", 0.3]],
+    "note": "Dynamite Barsoom prequel; sword-war, beheadings and bloody planetary combat. Graphic sword-and-planet action.",
+    "source": "GCD-broad"
+  },
+  "The Programme": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Super Power", 0.7], ["War", 0.7], ["Politics", 0.6], ["Conspiracy", 0.6], ["Military", 0.5], ["Gore", 0.6], ["Tragedy", 0.4], ["Historical", 0.4], ["Anti-Hero", 0.4], ["Dystopian", 0.4]],
+    "note": "WildStorm/Milligan Cold-War superhuman weapons reawaken; massive on-page destruction and graphic deaths. Mature superhero-deconstruction war.",
+    "source": "GCD-broad"
+  },
+  "Skaar: Son of Hulk": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Super Power", 0.6], ["Aliens", 0.6], ["Swordplay", 0.5], ["Gore", 0.6], ["Survival", 0.6], ["Anti-Hero", 0.5], ["War", 0.5], ["Slavery", 0.4], ["Revenge", 0.4], ["Space", 0.5]],
+    "note": "Hulk's son on the savage planet Sakaar; gladiatorial on-page slayings, decapitations and blood. Barbarian sci-fi action, more violent than mainline capes.",
+    "source": "GCD-broad"
+  },
+  "Lady Death": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Demons", 0.7], ["Gore", 0.8], ["Magic", 0.5], ["Female Protagonist", 0.6], ["Swordplay", 0.5], ["War", 0.5], ["Anti-Hero", 0.4], ["Nudity", 0.4], ["Revenge", 0.4], ["Slavery", 0.3]],
+    "note": "Avatar dark-fantasy warrior-goddess; relentless graphic dismemberment, gore and demon slaughter. Explicitly violent dark fantasy.",
+    "source": "GCD-broad"
+  },
+  "John Constantine: Hellblazer": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Demons", 0.7], ["Magic", 0.7], ["Urban Fantasy", 0.6], ["Gore", 0.6], ["Anti-Hero", 0.7], ["Curses", 0.5], ["Tragedy", 0.5], ["Exorcism", 0.4], ["Conspiracy", 0.3], ["Cult", 0.3]],
+    "note": "2020 Spurrier Hellblazer; occult horror with graphic deaths, body horror and gory supernatural violence. Mature urban-fantasy.",
+    "source": "GCD-broad"
+  },
+  "Sam and Twitch": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 1.0], ["Detective", 0.9], ["Police", 0.8], ["Gore", 0.5], ["Mafia", 0.5], ["Urban", 0.5], ["Conspiracy", 0.4], ["Tragedy", 0.3], ["Anti-Hero", 0.3], ["Assassins", 0.4]],
+    "note": "McFarlane/Bendis homicide-detective spin-off from Spawn; graphic on-page murders, mob hits, gore. Hard crime-noir.",
+    "source": "GCD-broad"
+  },
+  "Case Files: Sam & Twitch": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 1.0], ["Detective", 0.9], ["Police", 0.8], ["Gore", 0.5], ["Mafia", 0.5], ["Urban", 0.5], ["Conspiracy", 0.4], ["Tragedy", 0.3], ["Anti-Hero", 0.3], ["Revenge", 0.3]],
+    "note": "Continuation of the Sam & Twitch homicide-detective noir; graphic murders and crime-scene gore. Hard crime-thriller.",
+    "source": "GCD-broad"
+  },
+  "Conan the Cimmerian": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Swordplay", 1.0], ["Magic", 0.6], ["Travel", 0.6], ["Gore", 0.7], ["Mythology", 0.5], ["Anti-Hero", 0.4], ["Survival", 0.4], ["War", 0.4], ["Demons", 0.3], ["Medieval", 0.3]],
+    "note": "Dark Horse Conan ongoing; explicit sword slaughter, beheadings, gory sorcery. Graphic sword-and-sorcery.",
+    "source": "GCD-broad"
+  },
+  "The Astounding Wolf-Man": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Super Power", 0.6], ["Superhero", 0.6], ["Gore", 0.6], ["Curses", 0.5], ["Tragedy", 0.5], ["Anti-Hero", 0.4], ["Revenge", 0.5], ["Monster Boy", 0.4], ["Survival", 0.4], ["Shapeshifting", 0.4]],
+    "note": "Kirkman werewolf-superhero; graphic on-page maulings, family murder, blood. Mature horror-superhero with real deaths (no Werewolf tag — Curses/Shapeshifting/Monster Boy stand in).",
+    "source": "GCD-broad"
+  },
+  "Savage Avengers": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Swordplay", 0.7], ["Super Power", 0.6], ["Gore", 0.8], ["Magic", 0.5], ["Demons", 0.5], ["Anti-Hero", 0.6], ["Superhero", 0.5], ["Mythology", 0.5], ["Revenge", 0.4], ["Curses", 0.3]],
+    "note": "Duggan's Conan-meets-Marvel team (Punisher, Elektra, Wolverine); explicit graphic slaughter, decapitations, blood. Brutal sword-and-superhero action.",
+    "source": "GCD-broad"
+  },
+  "Alias": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 0.8], ["Detective", 0.8], ["Superhero", 0.4], ["Anti-Hero", 0.6], ["Female Protagonist", 0.7], ["Gore", 0.4], ["Psychosexual", 0.4], ["Tragedy", 0.5], ["Urban", 0.5], ["Conspiracy", 0.4]],
+    "note": "Bendis MAX-imprint Jessica Jones PI noir; on-page killings, brutal powered violence and adult/dark content (Purple Man arc). Mature crime-superhero.",
+    "source": "GCD-broad"
+  },
+  "Animosity": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Post-Apocalyptic", 0.7], ["Animals", 0.7], ["Survival", 0.8], ["Gore", 0.8], ["Anthropomorphism", 0.5], ["Tragedy", 0.6], ["War", 0.5], ["Travel", 0.4], ["Found Family", 0.4], ["Revenge", 0.3]],
+    "note": "AfterShock — animals suddenly gain sentience and wage war on humanity; extremely graphic on-page killings on both sides. Brutal post-apoc survival.",
+    "source": "GCD-broad"
+  },
+  "American Century": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Crime", 0.8], ["Historical", 0.7], ["Anti-Hero", 0.6], ["Guns", 0.6], ["Fugitive", 0.5], ["Gambling", 0.4], ["Tragedy", 0.4], ["Conspiracy", 0.4], ["Travel", 0.3], ["Gore", 0.3]],
+    "note": "Vertigo 1950s con-man crime saga; on-page shootings and murders in a hardboiled-noir frame. Mature crime-thriller.",
+    "source": "GCD-broad"
+  },
+  "Dark Ark": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Demons", 0.6], ["Magic", 0.6], ["Survival", 0.6], ["Gore", 0.6], ["Religion", 0.5], ["Tragedy", 0.5], ["Monster Girl", 0.3], ["Curses", 0.4], ["Ships", 0.3], ["Anti-Hero", 0.3]],
+    "note": "AfterShock dark-fantasy — a sorcerer's ark carrying monsters during the Flood; on-page creature killings and bloodshed. Dark fantasy with explicit violence.",
+    "source": "GCD-broad"
+  },
+  "Immortal Hulk": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Body Horror", 0.9], ["Superhero", 0.5], ["Gore", 0.9], ["Cosmic Horror", 0.6], ["Tragedy", 0.6], ["Dissociative Identities", 0.5], ["Demons", 0.4], ["Survival", 0.4], ["Revenge", 0.3], ["Conspiracy", 0.4]],
+    "note": "Ewing's horror Hulk; grotesque on-page body-horror deaths, regeneration gore, people torn apart. One of Marvel's most graphic recent books.",
+    "source": "GCD-broad"
+  },
+  "The Manhattan Projects": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Conspiracy", 0.7], ["Historical", 0.5], ["Gore", 0.7], ["Anti-Hero", 0.6], ["Cannibalism", 0.4], ["War", 0.4], ["Satire", 0.5], ["Aliens", 0.3], ["Tragedy", 0.3], ["Space", 0.3]],
+    "note": "Hickman's secret-history of mad-scientist Manhattan Project; graphic on-page murders, Oppenheimer cannibalism, blood. Dark sci-fi action-satire.",
+    "source": "GCD-broad"
+  },
+  "Sabre": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Post-Apocalyptic", 0.7], ["Travel", 0.6], ["Dystopian", 0.5], ["Anti-Hero", 0.5], ["Guns", 0.5], ["Swordplay", 0.4], ["Gore", 0.4], ["Survival", 0.5], ["Revenge", 0.4], ["Tragedy", 0.3]],
+    "note": "Don McGregor's pioneering post-apocalyptic adventure; on-page killings and bloodshed in a collapsed future. Mature action.",
+    "source": "GCD-broad"
+  },
+  "Rex Mundi": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Detective", 0.7], ["Historical", 0.7], ["Conspiracy", 0.7], ["Magic", 0.5], ["Crime", 0.5], ["Gore", 0.4], ["Politics", 0.5], ["Cult", 0.4], ["Religion", 0.5], ["War", 0.4]],
+    "note": "Image/Dark Horse occult alt-history murder-mystery; ritual killings, graphic murders and war. Mature historical-thriller.",
+    "source": "GCD-broad"
+  },
+  "Mind MGMT": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Espionage", 0.8], ["Conspiracy", 0.8], ["Super Power", 0.6], ["Memory Manipulation", 0.6], ["Gore", 0.4], ["Anti-Hero", 0.4], ["Assassins", 0.5], ["Guns", 0.4], ["Tragedy", 0.3], ["Detective", 0.4]],
+    "note": "Kindt psychic-spy conspiracy; on-page assassinations, psychic-induced killings and bloodshed. Spy-thriller with explicit violence.",
+    "source": "GCD-broad"
+  },
+  "The Maxx": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Super Power", 0.5], ["Urban Fantasy", 0.5], ["Tragedy", 0.6], ["Gore", 0.4], ["Psychosexual", 0.4], ["Anti-Hero", 0.4], ["Rape", 0.4], ["Survival", 0.4], ["Dissociative Identities", 0.4], ["Virtual World", 0.3]],
+    "note": "Sam Kieth's surreal dark fantasy; on-page violence, sexual-assault trauma and gore woven through a homeless-hero/social-worker psychodrama. Mature.",
+    "source": "GCD-broad"
+  },
+  "Dept. H": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Detective", 0.8], ["Survival", 0.7], ["Crime", 0.6], ["Conspiracy", 0.5], ["Tragedy", 0.5], ["Gore", 0.3], ["Coastal", 0.4], ["Foreign", 0.3], ["Ships", 0.3], ["Environmental", 0.3]],
+    "note": "Kindt undersea murder-mystery; a killing in a deep-sea station with on-page death and bloodshed under crushing survival stakes. Crime-thriller.",
+    "source": "GCD-broad"
+  },
+  "Razorblades: The Horror Magazine": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Gore", 0.8], ["Cosmic Horror", 0.4], ["Tragedy", 0.4], ["Body Horror", 0.5], ["Curses", 0.4], ["Demons", 0.3], ["Survival", 0.3], ["Suicide", 0.3], ["Ghost", 0.3], ["Episodic", 0.4]],
+    "note": "James Tynion horror anthology magazine; explicit gore and graphic deaths by design.",
+    "source": "GCD-broad"
+  },
+  "Hellboy: Weird Tales": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Demons", 0.7], ["Detective", 0.5], ["Gore", 0.5], ["Magic", 0.5], ["Anti-Hero", 0.5], ["Mythology", 0.5], ["Curses", 0.4], ["Exorcism", 0.3], ["Survival", 0.3], ["Cosmic Horror", 0.3]],
+    "note": "Hellboy occult-detective anthology; monster-fighting with on-page creature kills and bloodshed. Dark-fantasy action.",
+    "source": "GCD-broad"
+  },
+  "Drakuun": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Magic", 0.6], ["Swordplay", 0.6], ["Mythology", 0.5], ["Travel", 0.5], ["Gore", 0.5], ["Female Protagonist", 0.5], ["War", 0.4], ["Nudity", 0.4], ["Dragons", 0.4], ["Revenge", 0.3]],
+    "note": "Johji Manabe sword-and-sorcery manga (Dark Horse); on-page sword combat, killings and bloodshed. Mature fantasy action.",
+    "source": "GCD-broad"
+  },
+  "Bloodshot": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Super Power", 0.7], ["Military", 0.6], ["Guns", 0.8], ["Gore", 0.8], ["Anti-Hero", 0.7], ["Conspiracy", 0.6], ["Cyborg", 0.5], ["Revenge", 0.5], ["Survival", 0.4], ["Memory Manipulation", 0.4]],
+    "note": "Valiant nanite-soldier (Swierczynski run); ultra-violent on-page gunfights, regenerating gore, throats torn out. Graphic sci-fi action.",
+    "source": "GCD-broad"
+  },
+  "Highlander": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Swordplay", 0.9], ["Historical", 0.5], ["Gore", 0.7], ["Anti-Hero", 0.4], ["Revenge", 0.5], ["Tragedy", 0.4], ["Urban Fantasy", 0.4], ["Survival", 0.4], ["War", 0.3], ["Curses", 0.3]],
+    "note": "Dynamite Highlander; immortals decapitate each other on-page (beheading is the core kill) with blood and 'the Quickening'. Explicit sword violence.",
+    "source": "GCD-broad"
+  },
+  "Rat Queens": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Magic", 0.6], ["Swordplay", 0.6], ["Travel", 0.6], ["Mythology", 0.5], ["Gore", 0.6], ["Female Protagonist", 0.5], ["Goblin", 0.4], ["Anti-Hero", 0.4], ["Ensemble Cast", 0.4], ["Satire", 0.4]],
+    "note": "Wiebe's raunchy D&D-style mercenary party; on-page gory monster/goblin kills, dismemberment played mature-comedic. Action + explicit violence, lighter tone.",
+    "source": "GCD-broad"
+  },
+  "The Wicked + The Divine": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Gods", 0.9], ["Mythology", 0.6], ["Tragedy", 0.7], ["Gore", 0.6], ["Super Power", 0.5], ["LGBTQ+ Themes", 0.5], ["Conspiracy", 0.4], ["Reincarnation", 0.4], ["Revenge", 0.3], ["Suicide", 0.3]],
+    "note": "Gillen/McKelvie reincarnated-gods drama; abrupt graphic on-page deaths — heads explode, characters murdered. Dark fantasy with explicit violence.",
+    "source": "GCD-broad"
+  },
+  "Bitch Planet": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Dystopian", 0.8], ["Prison", 0.7], ["Class Struggle", 0.6], ["Female Protagonist", 0.6], ["Gore", 0.5], ["Survival", 0.5], ["Satire", 0.5], ["Battle Royale", 0.4], ["Revenge", 0.4], ["Tragedy", 0.4]],
+    "note": "DeConnick off-world women's-prison dystopia; on-page executions, brutal deaths in a blood-sport, graphic violence. Sci-fi exploitation-homage with real kills.",
+    "source": "GCD-broad"
+  },
+  "Nexus": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [["Space", 0.6], ["Super Power", 0.6], ["Assassins", 0.6], ["Politics", 0.5], ["Anti-Hero", 0.6], ["Gore", 0.5], ["Tragedy", 0.4], ["Revenge", 0.4], ["Satire", 0.4], ["War", 0.4]],
+    "note": "Baron/Rude — a being compelled to execute mass-murderers; on-page disintegrations and killings, with a satirical-political edge. Sci-fi action with explicit deaths.",
+    "source": "GCD-broad"
+  }
+}
