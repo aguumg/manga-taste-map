@@ -70,6 +70,24 @@ await page.waitForTimeout(1200);
 const afterReload = await page.locator('#highlightTop').isChecked();
 ok(afterReload === !hadHighlight, `highlight-top toggle persists across reload (${hadHighlight}->${afterReload})`);
 
+// 7. STALE localStorage regression: simulate an old shelf saved before the
+// title-matcher existed (Demon Slayer with empty links) and confirm reload
+// refreshes its map link from the rebuilt seed instead of keeping it dead.
+await page.evaluate(() => {
+  localStorage.setItem('taste_shelf_v1', JSON.stringify([
+    { sid:'demon-slayer', title:'Demon Slayer', status:'done', source:'mine', note:'kept note', url:'', cid:null, wk:null }
+  ]));
+});
+await page.reload({ waitUntil: 'load' });
+await page.waitForTimeout(1200);
+await page.click('.tab[data-tab="shelf"]');
+await page.waitForTimeout(200);
+const dsRow = page.locator('#shelfList .shelf-row[data-sid="demon-slayer"]');
+const dsMap = await dsRow.locator('button[data-shmap]').count();
+ok(dsMap >= 1, `stale shelf entry gets its map link refreshed on reload (${dsMap})`);
+const dsNote = await dsRow.locator('input[data-shnote]').inputValue().catch(()=>'');
+ok(dsNote === 'kept note', `user note preserved through the refresh ["${dsNote}"]`);
+
 await browser.close();
 console.log(log.join('\n'));
 console.log('\nJS errors captured: ' + errors.length);

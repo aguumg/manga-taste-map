@@ -1133,8 +1133,22 @@ function loadShelf(){
   try{ const raw = localStorage.getItem(LS_SHELF); if(raw) stored = JSON.parse(raw); }catch(e){}
   let out;
   if(Array.isArray(stored)){
-    // keep stored entries (user edits win), then append any seed sid not present
-    out = stored.slice();
+    const seedBySid = new Map(shelfSeed.map(e=>[e.sid, e]));
+    // Merge: REFRESH seed-owned fields (map links cid/wk, read url, title, source)
+    // from the latest build so rebuilds actually reach the user; keep only the
+    // user-editable fields (status, note). For user-added rows, re-resolve the
+    // map link in case the dataset changed since they typed it.
+    out = stored.map(x=>{
+      const sd = seedBySid.get(x.sid);
+      if(sd){
+        return Object.assign(shelfFromSeed(sd), {
+          status: x.status || sd.status,
+          note:   (x.note!=null && x.note!=="") ? x.note : sd.note
+        });
+      }
+      const m = matchShelfTitle(x.title || "");
+      return Object.assign({}, x, {cid: x.cid!=null?x.cid:m.cid, wk: x.wk!=null?x.wk:m.wk});
+    });
     const have = new Set(out.map(x=>x.sid));
     for(const e of shelfSeed){ if(!have.has(e.sid)){ out.push(shelfFromSeed(e)); } }
   } else {
