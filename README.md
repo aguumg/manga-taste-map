@@ -136,10 +136,6 @@ Then a useful failure. I kept fixing the shelf's map-links, rebuilding, verifyin
 
 Two checks now guard the lazy version of that mistake. Two independent sweeps (MAL's top lists, then eight "best dark manga" lists) both came back with the same answer — **every strong-fit title was already in the corpus**, so the bottleneck was never discovery, it was *using* the thing. And a **Playwright** harness drives the whole app headless before anything ships: it clicks every tab, adds a title, follows a link to the map, and even plants a stale shelf to prove the reload heals it. I trust those runs more than I trust "looks fine to me."
 
----
-
-## Part 4 — designing out the data-entry that caused the bug
-
 The shelf had one rough edge left: adding a title meant *typing* it. And free-typed text doesn't match a database — type "God Level Assassin" and the app can't tell it's the same row as the catalog entry, so it lands unlinked. The earlier "missing → map" complaints traced back to exactly this.
 
 The fix was to stop asking the user to spell. Two changes: a **"+ shelf" button on every row** in both the Eastern and Western tabs — one click, the title is added already linked to its dot — and an **autocomplete** on the shelf's add box that searches the corpus as you type, so you *pick* the canonical title instead of guessing it. Free text still works as a fallback; it just isn't the default path anymore. The lesson rhymes with Part 3: the most reliable user input is the input you don't make the user type.
