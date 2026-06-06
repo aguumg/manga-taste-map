@@ -3900,7 +3900,9 @@ return Plotly;
   body{overflow-x:hidden}
   #app{display:flex;height:100vh;width:100vw;overflow:hidden}
   #left{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
-  #plot{flex:1 1 auto;min-height:0;background:var(--bg-deep)}
+  #plot{flex:1 1 auto;min-height:0;background:var(--bg-deep);touch-action:none}
+  /* let Plotly own touch gestures (pinch-zoom / drag-pan) instead of the browser */
+  #plot .plot-container,#plot .svg-container,#plot .main-svg,#plot .nsewdrag{touch-action:none}
   #right{width:454px;flex:0 0 454px;background:var(--bg-panel);
     border-left:1px solid var(--line);display:flex;flex-direction:column;
     box-shadow:-6px 0 22px rgba(0,0,0,.5)}
