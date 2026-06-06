@@ -12479,5 +12479,245 @@
    ]
   ],
   "note": "Manhwa. A martial artist's long, brutal road of training and duels toward mastery — murim-flavored action with earned progression."
+ },
+ "Legend of the Northern Blade": {
+  "tags": [
+   [
+    "Martial Arts",
+    0.9
+   ],
+   [
+    "Revenge",
+    0.8
+   ],
+   [
+    "Swordplay",
+    0.7
+   ],
+   [
+    "Cultivation",
+    0.5
+   ],
+   [
+    "Male Protagonist",
+    0.5
+   ],
+   [
+    "Tragedy",
+    0.3
+   ],
+   [
+    "Gore",
+    0.3
+   ]
+  ],
+  "note": "Manhwa. After the leader of the Northern Heavenly Sect is murdered, his son rebuilds his strength to dismantle the alliance behind it. Top-tier murim fights, real stakes.",
+  "known": true,
+  "est_verdict": null,
+  "source": "manhwa-scan"
+ },
+ "Moon Shadow Sword Emperor": {
+  "tags": [
+   [
+    "Martial Arts",
+    0.9
+   ],
+   [
+    "Revenge",
+    0.7
+   ],
+   [
+    "Reincarnation",
+    0.6
+   ],
+   [
+    "Swordplay",
+    0.7
+   ],
+   [
+    "Cultivation",
+    0.5
+   ],
+   [
+    "Male Protagonist",
+    0.5
+   ]
+  ],
+  "note": "Manhwa. A revenge-regression murim tale elevated by sharp delivery and striking art — a fallen master restarts to grind vengeance.",
+  "known": true,
+  "est_verdict": null,
+  "source": "manhwa-scan"
+ },
+ "Martial Universe": {
+  "tags": [
+   [
+    "Cultivation",
+    0.9
+   ],
+   [
+    "Martial Arts",
+    0.8
+   ],
+   [
+    "Super Power",
+    0.5
+   ],
+   [
+    "Male Protagonist",
+    0.5
+   ],
+   [
+    "Revenge",
+    0.3
+   ]
+  ],
+  "note": "Manhua (Wu Dong Qian Kun). A talentless clan kid finds a relic and grinds his way up a detailed martial-cultivation ladder.",
+  "known": true,
+  "est_verdict": null,
+  "source": "manhwa-scan"
+ },
+ "Peerless Battle Spirit": {
+  "tags": [
+   [
+    "Cultivation",
+    0.9
+   ],
+   [
+    "Martial Arts",
+    0.7
+   ],
+   [
+    "Super Power",
+    0.6
+   ],
+   [
+    "Male Protagonist",
+    0.5
+   ]
+  ],
+  "note": "Manhua. A youth with crippled talent awakens a battle spirit and levels through a brutal cultivation world.",
+  "known": true,
+  "est_verdict": null,
+  "source": "manhwa-scan"
+ },
+ "Becoming Necromancer God Through a Skeleton Clone": {
+  "tags": [
+   [
+    "Magic",
+    0.7
+   ],
+   [
+    "Super Power",
+    0.7
+   ],
+   [
+    "Cultivation",
+    0.4
+   ],
+   [
+    "Male Protagonist",
+    0.5
+   ],
+   [
+    "Gore",
+    0.3
+   ]
+  ],
+  "note": "Manhua. Awakens a Necromancer class plus an underworld skeleton clone that feeds power back; outsmarts stronger foes via information asymmetry.",
+  "known": true,
+  "est_verdict": null,
+  "source": "manhwa-scan"
+ },
+ "Fist Demon of Mount Hua": {
+  "tags": [
+   [
+    "Martial Arts",
+    0.9
+   ],
+   [
+    "Cultivation",
+    0.5
+   ],
+   [
+    "Revenge",
+    0.4
+   ],
+   [
+    "Gore",
+    0.4
+   ],
+   [
+    "Tragedy",
+    0.4
+   ],
+   [
+    "Anti-Hero",
+    0.4
+   ],
+   [
+    "Male Protagonist",
+    0.5
+   ]
+  ],
+  "note": "Manhwa. A disabled martial artist overcomes his limits through grit in a dark murim world.",
+  "known": true,
+  "est_verdict": null,
+  "source": "manhwa-scan"
+ },
+ "Dungeon Defense": {
+  "tags": [
+   [
+    "Anti-Hero",
+    0.8
+   ],
+   [
+    "Reincarnation",
+    0.6
+   ],
+   [
+    "Politics",
+    0.5
+   ],
+   [
+    "Magic",
+    0.5
+   ],
+   [
+    "Tragedy",
+    0.5
+   ],
+   [
+    "Male Protagonist",
+    0.5
+   ]
+  ],
+  "note": "Manhwa. A strategy champ reincarnates as the weakest Demon Lord and schemes his way up — genuinely dark and manipulative.",
+  "known": true,
+  "est_verdict": null,
+  "source": "manhwa-scan"
+ },
+ "Monster Pet Evolution": {
+  "tags": [
+   [
+    "Super Power",
+    0.6
+   ],
+   [
+    "Cultivation",
+    0.3
+   ],
+   [
+    "Male Protagonist",
+    0.5
+   ],
+   [
+    "Survival",
+    0.4
+   ]
+  ],
+  "note": "Manhua. In a monster-overrun world, the MC grinds to become an elite beast trainer/evolver.",
+  "known": true,
+  "est_verdict": null,
+  "source": "manhwa-scan"
  }
 }

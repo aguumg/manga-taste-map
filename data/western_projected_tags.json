@@ -25659,5 +25659,573 @@
     ],
     "berserk_cos": 0.224,
     "mode0_cos": 0.178
+  },
+  "Legend of the Northern Blade": {
+    "title": "Legend of the Northern Blade",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Martial Arts",
+        0.9
+      ],
+      [
+        "Revenge",
+        0.8
+      ],
+      [
+        "Swordplay",
+        0.7
+      ],
+      [
+        "Cultivation",
+        0.5
+      ],
+      [
+        "Male Protagonist",
+        0.5
+      ],
+      [
+        "Tragedy",
+        0.3
+      ],
+      [
+        "Gore",
+        0.3
+      ]
+    ],
+    "note": "Manhwa. After the leader of the Northern Heavenly Sect is murdered, his son rebuilds his strength to dismantle the alliance behind it. Top-tier murim fights, real stakes.",
+    "description": "Manhwa. After the leader of the Northern Heavenly Sect is murdered, his son rebuilds his strength to dismantle the alliance behind it. Top-tier murim fights, real stakes.",
+    "coords": [
+      0.3421,
+      0.1314
+    ],
+    "nearest_eastern": [
+      [
+        "Absolute Regression",
+        0.567
+      ],
+      [
+        "The Legend of the Northern Blade",
+        0.566
+      ],
+      [
+        "Principles of Heavens: Zen’s Cultivation of Immortality",
+        0.564
+      ],
+      [
+        "The Undefeatable Swordsman",
+        0.56
+      ],
+      [
+        "The Breaker: Eternal Force",
+        0.537
+      ],
+      [
+        "The Reincarnated Assassin Is a Swordmaster",
+        0.52
+      ],
+      [
+        "Legend of an Asura - The Poison Dragon",
+        0.52
+      ],
+      [
+        "Return of the Blossoming Blade",
+        0.511
+      ]
+    ],
+    "berserk_cos": 0.235,
+    "mode0_cos": 0.184
+  },
+  "Moon Shadow Sword Emperor": {
+    "title": "Moon Shadow Sword Emperor",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Martial Arts",
+        0.9
+      ],
+      [
+        "Revenge",
+        0.7
+      ],
+      [
+        "Reincarnation",
+        0.6
+      ],
+      [
+        "Swordplay",
+        0.7
+      ],
+      [
+        "Cultivation",
+        0.5
+      ],
+      [
+        "Male Protagonist",
+        0.5
+      ]
+    ],
+    "note": "Manhwa. A revenge-regression murim tale elevated by sharp delivery and striking art — a fallen master restarts to grind vengeance.",
+    "description": "Manhwa. A revenge-regression murim tale elevated by sharp delivery and striking art — a fallen master restarts to grind vengeance.",
+    "coords": [
+      0.3538,
+      -0.0302
+    ],
+    "nearest_eastern": [
+      [
+        "The Reincarnated Assassin Is a Swordmaster",
+        0.62
+      ],
+      [
+        "Reborn as a Scholar",
+        0.58
+      ],
+      [
+        "Return of the Blossoming Blade",
+        0.572
+      ],
+      [
+        "The Devil Butler",
+        0.557
+      ],
+      [
+        NaN,
+        0.554
+      ],
+      [
+        "Principles of Heavens: Zen’s Cultivation of Immortality",
+        0.548
+      ],
+      [
+        "Absolute Regression",
+        0.547
+      ],
+      [
+        "Heavenly Demon Reborn!",
+        0.54
+      ]
+    ],
+    "berserk_cos": 0.169,
+    "mode0_cos": 0.137
+  },
+  "Martial Universe": {
+    "title": "Martial Universe",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Cultivation",
+        0.9
+      ],
+      [
+        "Martial Arts",
+        0.8
+      ],
+      [
+        "Super Power",
+        0.5
+      ],
+      [
+        "Male Protagonist",
+        0.5
+      ],
+      [
+        "Revenge",
+        0.3
+      ]
+    ],
+    "note": "Manhua (Wu Dong Qian Kun). A talentless clan kid finds a relic and grinds his way up a detailed martial-cultivation ladder.",
+    "description": "Manhua (Wu Dong Qian Kun). A talentless clan kid finds a relic and grinds his way up a detailed martial-cultivation ladder.",
+    "coords": [
+      0.2644,
+      -0.0081
+    ],
+    "nearest_eastern": [
+      [
+        "The Undefeatable Swordsman",
+        0.522
+      ],
+      [
+        "The Breaker: Eternal Force",
+        0.516
+      ],
+      [
+        "Principles of Heavens: Zen’s Cultivation of Immortality",
+        0.512
+      ],
+      [
+        "Rebirth Of The Urban Immortal Cultivator",
+        0.509
+      ],
+      [
+        "The Devil Butler",
+        0.505
+      ],
+      [
+        "The Celestial Returned from Hell",
+        0.499
+      ],
+      [
+        "Absolute Sword Sense",
+        0.495
+      ],
+      [
+        "Heavenly Demon Reborn!",
+        0.481
+      ]
+    ],
+    "berserk_cos": 0.117,
+    "mode0_cos": 0.118
+  },
+  "Peerless Battle Spirit": {
+    "title": "Peerless Battle Spirit",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Cultivation",
+        0.9
+      ],
+      [
+        "Martial Arts",
+        0.7
+      ],
+      [
+        "Super Power",
+        0.6
+      ],
+      [
+        "Male Protagonist",
+        0.5
+      ]
+    ],
+    "note": "Manhua. A youth with crippled talent awakens a battle spirit and levels through a brutal cultivation world.",
+    "description": "Manhua. A youth with crippled talent awakens a battle spirit and levels through a brutal cultivation world.",
+    "coords": [
+      0.2434,
+      -0.0212
+    ],
+    "nearest_eastern": [
+      [
+        "The Undefeatable Swordsman",
+        0.511
+      ],
+      [
+        "Your Talent Is Mine",
+        0.496
+      ],
+      [
+        "The Celestial Returned from Hell",
+        0.492
+      ],
+      [
+        "Absolute Sword Sense",
+        0.492
+      ],
+      [
+        "Leveling Beyond the Max",
+        0.468
+      ],
+      [
+        "Principles of Heavens: Zen’s Cultivation of Immortality",
+        0.464
+      ],
+      [
+        "Reborn as a Scholar",
+        0.463
+      ],
+      [
+        "Return of the Mad Demon",
+        0.46
+      ]
+    ],
+    "berserk_cos": 0.094,
+    "mode0_cos": 0.109
+  },
+  "Becoming Necromancer God Through a Skeleton Clone": {
+    "title": "Becoming Necromancer God Through a Skeleton Clone",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Magic",
+        0.7
+      ],
+      [
+        "Super Power",
+        0.7
+      ],
+      [
+        "Cultivation",
+        0.4
+      ],
+      [
+        "Male Protagonist",
+        0.5
+      ],
+      [
+        "Gore",
+        0.3
+      ]
+    ],
+    "note": "Manhua. Awakens a Necromancer class plus an underworld skeleton clone that feeds power back; outsmarts stronger foes via information asymmetry.",
+    "description": "Manhua. Awakens a Necromancer class plus an underworld skeleton clone that feeds power back; outsmarts stronger foes via information asymmetry.",
+    "coords": [
+      0.3015,
+      -0.0418
+    ],
+    "nearest_eastern": [
+      [
+        "Leveling Beyond the Max",
+        0.485
+      ],
+      [
+        "Villain to Kill",
+        0.485
+      ],
+      [
+        "Your Talent Is Mine",
+        0.457
+      ],
+      [
+        "I Woke Up as the Villain",
+        0.452
+      ],
+      [
+        "The Esper's Game",
+        0.449
+      ],
+      [
+        "The Frozen Player Returns",
+        0.448
+      ],
+      [
+        "The Return of the Superhero",
+        0.426
+      ],
+      [
+        "Black Clover",
+        0.418
+      ]
+    ],
+    "berserk_cos": 0.225,
+    "mode0_cos": 0.182
+  },
+  "Fist Demon of Mount Hua": {
+    "title": "Fist Demon of Mount Hua",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Martial Arts",
+        0.9
+      ],
+      [
+        "Cultivation",
+        0.5
+      ],
+      [
+        "Revenge",
+        0.4
+      ],
+      [
+        "Gore",
+        0.4
+      ],
+      [
+        "Tragedy",
+        0.4
+      ],
+      [
+        "Anti-Hero",
+        0.4
+      ],
+      [
+        "Male Protagonist",
+        0.5
+      ]
+    ],
+    "note": "Manhwa. A disabled martial artist overcomes his limits through grit in a dark murim world.",
+    "description": "Manhwa. A disabled martial artist overcomes his limits through grit in a dark murim world.",
+    "coords": [
+      0.2905,
+      0.1898
+    ],
+    "nearest_eastern": [
+      [
+        "Legend of an Asura - The Poison Dragon",
+        0.619
+      ],
+      [
+        "The Devil Butler",
+        0.554
+      ],
+      [
+        "The Legend of the Northern Blade",
+        0.551
+      ],
+      [
+        "The Breaker: Eternal Force",
+        0.533
+      ],
+      [
+        "Heavenly Demon Reborn!",
+        0.529
+      ],
+      [
+        "The Undefeatable Swordsman",
+        0.528
+      ],
+      [
+        "Baki the Grappler",
+        0.527
+      ],
+      [
+        "THE BREAKER",
+        0.511
+      ]
+    ],
+    "berserk_cos": 0.222,
+    "mode0_cos": 0.204
+  },
+  "Dungeon Defense": {
+    "title": "Dungeon Defense",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Anti-Hero",
+        0.8
+      ],
+      [
+        "Reincarnation",
+        0.6
+      ],
+      [
+        "Politics",
+        0.5
+      ],
+      [
+        "Magic",
+        0.5
+      ],
+      [
+        "Tragedy",
+        0.5
+      ],
+      [
+        "Male Protagonist",
+        0.5
+      ]
+    ],
+    "note": "Manhwa. A strategy champ reincarnates as the weakest Demon Lord and schemes his way up — genuinely dark and manipulative.",
+    "description": "Manhwa. A strategy champ reincarnates as the weakest Demon Lord and schemes his way up — genuinely dark and manipulative.",
+    "coords": [
+      0.3308,
+      0.1036
+    ],
+    "nearest_eastern": [
+      [
+        "The Max Level Hero Strikes Back!",
+        0.527
+      ],
+      [
+        "I'm Not That Kind of Talent",
+        0.513
+      ],
+      [
+        "The Swordmaster's Son",
+        0.478
+      ],
+      [
+        "The Death Mage",
+        0.465
+      ],
+      [
+        "The Saga of Tanya the Evil",
+        0.452
+      ],
+      [
+        "The Devil Butler",
+        0.451
+      ],
+      [
+        "Becoming the Monarch",
+        0.444
+      ],
+      [
+        "The Ember Knight",
+        0.438
+      ]
+    ],
+    "berserk_cos": 0.273,
+    "mode0_cos": 0.285
+  },
+  "Monster Pet Evolution": {
+    "title": "Monster Pet Evolution",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Super Power",
+        0.6
+      ],
+      [
+        "Cultivation",
+        0.3
+      ],
+      [
+        "Male Protagonist",
+        0.5
+      ],
+      [
+        "Survival",
+        0.4
+      ]
+    ],
+    "note": "Manhua. In a monster-overrun world, the MC grinds to become an elite beast trainer/evolver.",
+    "description": "Manhua. In a monster-overrun world, the MC grinds to become an elite beast trainer/evolver.",
+    "coords": [
+      0.1844,
+      0.0163
+    ],
+    "nearest_eastern": [
+      [
+        "Your Talent Is Mine",
+        0.522
+      ],
+      [
+        "The Perfect Hybrid",
+        0.437
+      ],
+      [
+        "Extraordinary Evolution",
+        0.431
+      ],
+      [
+        "The Gamer",
+        0.416
+      ],
+      [
+        "Boundless Ascension",
+        0.413
+      ],
+      [
+        "My Life as a Player",
+        0.404
+      ],
+      [
+        "Darwin's Game",
+        0.404
+      ],
+      [
+        "Ultimate Shut-in",
+        0.402
+      ]
+    ],
+    "berserk_cos": 0.198,
+    "mode0_cos": 0.183
   }
 }

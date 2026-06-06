@@ -735,6 +735,8 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .shelf-row .snote{margin-top:6px}
   .shelf-x{cursor:pointer;color:var(--oxblood);font-weight:700;flex:0 0 auto;padding:0 4px}
   .shelf-x:hover{color:var(--gold-soft)}
+  .shelfbtn{flex:0 0 auto;font-size:11px;padding:3px 7px;white-space:nowrap}
+  .shelfbtn.on{color:var(--gold);border-color:var(--gold-soft)}
   .shelf-alt{color:var(--text-dim);font-size:11px;font-weight:400}
   .shelf-nomap{color:var(--text-dim);font-size:11px;opacity:.7;flex:0 0 auto;padding:0 4px;font-style:italic}
   .shelf-row.flash{box-shadow:0 0 0 2px var(--gold) inset;transition:box-shadow .2s}
@@ -970,11 +972,12 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
     <div class="tabpane" id="pane-shelf">
       <div class="pad">
         <div class="hint" style="margin-top:0">Your reading queue — arbitrary titles (anime / comics / webtoons), most of them not in the map corpus. Set a status, edit the note, follow the ↗ link; if a title matches a corpus or Western item a “→ map” button focuses it on the map.</div>
-        <div class="row" style="gap:6px;margin-top:8px;margin-bottom:8px">
-          <input id="shelfAdd" type="text" placeholder="+ add a title to your shelf" style="flex:1">
+        <div class="row" style="gap:6px;margin-top:8px;margin-bottom:0">
+          <input id="shelfAdd" type="text" placeholder="+ add a title (type to search our database)" style="flex:1" autocomplete="off">
           <button class="btn primary" id="shelfAddBtn">Add</button>
         </div>
-        <div class="row" id="shelfFilters" style="gap:6px;flex-wrap:wrap;margin-bottom:6px"></div>
+        <div id="shelfSugg" class="results" style="max-height:200px;display:none;border:1px solid var(--line);border-radius:6px;margin-top:4px;margin-bottom:8px"></div>
+        <div class="row" id="shelfFilters" style="gap:6px;flex-wrap:wrap;margin-bottom:6px;margin-top:8px"></div>
       </div>
       <div class="stat" id="shelfStat"></div>
       <div class="results" id="shelfList"></div>
@@ -1664,6 +1667,8 @@ function rowEl(t, rankObj, isLib){
       t${rankObj.taste.toFixed(2)}</small></div>` : "";
   const readToggle = `<div class="rd ${isRead(t.id)?'on':''}" data-act="read" title="toggle read">${isRead(t.id)?'✓':'○'}</div>`;
   const matchNote = t._match ? `<div class="matchnote">matched: ${esc(t._match)}</div>` : "";
+  const onShelf = inShelf(t.id, null, dispName(t));
+  const shelfBtn = `<button class="btn sm shelfbtn${onShelf?' on':''}" data-act="addshelf" title="add to reading shelf">${onShelf?'✓ shelf':'+ shelf'}</button>`;
   d.innerHTML = `<div class="head">
       ${isLib?readToggle:""}
       <div class="meta"><div class="ttl">${esc(dispName(t))} <span class="cc">${t.c}${t.as?(' · '+t.as):''}</span> ${readLinkHtml(t.e||t.r||dispName(t), t.id, false)}</div>
@@ -1671,12 +1676,15 @@ function rowEl(t, rankObj, isLib){
         <div>${gpills(t)}</div>
         <div class="tt">${esc(t.tt)}</div></div>
       ${simStr}
+      ${shelfBtn}
     </div>
     <div class="expand" data-exp="${t.id}"></div>`;
   // toggle expand on head click (but not when clicking the read dot)
   d.querySelector(".head").addEventListener("click", e=>{
     if(e.target.dataset.act==="read"){ setEnt(t.id,{read:!isRead(t.id)});
       refreshAll(); return; }
+    if(e.target.dataset.act==="addshelf"){ addToShelf(dispName(t), t.id, null);
+      e.target.textContent="✓ shelf"; e.target.classList.add("on"); return; }
     const ex = d.querySelector(".expand");
     const open = ex.classList.toggle("open");
     if(open) fillExpand(ex, t, isLib);
@@ -2013,15 +2021,20 @@ function westRowEl(it){
     : "";
   const src = [it.pub, it.yr].filter(Boolean).join(" · ");
   const readToggle = `<div class="rd ${westReadOf(it.t)?'on':''}" data-act="wread" title="toggle read">${westReadOf(it.t)?'✓':'○'}</div>`;
+  const onShelfW = inShelf(null, it.t, it.t);
+  const shelfBtnW = `<button class="btn sm shelfbtn${onShelfW?' on':''}" data-act="addshelf" title="add to reading shelf">${onShelfW?'✓ shelf':'+ shelf'}</button>`;
   d.innerHTML = `<div class="head">
       ${readToggle}
       <div class="meta"><div class="ttl">${esc(it.t)} <span class="cc">${esc(src)}</span> ${readLinkHtml(it.t, null, true)}</div>
         <div class="tt">${esc((it.tags||[]).map(p=>p[0]).join(", "))}</div></div>
       ${verdictTag}
+      ${shelfBtnW}
     </div>
     <div class="expand" data-wexp="${esc(it.t)}"></div>`;
   d.querySelector(".head").addEventListener("click", e=>{
     if(e.target.dataset.act==="wread"){ setWestEnt(it.t,{read:!westReadOf(it.t)}); westRefresh(); return; }
+    if(e.target.dataset.act==="addshelf"){ addToShelf(it.t, null, it.t);
+      e.target.textContent="✓ shelf"; e.target.classList.add("on"); return; }
     const ex=d.querySelector(".expand");
     if(ex.classList.toggle("open")) fillWestExpand(ex, it);
     // FEATURE A: halo this Western title on the map. ADDITIVE.
@@ -2192,6 +2205,56 @@ function shelfAdd(){
   const row=document.querySelector('#shelfList .shelf-row[data-sid="'+cssEsc(sid)+'"]');
   if(row){ row.scrollIntoView({block:"center"}); row.classList.add("flash");
     setTimeout(()=>row.classList.remove("flash"),1200); }
+}
+// Is a title already on the shelf? (match by corpus id, Western key, or name)
+function shelfHas(cid, wk, title){
+  const tn=_normShelf(title||"");
+  return shelf.find(e =>
+    (cid!=null && e.cid===cid) ||
+    (wk!=null && e.wk===wk) ||
+    (tn && _normShelf(e.title)===tn)) || null;
+}
+function inShelf(cid, wk, title){ return !!shelfHas(cid, wk, title); }
+// Add a title (from a row button or a search pick) to the shelf, linked to its
+// map dot. Dedups, un-tombstones, persists. Returns true if newly added.
+function addToShelf(title, cid, wk){
+  if(shelfHas(cid, wk, title)) return false;
+  let sid = slug(title) || ("t-"+shelf.length);
+  if(shelf.some(e=>e.sid===sid)) sid = sid+"-"+shelf.length;
+  if(shelfRemoved.has(sid)){ shelfRemoved.delete(sid); saveShelfRemoved(); }
+  shelf.push({sid, title, status:"toread", source:"mine", note:"", url:"", cid:cid==null?null:cid, wk:wk==null?null:wk});
+  saveShelf();
+  const at=document.querySelector(".tab.active");
+  if(at && at.dataset.tab==="shelf") renderShelf();
+  return true;
+}
+// Autocomplete on the shelf "add" box: same DB search as Library/anchor. Picking
+// a result links it to its dot; typing a non-match still adds via shelfAdd().
+function wireShelfSearch(){
+  const inp=document.getElementById("shelfAdd"), sg=document.getElementById("shelfSugg");
+  if(!inp||!sg) return;
+  inp.addEventListener("input",()=>{
+    const res=searchAnchors(inp.value,40);
+    if(!res.length){ sg.style.display="none"; return; }
+    sg.innerHTML=""; sg.style.display="block";
+    for(const r of res){
+      const d=document.createElement("div"); d.className="item"; d.style.cursor="pointer";
+      const already=inShelf(r.kind==='e'?r.key:null, r.kind==='w'?r.key:null, r.name);
+      const mh=r.match?`<div class="matchnote">matched: ${esc(r.match)}</div>`:"";
+      const cc=r.kind==='w'?`<span class="cc" style="color:${WEST_COL}">▲ Western</span>`:`<span class="cc">${esc(r.country)}</span>`;
+      const chk=already?' <small style="color:var(--gold)">✓ in shelf</small>':'';
+      d.innerHTML=`<div class="head"><div class="meta"><div class="ttl">${esc(r.name)} ${cc}${chk}</div>${mh}</div></div>`;
+      d.onclick=()=>{
+        addToShelf(r.name, r.kind==='e'?r.key:null, r.kind==='w'?r.key:null);
+        inp.value=""; sg.style.display="none"; shelfFilter="all"; renderShelf();
+        const sid=slug(r.name);
+        const row=document.querySelector('#shelfList .shelf-row[data-sid="'+cssEsc(sid)+'"]');
+        if(row){ row.scrollIntoView({block:"center"}); row.classList.add("flash"); setTimeout(()=>row.classList.remove("flash"),1200); }
+      };
+      sg.appendChild(d);
+    }
+  });
+  document.addEventListener("click",e=>{ if(!sg.contains(e.target)&&e.target!==inp) sg.style.display="none"; });
 }
 
 /* ---------- tag preferences tab ---------- */
@@ -2511,6 +2574,7 @@ document.getElementById("clearVotes").onclick=()=>{ votes={}; saveVotes(); rebui
   if(pa) pa.onclick=()=>setPresetE("https://anilist.co/manga/{id}");
 }
 wireAnchorSearch();
+wireShelfSearch();
 // CHANGE 3: genre-filter collapse headers (both tabs share one open/closed state)
 document.querySelectorAll('.gfhead').forEach(h=>h.onclick=()=>{
   genreOpen = !genreOpen;

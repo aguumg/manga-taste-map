@@ -104,6 +104,35 @@ await page.waitForTimeout(200);
 const stillGone = await page.locator(`#shelfList .shelf-row[data-sid="${victimSid}"]`).count();
 ok(stillGone === 0, `deleted shelf row stays deleted after reload (sid=${victimSid})`);
 
+// 9. "+ shelf" button on a My Library (Eastern) row adds + flips to ✓
+await page.click('.tab[data-tab="lib"]');
+await page.waitForTimeout(400);
+const libBtn = page.locator('#libList .item .shelfbtn').first();
+await libBtn.scrollIntoViewIfNeeded();
+await libBtn.click();
+await page.waitForTimeout(150);
+const libBtnAfter = (await libBtn.innerText()).trim();
+ok(libBtnAfter.includes('✓'), `My Library "+ shelf" button adds and flips to ✓ ["${libBtnAfter}"]`);
+
+// 9b. same button exists on Western rows
+await page.click('.tab[data-tab="west"]');
+await page.waitForTimeout(300);
+const westBtns = await page.locator('#westList .item .shelfbtn').count();
+ok(westBtns > 0, `Western rows have a "+ shelf" button (${westBtns})`);
+
+// 10. shelf search autocomplete: type a corpus title -> suggestion -> add linked
+await page.click('.tab[data-tab="shelf"]');
+await page.waitForTimeout(200);
+await page.fill('#shelfAdd', 'Vinland Saga');
+await page.waitForTimeout(350);
+const suggCount = await page.locator('#shelfSugg .item').count();
+ok(suggCount > 0, `shelf search shows DB suggestions (${suggCount})`);
+await page.locator('#shelfSugg .item').first().click();
+await page.waitForTimeout(300);
+const vsRow = page.locator('#shelfList .shelf-row', { hasText: 'Vinland Saga' }).first();
+const vsMap = await vsRow.locator('button[data-shmap]').count();
+ok(vsMap >= 1, `picked suggestion added WITH a map link (data-shmap=${vsMap})`);
+
 await browser.close();
 console.log(log.join('\n'));
 console.log('\nJS errors captured: ' + errors.length);
