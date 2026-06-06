@@ -12403,5 +12403,81 @@
    ]
   ],
   "note": "Manga ('Song of Saya', from Nitroplus/Urobuchi's horror). After a crash and brain surgery, Fuminori perceives the whole world — people, food, buildings — as pulsating viscera. The lone exception is Saya, a girl who looks human to him but is something far worse. A grotesque body-horror romance about madness, perception, and love past the edge of sanity."
+ },
+ "God Level Assassin": {
+  "known": true,
+  "est_verdict": "loved",
+  "source": "shelf-add",
+  "tags": [
+   [
+    "Assassins",
+    1.0
+   ],
+   [
+    "Martial Arts",
+    0.7
+   ],
+   [
+    "Revenge",
+    0.7
+   ],
+   [
+    "Anti-Hero",
+    0.7
+   ],
+   [
+    "Super Power",
+    0.6
+   ],
+   [
+    "Male Protagonist",
+    0.5
+   ],
+   [
+    "Cultivation",
+    0.4
+   ],
+   [
+    "Gore",
+    0.4
+   ]
+  ],
+  "note": "Manhua ('I'm the Shadow'). A shadow-class assassin who dismantles enemies with cold, lethal precision — an overpowered lead in an action-revenge grind. (Agus loves it despite the OP MC — OP isn't always a dealbreaker for him.)"
+ },
+ "Long Way of the Warrior": {
+  "known": true,
+  "est_verdict": "liked",
+  "source": "shelf-add",
+  "tags": [
+   [
+    "Martial Arts",
+    0.9
+   ],
+   [
+    "Swordplay",
+    0.7
+   ],
+   [
+    "Cultivation",
+    0.6
+   ],
+   [
+    "Revenge",
+    0.6
+   ],
+   [
+    "Male Protagonist",
+    0.5
+   ],
+   [
+    "Tragedy",
+    0.3
+   ],
+   [
+    "Gore",
+    0.3
+   ]
+  ],
+  "note": "Manhwa. A martial artist's long, brutal road of training and duels toward mastery — murim-flavored action with earned progression."
  }
 }

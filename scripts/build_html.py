@@ -108,6 +108,9 @@ SHELF_SEED = [
   {"title":"Second Life Ranker","status":"toread","source":"curated","note":"Tower-climb revenge; twin betrayed/killed; earned grind.","url":""},
   {"title":"Tomie","status":"toread","source":"curated","note":"Ito horror; murder/regeneration; disturbing.","url":""},
   {"title":"Gantz","status":"toread","source":"curated","note":"Brutal alien death-game; high mortality, real stakes.","url":""},
+  # --- READING: own picks from flights (2026-06-06) ---
+  {"title":"God Level Assassin","status":"reading","source":"mine","note":"Loved — read to ch91 (OP MC but I enjoy it).","url":"https://manhuaus.com/manga/god-level-assassin-im-the-shadow/chapter-91/"},
+  {"title":"Long Way of the Warrior","status":"reading","source":"mine","note":"Read to ch150.","url":"https://manhwatop.com/manga-tag/long-way-of-the-warrior-chapters/"},
 ]
 
 ROOT = Path(__file__).resolve().parent.parent

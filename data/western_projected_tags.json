@@ -25501,5 +25501,163 @@
     ],
     "berserk_cos": 0.317,
     "mode0_cos": 0.183
+  },
+  "God Level Assassin": {
+    "title": "God Level Assassin",
+    "known": true,
+    "est_verdict": "loved",
+    "tags": [
+      [
+        "Assassins",
+        1.0
+      ],
+      [
+        "Martial Arts",
+        0.7
+      ],
+      [
+        "Revenge",
+        0.7
+      ],
+      [
+        "Anti-Hero",
+        0.7
+      ],
+      [
+        "Super Power",
+        0.6
+      ],
+      [
+        "Male Protagonist",
+        0.5
+      ],
+      [
+        "Cultivation",
+        0.4
+      ],
+      [
+        "Gore",
+        0.4
+      ]
+    ],
+    "note": "Manhua ('I'm the Shadow'). A shadow-class assassin who dismantles enemies with cold, lethal precision — an overpowered lead in an action-revenge grind. (Agus loves it despite the OP MC — OP isn't always a dealbreaker for him.)",
+    "description": "Manhua ('I'm the Shadow'). A shadow-class assassin who dismantles enemies with cold, lethal precision — an overpowered lead in an action-revenge grind. (Agus loves it despite the OP MC — OP isn't always a dealbreaker for him.)",
+    "coords": [
+      0.363,
+      0.1603
+    ],
+    "nearest_eastern": [
+      [
+        "The Reborn Young Lord is an Assassin",
+        0.507
+      ],
+      [
+        "The Reaper",
+        0.504
+      ],
+      [
+        "Legend of an Asura - The Poison Dragon",
+        0.473
+      ],
+      [
+        "The Breaker: Eternal Force",
+        0.463
+      ],
+      [
+        "The Devil Butler",
+        0.461
+      ],
+      [
+        "GOSU",
+        0.446
+      ],
+      [
+        "Hunter x Hunter",
+        0.439
+      ],
+      [
+        "Ichi the Killer",
+        0.432
+      ]
+    ],
+    "berserk_cos": 0.21,
+    "mode0_cos": 0.213
+  },
+  "Long Way of the Warrior": {
+    "title": "Long Way of the Warrior",
+    "known": true,
+    "est_verdict": "liked",
+    "tags": [
+      [
+        "Martial Arts",
+        0.9
+      ],
+      [
+        "Swordplay",
+        0.7
+      ],
+      [
+        "Cultivation",
+        0.6
+      ],
+      [
+        "Revenge",
+        0.6
+      ],
+      [
+        "Male Protagonist",
+        0.5
+      ],
+      [
+        "Tragedy",
+        0.3
+      ],
+      [
+        "Gore",
+        0.3
+      ]
+    ],
+    "note": "Manhwa. A martial artist's long, brutal road of training and duels toward mastery — murim-flavored action with earned progression.",
+    "description": "A tale about Yorick Brown, the last man on Earth. The entire series was collected into ten trade paperbacks, and various compendiums and hardcovers. Trade Paperbacks Unmanned (#1-5) Cycles (#6-10) One Small Step (#11-17) Safeword (#18-23) Ring of Truth (#24-31) Girl on Girl (#32-36) Paper Dolls (#37-42) Kimono Dragons (#43-48) Motherland (#49-54) Whys and Wherefores (#55-60) Compendium Y: The Last Man Compendium Book One (#1-31) Y: The Last Man Compendium Book Two (#32-60) Hardcovers Book One (#1-10) Book Two (#11-23) Book Three (#24-36) Book Four (#37-48) Book Five (#49-60) Y: The Last Man Om",
+    "coords": [
+      0.333,
+      0.1196
+    ],
+    "nearest_eastern": [
+      [
+        "The Undefeatable Swordsman",
+        0.598
+      ],
+      [
+        "Principles of Heavens: Zen’s Cultivation of Immortality",
+        0.577
+      ],
+      [
+        "Absolute Regression",
+        0.556
+      ],
+      [
+        "The Legend of the Northern Blade",
+        0.551
+      ],
+      [
+        "Absolute Sword Sense",
+        0.539
+      ],
+      [
+        "Return of the Blossoming Blade",
+        0.525
+      ],
+      [
+        "Reborn as a Scholar",
+        0.516
+      ],
+      [
+        "The Breaker: Eternal Force",
+        0.511
+      ]
+    ],
+    "berserk_cos": 0.224,
+    "mode0_cos": 0.178
   }
 }
