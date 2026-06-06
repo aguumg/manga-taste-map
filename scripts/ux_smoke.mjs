@@ -88,6 +88,22 @@ ok(dsMap >= 1, `stale shelf entry gets its map link refreshed on reload (${dsMap
 const dsNote = await dsRow.locator('input[data-shnote]').inputValue().catch(()=>'');
 ok(dsNote === 'kept note', `user note preserved through the refresh ["${dsNote}"]`);
 
+// 8. DELETE persistence: remove a seed row with ✕, reload, confirm it stays gone
+//    (tombstone) and is NOT resurrected by the seed-merge.
+await page.click('.tab[data-tab="shelf"]');
+await page.waitForTimeout(200);
+const before = await page.locator('#shelfList .shelf-row').count();
+const victim = page.locator('#shelfList .shelf-row').first();
+const victimSid = await victim.getAttribute('data-sid');
+await victim.locator('.shelf-x').click();
+await page.waitForTimeout(200);
+await page.reload({ waitUntil: 'load' });
+await page.waitForTimeout(1200);
+await page.click('.tab[data-tab="shelf"]');
+await page.waitForTimeout(200);
+const stillGone = await page.locator(`#shelfList .shelf-row[data-sid="${victimSid}"]`).count();
+ok(stillGone === 0, `deleted shelf row stays deleted after reload (sid=${victimSid})`);
+
 await browser.close();
 console.log(log.join('\n'));
 console.log('\nJS errors captured: ' + errors.length);

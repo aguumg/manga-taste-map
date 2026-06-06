@@ -987,6 +987,7 @@ const LS_LIB_V1 = "taste_library_v1";
 const LS_VOTES = "taste_tagvotes_v1";
 const LS_WEST = "taste_western_v1";
 const LS_SHELF = "taste_shelf_v1";   // Reading Shelf (arbitrary reading queue)
+const LS_SHELF_REMOVED = "taste_shelf_removed_v1";   // tombstones: seed sids the user deleted (so the merge doesn't resurrect them)
 const LS_GENRE_OPEN = "ui_genre_open";   // CHANGE 3: collapsible genre filter state
 const LS_CONTROLS_OPEN = "ui_controls_open";   // collapsible whole-options block (Anchor tab)
 // READ SOURCE: per-title "↗ Read" link templates. {q}=URL-encoded title, {id}=AniList id.
@@ -1123,6 +1124,11 @@ const SHELF_STATUS_ORDER = ["toread","reading","paused","done"];
 const SHELF_STATUS_LABEL = {toread:"To-read", reading:"Reading", paused:"Paused", done:"Done"};
 const SHELF_SOURCE_LABEL = {mine:"mine", friend:"friend", "cbr-viking":"CBR-viking", curated:"curated"};
 const shelfSeed = DATA.shelfSeed || [];
+// Tombstone set: seed entries the user removed with ✕, so the merge in loadShelf
+// doesn't resurrect them on reload. Must init BEFORE loadShelf() runs.
+function loadShelfRemoved(){ try{ return new Set(JSON.parse(localStorage.getItem(LS_SHELF_REMOVED)||"[]")); }catch(e){ return new Set(); } }
+let shelfRemoved = loadShelfRemoved();
+function saveShelfRemoved(){ localStorage.setItem(LS_SHELF_REMOVED, JSON.stringify([...shelfRemoved])); }
 let shelf = loadShelf();
 function shelfFromSeed(e){
   return {sid:e.sid, title:e.title, status:e.status, source:e.source,
@@ -1150,7 +1156,8 @@ function loadShelf(){
       return Object.assign({}, x, {cid: x.cid!=null?x.cid:m.cid, wk: x.wk!=null?x.wk:m.wk});
     });
     const have = new Set(out.map(x=>x.sid));
-    for(const e of shelfSeed){ if(!have.has(e.sid)){ out.push(shelfFromSeed(e)); } }
+    // append seed sids that are neither present NOR tombstoned (user-deleted)
+    for(const e of shelfSeed){ if(!have.has(e.sid) && !shelfRemoved.has(e.sid)){ out.push(shelfFromSeed(e)); } }
   } else {
     out = shelfSeed.map(shelfFromSeed);
   }
@@ -2143,6 +2150,7 @@ function shelfRowEl(e){
   // ✕ remove
   d.querySelector(".shelf-x").onclick=ev=>{
     ev.stopPropagation();
+    shelfRemoved.add(e.sid); saveShelfRemoved();   // tombstone so it stays gone after reload
     shelf = shelf.filter(x=>x!==e); saveShelf(); renderShelf();
   };
   return d;
@@ -2275,7 +2283,8 @@ function exportJson(){
     version:"taste_library_v2", exported:new Date().toISOString(),
     library:lib, tagVotes:votes, tagVotesByName:votesExport(),
     western: westLib,   // Western library (own corpus); empty {} if untouched
-    shelf: shelf        // Reading Shelf (arbitrary reading queue)
+    shelf: shelf,       // Reading Shelf (arbitrary reading queue)
+    shelfRemoved: [...shelfRemoved]   // seed titles the user deleted (tombstones)
   }, null, 2), "application/json");
 }
 function exportCsv(){
@@ -2315,8 +2324,11 @@ function importJson(file){
           if(westEmpty(westLib[k])) delete westLib[k]; }
         saveWest(); nWest = Object.keys(westLib).length;
       }
-      // Reading Shelf (additive; older exports won't have it)
-      if(Array.isArray(obj.shelf)){ shelf = obj.shelf; saveShelf(); }
+      // Reading Shelf (additive; older exports won't have it). Restore tombstones
+      // first, then route the imported shelf through loadShelf so it picks up
+      // fresh map links and respects the deletions.
+      if(Array.isArray(obj.shelfRemoved)){ shelfRemoved = new Set(obj.shelfRemoved); saveShelfRemoved(); }
+      if(Array.isArray(obj.shelf)){ localStorage.setItem(LS_SHELF, JSON.stringify(obj.shelf)); shelf = loadShelf(); }
       refreshAnchor(); renderLib(); renderTags(); libStat();
       if(WEST) westRefresh();
       renderShelf();
