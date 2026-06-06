@@ -181,27 +181,85 @@ def main():
     print(f"Fit labels: {len(y)}  (pos={int((y==1).sum())}, neg={int((y==0).sum())}, "
           f"weighted-pos={wts[y==1].sum():.1f})")
 
+    # --- fold the reader's WESTERN verdicts into training at LOW weight ---
+    # Western tags are LLM-assigned (lower fidelity than AniList crowd tags), so we
+    # down-weight them by WEST_W so they nudge but don't dominate. Kept OUT of the
+    # cosine/bimodality below (those stay about the Eastern favorites).
+    WEST_W = 0.3
+    Xw_lab = None; west_titles = []
+    wv = DATA / "western_vectors.npz"; wp = DATA / "western_projected_tags.json"
+    if wv.exists() and wp.exists():
+        wz = np.load(wv, allow_pickle=True)
+        Xw_all = wz["X"].astype(float)
+        w_row = {str(t): r for r, t in enumerate(wz["titles"])}
+        proj = json.loads(wp.read_text())
+        wmap_w = {"loved": (1, 1.0), "liked": (1, 0.5), "disliked": (0, 1.0)}
+        rows, ys, ws = [], [], []
+        for title, rec in proj.items():
+            v = rec.get("est_verdict")
+            if v in wmap_w and title in w_row:
+                yy, bw = wmap_w[v]
+                rows.append(w_row[title]); ys.append(yy); ws.append(bw * WEST_W)
+                west_titles.append(title)
+        if rows:
+            Xw_lab = Xw_all[rows]; yw = np.array(ys); wtsw = np.array(ws, float)
+            print(f"Western training labels (x{WEST_W}): {len(rows)} "
+                  f"(pos={int((yw==1).sum())}, neg={int((yw==0).sum())}) {west_titles}")
+
+    # Eastern-only baseline (for the honest before/after comparison)
+    eb = None
+    for C in [0.003,0.01,0.03,0.1,0.3,1.0,3.0,10.0]:
+        a,_,_ = loo_auc_logistic(Xl, y, C, wl=wts)
+        if eb is None or a > eb[1]: eb = (C, a)
+    east_only_auc = eb[1]
+    print(f"Eastern-only baseline LOO-AUC = {east_only_auc:.3f} (C={eb[0]})")
+
+    # Combined training matrices (Eastern + down-weighted Western) used for the
+    # logistic fit + scoring ONLY. Xl/y/wts stay Eastern for cosine/bimodality.
+    if Xw_lab is not None:
+        Xfit = np.vstack([Xl, Xw_lab]); yfit = np.concatenate([y, yw]); wfit = np.concatenate([wts, wtsw])
+    else:
+        Xfit, yfit, wfit = Xl, y, wts
+
     # --- primary: L2 logistic, choose C by LOO-AUC (weighted) ---
     Cgrid = [0.003, 0.01, 0.03, 0.1, 0.3, 1.0, 3.0, 10.0]
     best = None
     for C in Cgrid:
-        auc, acc, _ = loo_auc_logistic(Xl, y, C, wl=wts)
+        auc, acc, _ = loo_auc_logistic(Xfit, yfit, C, wl=wfit)
         print(f"  logistic C={C:<5}  LOO-AUC={auc:.3f}  LOO-acc={acc:.3f}")
         if best is None or auc > best[1]:
             best = (C, auc, acc)
     bestC, log_auc, log_acc = best
-    print(f"  -> chosen C={bestC} (LOO-AUC={log_auc:.3f}, LOO-acc={log_acc:.3f})")
+    tag = f"Eastern+Western(x{WEST_W})" if Xw_lab is not None else "Eastern-only"
+    print(f"  -> chosen C={bestC} (LOO-AUC={log_auc:.3f}, LOO-acc={log_acc:.3f}) "
+          f"[{tag}]  vs Eastern-only baseline {east_only_auc:.3f}  "
+          f"(delta {log_auc-east_only_auc:+.3f})")
 
     # robustness model (weighted class means)
-    nsc_auc, nsc_acc, _ = loo_auc_nsc(Xl, y, wl=wts)
+    nsc_auc, nsc_acc, _ = loo_auc_nsc(Xfit, yfit, wl=wfit)
     print(f"  NSC / diagonal-LDA  LOO-AUC={nsc_auc:.3f}  LOO-acc={nsc_acc:.3f}")
 
     # --- fit final logistic on all labels, score full corpus ---
-    scaler = StandardScaler().fit(Xl)
+    scaler = StandardScaler().fit(Xfit)
     clf = LogisticRegression(C=bestC, max_iter=5000,
                              class_weight="balanced").fit(
-        scaler.transform(Xl), y, sample_weight=wts)
+        scaler.transform(Xfit), yfit, sample_weight=wfit)
     model_score = clf.predict_proba(scaler.transform(X))[:, 1]
+
+    # --- score Western titles with the SAME fitted logistic (cross-domain) ---
+    # Western vectors live in the same 254-tag basis but are LLM-tagged, so these
+    # scores are an approximate estimate, not calibrated 1:1 against Eastern.
+    wv = DATA / "western_vectors.npz"
+    if wv.exists():
+        wz = np.load(wv, allow_pickle=True)
+        Xw = wz["X"].astype(float)
+        wtitles = [str(t) for t in wz["titles"]]
+        w_scores = clf.predict_proba(scaler.transform(Xw))[:, 1]
+        (DATA / "western_scores.json").write_text(
+            json.dumps({t: round(float(s), 4) for t, s in zip(wtitles, w_scores)},
+                       ensure_ascii=False))
+        print(f"scored {len(wtitles)} Western titles (cross-domain) "
+              f"-> western_scores.json  [range {w_scores.min():.2f}-{w_scores.max():.2f}]")
 
     # --- baselines: cosine to Berserk vector and to positive centroid ---
     # Positive set for cosine + bimodality = ALL fitted positives (original

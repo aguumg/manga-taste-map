@@ -264,9 +264,9 @@
     "neg": 17
   },
   "logistic": {
-    "C": 0.003,
-    "loo_auc": 0.6698292220113852,
-    "loo_acc": 0.5833333333333334,
+    "C": 0.01,
+    "loo_auc": 0.6638655462184874,
+    "loo_acc": 0.5769230769230769,
     "C_grid": [
       0.003,
       0.01,
@@ -279,8 +279,8 @@
     ]
   },
   "nsc": {
-    "loo_auc": 0.6793168880455407,
-    "loo_acc": 0.6875
+    "loo_auc": 0.653781512605042,
+    "loo_acc": 0.6730769230769231
   },
   "pc1_top": [
     [
@@ -772,53 +772,53 @@
     {
       "title": "Tower of God",
       "id": 85143,
-      "score": 0.5050966680658298,
+      "score": 0.487108301909573,
       "above_median": true
     },
     {
       "title": "Terra Formars",
       "id": 67563,
-      "score": 0.5754546284251639,
+      "score": 0.6880963124971545,
       "above_median": true
     },
     {
       "title": "I\u2019m the Max-Level Newbie",
       "id": 137280,
-      "score": 0.4781833402540284,
+      "score": 0.4485357398193528,
       "above_median": true
     },
     {
       "title": "The Skeleton Soldier Failed to Defend the Dungeon",
       "id": 103156,
-      "score": 0.45924370824040567,
+      "score": 0.3926574991419803,
       "above_median": false
     },
     {
       "title": "The Greatest Estate Developer",
       "id": 140407,
-      "score": 0.5305072757982199,
+      "score": 0.6102760046152231,
       "above_median": true
     },
     {
       "title": "Taming Master",
       "id": 125816,
-      "score": 0.4875598799623812,
+      "score": 0.5081532800859078,
       "above_median": true
     },
     {
       "title": "Mystic Musketeer",
       "id": 129918,
-      "score": 0.4962777106280521,
+      "score": 0.5220158154309906,
       "above_median": true
     },
     {
       "title": "Demon Devourer",
       "id": 144079,
-      "score": 0.484078072702949,
+      "score": 0.4763206584831377,
       "above_median": true
     }
   ],
   "mod_pos_n_above": 7,
-  "median_score": 0.46340765816744683,
+  "median_score": 0.43524259773541,
   "berserk_id": 30002
 }

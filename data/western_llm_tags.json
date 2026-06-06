@@ -12027,5 +12027,265 @@
     ],
     "note": "Baron/Rude — a being compelled to execute mass-murderers; on-page disintegrations and killings, with a satirical-political edge. Sci-fi action with explicit deaths.",
     "source": "GCD-broad"
+  },
+  "Eternal (Black Mask)": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Revenge",
+        0.9
+      ],
+      [
+        "Female Protagonist",
+        0.7
+      ],
+      [
+        "Tragedy",
+        0.7
+      ],
+      [
+        "Magic",
+        0.7
+      ],
+      [
+        "Gore",
+        0.9
+      ],
+      [
+        "Military",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ],
+      [
+        "Anti-Hero",
+        0.7
+      ]
+    ],
+    "note": "shieldmaiden vs warlock vengeance, Black Mask dark fantasy",
+    "source": "CBR-viking"
+  },
+  "Viking: The Long Cold Fire": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Crime",
+        0.7
+      ],
+      [
+        "Gore",
+        0.9
+      ],
+      [
+        "Anti-Hero",
+        0.7
+      ],
+      [
+        "Military",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ],
+      [
+        "Revenge",
+        0.9
+      ],
+      [
+        "Historical",
+        0.7
+      ],
+      [
+        "Swordplay",
+        0.7
+      ]
+    ],
+    "note": "Brandon/Klein (Image), stylish ultraviolent 9th-c looting brothers",
+    "source": "CBR-viking"
+  },
+  "Sword Daughter": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Revenge",
+        0.9
+      ],
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Tragedy",
+        0.7
+      ],
+      [
+        "Female Protagonist",
+        0.7
+      ],
+      [
+        "Swordplay",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ],
+      [
+        "Historical",
+        0.7
+      ],
+      [
+        "Anti-Hero",
+        0.7
+      ],
+      [
+        "Travel",
+        0.7
+      ]
+    ],
+    "note": "Brian Wood father-daughter Iceland revenge",
+    "source": "CBR-viking"
+  },
+  "Helheim": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Gore",
+        0.9
+      ],
+      [
+        "Zombie",
+        0.7
+      ],
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Cosmic Horror",
+        0.7
+      ],
+      [
+        "Body Horror",
+        0.7
+      ],
+      [
+        "Tragedy",
+        0.7
+      ],
+      [
+        "Revenge",
+        0.9
+      ],
+      [
+        "Curses",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ],
+      [
+        "Demons",
+        0.7
+      ]
+    ],
+    "note": "Cullen Bunn: Vikings + zombies + witches, horror",
+    "source": "CBR-viking"
+  },
+  "The Darkness: Lodbrok's Hand": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Gore",
+        0.9
+      ],
+      [
+        "Demons",
+        0.7
+      ],
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Anti-Hero",
+        0.7
+      ],
+      [
+        "Curses",
+        0.7
+      ],
+      [
+        "Tragedy",
+        0.7
+      ],
+      [
+        "Swordplay",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ]
+    ],
+    "note": "Top Cow Darkness artifact, Viking one-shot, gory",
+    "source": "CBR-viking"
+  },
+  "Heathen": {
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Magic",
+        0.7
+      ],
+      [
+        "Mythology",
+        0.7
+      ],
+      [
+        "Female Protagonist",
+        0.7
+      ],
+      [
+        "Travel",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ],
+      [
+        "Tragedy",
+        0.7
+      ],
+      [
+        "Swordplay",
+        0.7
+      ]
+    ],
+    "note": "Alterici (Vault): shieldmaiden rescues a valkyrie, Norse",
+    "source": "CBR-viking"
   }
 }

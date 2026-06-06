@@ -112,6 +112,9 @@ def build_tag_meta(Xdf, feat_cols, X, feat_row, res):
 EASTERN_DROP = DATA / "eastern_drop.json"
 WEST_PROJECTED = DATA / "western_projected_tags.json"
 WEST_CORPUS = DATA / "western_corpus.json"
+# Cross-domain model scores for Western titles (same logistic, applied to the
+# LLM-tagged Western vectors). {title: score 0..1}. Absent file -> no scores.
+WEST_SCORES = DATA / "western_scores.json"
 # Precomputed unified / IDF / Western-only map layouts + IDF tag weights.
 # layout*.json keys: "e<id>" (Eastern) and "w<title>" (Western); values [x,y].
 # layout_western.json: "w<title>" only. idf_weights.json: {tagName: weight}.
@@ -125,6 +128,86 @@ WEST_SEED_VERDICTS = {
     "Y: The Last Man": "liked", "Saga": "liked",
     "Crécy": "meh", "Crecy": "meh", "Locke & Key": "liked",
 }
+
+
+# BUGFIX (Western dropped under genre filter): Western titles have no AniList
+# genres, so any active genre chip excluded them from rankedList/drawPlot. Fix =
+# DERIVE a `.g` for each Western from its tags so they are treated exactly like
+# Eastern titles by genreActive(). Each (case-insensitive) tag SUBSTRING maps to
+# one or more AniList genres that exist in the corpus genre list (DATA.genres).
+# A Western gets a genre if it has any mapped tag with weight >= 0.4. Every
+# Western ends with at least ["Action"] so it is never genre-orphaned.
+WEST_TAG_GENRE_MAP = [
+    ("gore", ["Horror"]),
+    ("cosmic horror", ["Horror"]),
+    ("body horror", ["Horror"]),
+    ("zombie", ["Horror"]),
+    ("cannibalism", ["Horror"]),
+    ("sadism", ["Horror"]),
+    ("pandemic", ["Horror"]),
+    ("curses", ["Horror", "Supernatural", "Fantasy"]),
+    ("demons", ["Supernatural", "Fantasy"]),
+    ("magic", ["Supernatural", "Fantasy"]),
+    ("mythology", ["Supernatural", "Fantasy"]),
+    ("ghost", ["Supernatural", "Fantasy"]),
+    ("gods", ["Supernatural", "Fantasy"]),
+    ("afterlife", ["Supernatural", "Fantasy"]),
+    ("vampire", ["Supernatural", "Fantasy"]),
+    ("werewolf", ["Supernatural", "Fantasy"]),
+    ("war", ["Action"]),
+    ("military", ["Action"]),
+    ("guns", ["Action"]),
+    ("swordplay", ["Action"]),
+    ("martial arts", ["Action"]),
+    ("revenge", ["Action"]),
+    ("anti-hero", ["Action"]),
+    ("survival", ["Action", "Adventure"]),
+    ("gangs", ["Action"]),
+    ("crime", ["Mystery", "Thriller"]),
+    ("detective", ["Mystery", "Thriller"]),
+    ("police", ["Mystery", "Thriller"]),
+    ("conspiracy", ["Mystery", "Thriller"]),
+    ("espionage", ["Mystery", "Thriller"]),
+    ("spy", ["Mystery", "Thriller"]),
+    ("mafia", ["Mystery", "Thriller"]),
+    ("drugs", ["Mystery", "Thriller"]),
+    ("space", ["Sci-Fi"]),
+    ("aliens", ["Sci-Fi"]),
+    ("post-apocalyptic", ["Sci-Fi"]),
+    ("dystopian", ["Sci-Fi"]),
+    ("cyborg", ["Sci-Fi"]),
+    ("time", ["Sci-Fi"]),
+    ("travel", ["Adventure"]),
+    ("pirates", ["Adventure"]),
+    ("tragedy", ["Drama", "Psychological"]),
+    ("family life", ["Drama"]),
+    ("parenthood", ["Drama"]),
+    ("historical", ["Drama"]),
+    ("philosophy", ["Psychological"]),
+    ("memory", ["Psychological"]),
+]
+
+
+def _western_genres(tags):
+    """Derive the AniList genre list for a Western item from its (name, weight)
+    tags. A genre is included when any mapped tag SUBSTRING (case-insensitive)
+    appears in a tag with weight >= 0.4. Falls back to ["Action"] so the title
+    is never genre-orphaned. Returns a sorted, de-duplicated list."""
+    out = set()
+    for nm, w in (tags or []):
+        try:
+            wt = float(w)
+        except (TypeError, ValueError):
+            continue
+        if wt < 0.4:
+            continue
+        low = str(nm).lower()
+        for sub, genres in WEST_TAG_GENRE_MAP:
+            if sub in low:
+                out.update(genres)
+    if not out:
+        out.add("Action")
+    return sorted(out)
 
 
 def _clean_nearest(ne):
@@ -147,13 +230,26 @@ def _clean_nearest(ne):
     return out
 
 
-def build_western():
+def build_western(feat_cols=None):
     """Load the projected Western titles, join publisher/year by title from the
     Comicvine corpus, scrub NaN, and shape a lean dict the HTML embeds as WEST.
-    Returns None if the projected file is absent (Western layer just stays off)."""
+    Returns None if the projected file is absent (Western layer just stays off).
+
+    CHANGE 2: when feat_cols (the Eastern tag->column order) is supplied, each
+    item also gets a sparse `v` = [[colIndex, weight], ...] in the SAME j-index
+    basis as the Eastern titles, plus its L2 `norm`. This lets a Western title
+    act as an anchor/centroid (cosine vs the Eastern cloud) exactly like an
+    Eastern title does. Tags not present in feat_cols are skipped."""
     if not WEST_PROJECTED.exists():
         return None
+    # name -> column index, in the Eastern feature basis (sparse j indices).
+    name_to_col = ({name: idx for idx, name in enumerate(feat_cols)}
+                   if feat_cols is not None else {})
     proj = json.loads(WEST_PROJECTED.read_text())
+    # title -> cross-domain model score (0..1) from the same logistic. Absent
+    # file or missing title -> the item's `s` stays None (no score under the
+    # model-score ranking mode).
+    scores = json.loads(WEST_SCORES.read_text()) if WEST_SCORES.exists() else {}
     # title -> {publisher, year} from the raw Comicvine corpus (keyed by id).
     meta = {}
     if WEST_CORPUS.exists():
@@ -170,8 +266,25 @@ def build_western():
             continue  # no PCA placement -> can't put it on the map
         m = meta.get(title, {})
         seed_verdict = WEST_SEED_VERDICTS.get(title)
+        # CHANGE 2: full tag list -> sparse vector in the Eastern j-index basis.
+        sparse_v = []
+        seen_cols = set()
+        for nm, w in (v.get("tags") or []):
+            col = name_to_col.get(str(nm))
+            if col is None or col in seen_cols:
+                continue
+            seen_cols.add(col)
+            sparse_v.append([col, round(float(w), 4)])
+        wnorm = (sum(val * val for _, val in sparse_v)) ** 0.5
+        sc = scores.get(title)
         items.append({
             "t": title,
+            "s": (round(float(sc), 6) if sc is not None else None),  # cross-domain model score (est.)
+            # BUGFIX: derived AniList genres so genreActive() treats Western like
+            # Eastern. Derived from the FULL tag list (not the top-6 hover slice).
+            "g": _western_genres(v.get("tags") or []),
+            "v": sparse_v,
+            "norm": round(wnorm, 6) if wnorm > 0 else 1e-9,
             "x": round(float(coords[0]), 4),
             "y": round(float(coords[1]), 4),
             "ev": v.get("est_verdict") or None,          # loved/liked/meh/null
@@ -218,7 +331,8 @@ def main():
     # onto the existing scatter via their `coords`. This is ADDITIVE: they are
     # NOT in the supervised model. Enrich each with publisher/year (joined by
     # title from western_corpus.json) and strip any NaN so allow_nan=False holds.
-    western = build_western()
+    # CHANGE 2: built AFTER feat_cols below so each Western item can carry a
+    # sparse `v`/`norm` in the Eastern j-index basis (built just after Xdf).
 
     # Precomputed map layouts (CHANGE A/B/C). These DRIVE the plotted (x,y) for
     # every point client-side: Eastern id -> layout["e"+id], Western title ->
@@ -232,6 +346,8 @@ def main():
 
     Xdf = build_feature_matrix(corpus)
     feat_cols = list(Xdf.columns)
+    # CHANGE 2: Western items now embed a sparse `v`/`norm` in this same basis.
+    western = build_western(feat_cols)
     X = Xdf.values
     ids_feat = Xdf.index.values
     feat_row = {int(i): r for r, i in enumerate(ids_feat)}
@@ -365,7 +481,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Manga / Manhwa Taste Map — Interactive</title>
 <script>/*PLOTLY_JS*/</script>
 <style>
@@ -379,6 +495,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;background:var(--bg-deep);color:var(--text);
     font:14px/1.45 var(--sans)}
+  body{overflow-x:hidden}
   #app{display:flex;height:100vh;width:100vw;overflow:hidden}
   #left{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
   #plot{flex:1 1 auto;min-height:0;background:var(--bg-deep)}
@@ -459,6 +576,11 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .item .sim small{display:block;color:var(--text-dim);font-size:9.5px}
   .item .ttl{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
   .cc{color:var(--text-dim);font-size:11px;font-weight:400}
+  /* READ SOURCE: subtle gold per-title link */
+  .readlink{color:var(--gold);font-size:10.5px;text-decoration:none;opacity:.78;
+    white-space:nowrap;flex:0 0 auto;margin-left:6px;font-weight:500}
+  .readlink:hover{opacity:1;text-decoration:underline;color:var(--gold-soft)}
+  .expand .readlink{display:inline-block;margin:6px 0 2px 0;font-size:12px;opacity:1}
   .expand{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);display:none}
   .expand.open{display:block}
   .syn{font-size:12px;line-height:1.5;color:var(--text);background:var(--bg-deep);
@@ -515,6 +637,44 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   ::-webkit-scrollbar{width:10px;height:10px}
   ::-webkit-scrollbar-thumb{background:var(--line);border-radius:5px}
   ::-webkit-scrollbar-track{background:transparent}
+
+  /* ===== RESPONSIVE: phone (portrait) + iPad portrait (<=860px) ===== */
+  /* Restacks the desktop side-by-side layout vertically. Desktop (>860px)
+     is untouched. Map full-width on top, panel full-width below, page scrolls. */
+  @media (max-width:860px){
+    html,body{height:auto}
+    #app{display:block;height:auto;width:100%;overflow:visible}
+    #left{display:block;width:100%}
+    #plot{width:100%;height:48vh;min-height:320px}
+    #right{width:100%;max-width:100%;flex:none;border-left:none;
+      border-top:1px solid var(--line);box-shadow:none}
+    /* let the right panel + its result lists scroll with the page, not internally */
+    .tabpane.active{display:block}
+    .results{flex:none;max-height:none;overflow:visible}
+    /* slightly larger base font for phone readability */
+    html,body{font-size:15px}
+    header{padding:13px 16px}
+    header h1{font-size:21px}
+    /* ----- touch-target bumps (mobile only) ----- */
+    .tab{padding:14px 6px;font-size:13.5px;min-height:44px}
+    .gchip{font-size:13px;padding:8px 13px;min-height:38px;display:inline-flex;
+      align-items:center}
+    .chip{padding:7px 12px;font-size:13px;min-height:38px}
+    .chip .x{padding:0 4px;font-size:15px}
+    .btn{padding:11px 15px;font-size:13.5px;min-height:42px}
+    .btn.sm{padding:8px 12px;font-size:12.5px;min-height:36px}
+    .opthead,.gfhead{padding-top:13px;padding-bottom:13px;min-height:44px;
+      align-items:center}
+    .item{padding:12px 16px}
+    .item .ttl{font-size:14px}
+    .tvrow{padding:11px 16px}
+    .rate button{width:34px;height:34px;font-size:15px}
+    .votes button{width:34px;height:32px;font-size:14px}
+    .rd{font-size:20px;width:32px}
+    input[type=text],select,textarea{padding:10px 11px;font-size:15px}
+    /* keep map full-width: don't let Plotly legend/colorbar force overflow */
+    #plot,#plot .plot-container,#plot .svg-container{max-width:100%}
+  }
 </style>
 </head>
 <body>
@@ -578,6 +738,18 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
           <label class="toggle" style="margin:0"><input type="checkbox" id="genreHide"> hide (vs dim) filtered</label>
           <button class="btn sm" id="resetAnchor">Reset → Berserk</button>
         </div>
+        <!-- READ SOURCE: configurable per-title "↗ Read" link templates -->
+        <label class="fld" style="margin-top:10px">READ SOURCE</label>
+        <label class="fld" style="font-weight:400;opacity:.85">Eastern reader template <span class="cc">— {q} = title, {id} = AniList id</span></label>
+        <input type="text" id="readSrcE" placeholder="https://mangadex.org/titles?q={q}" autocomplete="off">
+        <div class="row" style="margin-top:4px;flex-wrap:wrap;gap:4px">
+          <button class="btn sm" id="readPresetMangadex">MangaDex</button>
+          <button class="btn sm" id="readPresetComick">Comick</button>
+          <button class="btn sm" id="readPresetAnilist">AniList</button>
+        </div>
+        <label class="fld" style="font-weight:400;opacity:.85;margin-top:8px">Western reader template <span class="cc">— {q} = title</span></label>
+        <input type="text" id="readSrcW" placeholder="https://batcave.biz/search/{q}" autocomplete="off">
+        <div class="hint" style="margin-top:4px">Tip: point this at your own Suwayomi server if you run one.</div>
       </div>
       </div><!-- /optBox -->
       <div class="stat" id="anchorStat"></div>
@@ -642,6 +814,13 @@ const LS_VOTES = "taste_tagvotes_v1";
 const LS_WEST = "taste_western_v1";
 const LS_GENRE_OPEN = "ui_genre_open";   // CHANGE 3: collapsible genre filter state
 const LS_CONTROLS_OPEN = "ui_controls_open";   // collapsible whole-options block (Anchor tab)
+// READ SOURCE: per-title "↗ Read" link templates. {q}=URL-encoded title, {id}=AniList id.
+const LS_READ_SRC_E = "ui_read_src_e";   // Eastern reader template
+const LS_READ_SRC_W = "ui_read_src_w";   // Western reader template
+const READ_SRC_E_DEFAULT = "https://mangadex.org/titles?q={q}";
+const READ_SRC_W_DEFAULT = "https://batcave.biz/search/{q}";
+let readSrcE = localStorage.getItem(LS_READ_SRC_E) || READ_SRC_E_DEFAULT;
+let readSrcW = localStorage.getItem(LS_READ_SRC_W) || READ_SRC_W_DEFAULT;
 
 const titles = DATA.titles;
 const byId = new Map(titles.map(t => [t.id, t]));
@@ -658,11 +837,50 @@ function dropHidden(id){
 const GENRES = DATA.genres;
 const dispName = t => t.e || t.r || ("#" + t.id);
 
+// READ SOURCE: build the online-reader URL for a title.
+//   name   = display title (used for {q})
+//   id     = AniList numeric id (Eastern only; for {id})
+//   isWest = pick the Western template instead of the Eastern one
+// Western templates never get an id — any {id} placeholder is stripped to "".
+function readUrl(name, id, isWest){
+  const tpl = isWest ? readSrcW : readSrcE;
+  return tpl
+    .replace(/\{q\}/g, encodeURIComponent(name==null?"":name))
+    .replace(/\{id\}/g, (!isWest && id!=null) ? String(id) : "");
+}
+// READ SOURCE: the small subtle/gold "↗ Read" anchor markup for a row header.
+// stopPropagation on click so it opens the source WITHOUT toggling expand/halo.
+function readLinkHtml(name, id, isWest){
+  const url = readUrl(name, id, isWest);
+  return `<a class="readlink" href="${esc(url)}" target="_blank" rel="noopener"
+    onclick="event.stopPropagation()" title="Open in your read source">↗ Read</a>`;
+}
+
 /* ---------- Western layer (LLM-tagged, projected into the SAME PCA space) ----
    ADDITIVE. These titles are NOT in the supervised model — placed by theme and
    validated by nearest-neighbor only. WEST is null if the data wasn't built. */
 const WEST = DATA.western || null;
 const westItems = WEST ? WEST.items : [];
+// CHANGE 2: Western title -> item, so a Western title string can anchor the map.
+// Each Western item now carries `.v` (sparse, Eastern j-index basis) + `.norm`,
+// just like an Eastern title — so it can be used as an anchor/centroid.
+const westByTitle = new Map(westItems.map(it => [it.t, it]));
+// Resolve an anchor key (number => Eastern id, string => Western title) to the
+// underlying title-like object (both expose .v / .norm). null if unknown.
+function anchorVec(key){
+  return (typeof key === 'number') ? (byId.get(key) || null)
+                                   : (westByTitle.get(key) || null);
+}
+// Display name for any anchor key (Eastern id or Western title string).
+function anchorName(key){
+  if(typeof key === 'number'){ const t=byId.get(key); return t?dispName(t):("#"+key); }
+  return String(key);
+}
+// Country/source label for an anchor key (Eastern country, else "Western").
+function anchorCountry(key){
+  if(typeof key === 'number'){ const t=byId.get(key); return t?t.c:""; }
+  return "Western";
+}
 // Western library keyed by TITLE (own store). Seeded from per-item est_verdict
 // seeds so a handful (Crossed/Sara loved, Y/Saga liked, Crécy/Locke&Key meh)
 // show up pre-rated on first run. Edits win over the seed thereafter.
@@ -831,8 +1049,10 @@ function idfW(j){
   return (idfOn && IDF_BY_INDEX) ? (IDF_BY_INDEX[j] || 1) : 1;
 }
 function centroidOf(ids){
+  // CHANGE 2: anchor keys may be Eastern ids (number) OR Western titles (string).
+  // anchorVec() resolves both to an obj exposing `.v`. idfW(j) still applies.
   const c = new Float64Array(nFeat); let n=0;
-  for(const id of ids){ const t=byId.get(id); if(!t) continue;
+  for(const id of ids){ const t=anchorVec(id); if(!t || !t.v) continue;
     for(const [j,val] of t.v) c[j]+=val*idfW(j); n++; }
   if(n>0) for(let j=0;j<nFeat;j++) c[j]/=n;
   let nm=0; for(let j=0;j<nFeat;j++) nm+=c[j]*c[j];
@@ -849,11 +1069,16 @@ function cosineTo(cen, t){ let d=0; for(const [j,val] of t.v) d+=cen.c[j]*val*id
 
 let anchorIds = [DATA.berserkId];
 let colorBy = "anchor";          // anchor | taste | blend | score
-let simCache = new Map();        // id -> anchor cosine
+let simCache = new Map();        // id -> anchor cosine (Eastern)
+// WESTERN AS FIRST-CLASS: parallel cache, Western title -> anchor cosine. Western
+// items carry the same `.v`/`.norm` basis, so cosineTo(cen, item) is valid.
+let westSim = new Map();          // Western title -> anchor cosine
 function recomputeSim(){
   const cen = centroidOf(anchorIds);
   simCache.clear();
   for(const t of titles) simCache.set(t.id, cosineTo(cen, t));
+  westSim.clear();
+  for(const it of westItems) westSim.set(it.t, cosineTo(cen, it));
 }
 
 /* ---------- genre filter ---------- */
@@ -868,9 +1093,23 @@ function rankVal(t){
   if(colorBy==="blend"){ const a=simCache.get(t.id); return 0.5*a + 0.5*tasteFit01(t); }
   return simCache.get(t.id);   // anchor
 }
+// WESTERN AS FIRST-CLASS: rank metric for a Western item. Western have `.v`
+// (taste-fit works) but NO `.s` (model score) — score mode excludes them upstream,
+// so this is only ever called for anchor/taste/blend.
+function westRankVal(it){
+  if(colorBy==="score") return it.s;   // cross-domain model score (est.); null when absent
+  if(colorBy==="taste") return tasteFit01(it);
+  const a = westSim.get(it.t);
+  if(colorBy==="blend") return 0.5*a + 0.5*tasteFit01(it);
+  return a;   // anchor
+}
 
 /* ---------- plot ---------- */
 let plotInit = false;
+// list<->map link: the row clicked anywhere (My Library / Western / Anchor list).
+// Eastern id (number) OR Western title (string). null => nothing haloed.
+let selectedKey = null;
+let suppressSel = false;   // true while expandRow() synthetically clicks .head, so the programmatic expand doesn't toggle the selection off
 const GOLD_SCALE = [[0,'#2c2a32'],[0.4,'#6b5836'],[0.7,'#c9a44c'],[1,'#f0c878']];
 const COL = {gold:'#c9a44c', oxblood:'#8c3b3b', readGrey:'#5a5650',
              bg:'#16151a', text:'#e9e3d7', line:'#262430', panel:'#201f25'};
@@ -901,6 +1140,9 @@ function hoverFor(t){
 function nearSetForHighlight(){
   if(!document.getElementById("highlightTop").checked) return null;
   const N = Math.max(1, parseInt(document.getElementById("topN").value)||25);
+  // WESTERN AS FIRST-CLASS: rankedList now yields mixed keys — numeric Eastern ids
+  // AND Western title strings. The returned Set holds both; drawPlot's Eastern loop
+  // tests nearSet.has(t.id) and its Western loop tests nearSet.has(it.t).
   return new Set(rankedList(N, true).map(o=>o.id));
 }
 function drawPlot(){
@@ -933,6 +1175,9 @@ function drawPlot(){
   // CHANGE A: plotted coords now come from the active layout (t._px/_py),
   // not the embedded PCA t.x/t.y.
   const xs=a=>a.map(t=>t._px), ys=a=>a.map(t=>t._py), hv=a=>a.map(hoverFor);
+  // FEATURE B: per-point customdata so a map click can resolve the title.
+  // Eastern points => [id, 0]; Western points => [title, 1]. Read in plotly_click.
+  const cdE=a=>a.map(t=>[t.id,0]), cdW=a=>a.map(it=>[it.t,1]);
   const opac = t => genreActive(t) ? 0.82 : 0.07;   // dim non-matching
 
   const cmode = (colorBy==="score"||colorBy==="taste"||colorBy==="blend");
@@ -954,19 +1199,19 @@ function drawPlot(){
         tickfont:{color:COL.text}, titlefont:{color:COL.text},
         outlinecolor:COL.line, bgcolor:'rgba(0,0,0,0)', thickness:12 }
     },
-    text:hv(base), hoverinfo:"text"
+    text:hv(base), hoverinfo:"text", customdata:cdE(base)
   };
   // dim layer: faint grey for filtered-out base points (when not hiding)
   let dimTrace=null;
   if(!hideFiltered){
     const dim = base.filter(t=>!genreActive(t));
     dimTrace = { type:"scattergl", mode:"markers", name:"", showlegend:false,
-      hoverinfo:"skip", x:xs(dim), y:ys(dim),
+      hoverinfo:"skip", x:xs(dim), y:ys(dim), customdata:cdE(dim),
       marker:{symbol:"circle", size:4, color:'#2a2830', opacity:0.5} };
     // overlay: re-plot matching base on top so colors stay vivid
     const matchBase = base.filter(genreActive);
     baseTrace.x = xs(matchBase); baseTrace.y = ys(matchBase);
-    baseTrace.text = hv(matchBase);
+    baseTrace.text = hv(matchBase); baseTrace.customdata = cdE(matchBase);
     baseTrace.marker.size = matchBase.map(t=> nearSet && nearSet.has(t.id) ? 11 : 5);
     baseTrace.marker.color = matchBase.map(rankVal);
     baseTrace.marker.line.width = matchBase.map(t=> nearSet && nearSet.has(t.id) ? 1.6 : 0.2);
@@ -980,17 +1225,19 @@ function drawPlot(){
     x:xs(lovedShown), y:ys(lovedShown),
     marker:{symbol:"star", size: lovedShown.map(t=>genreActive(t)?15:7),
       color:COL.gold, line:{width:1.2, color:'#16150f'}},
-    text:hv(lovedShown), hoverinfo:"text" };
+    text:hv(lovedShown), hoverinfo:"text", customdata:cdE(lovedShown) };
   const disShown = disliked.filter(t=>!hideFiltered || genreActive(t));
   const disTrace = { type:"scattergl", mode:"markers", name:"✕ Disliked",
     x:xs(disShown), y:ys(disShown),
     marker:{symbol:"x", size: disShown.map(t=>genreActive(t)?11:5), color:COL.oxblood,
-      line:{width:1.4, color:COL.oxblood}}, text:hv(disShown), hoverinfo:"text" };
+      line:{width:1.4, color:COL.oxblood}}, text:hv(disShown), hoverinfo:"text",
+    customdata:cdE(disShown) };
   const readShown = readUnrated.filter(t=>!hideFiltered || genreActive(t));
   const readTrace = { type:"scattergl", mode:"markers", name:"✕ Read",
     x:xs(readShown), y:ys(readShown),
     marker:{symbol:"x", size: readShown.map(t=>genreActive(t)?8:4), color:COL.readGrey,
-      line:{width:1, color:COL.readGrey}}, text:hv(readShown), hoverinfo:"text" };
+      line:{width:1, color:COL.readGrey}}, text:hv(readShown), hoverinfo:"text",
+    customdata:cdE(readShown) };
 
   // Western layer: distinct teal triangles, own legend entry. Always shown
   // unless the "Show Western titles" toggle is off (they have no AniList
@@ -998,17 +1245,81 @@ function drawPlot(){
   // In Western-only mode they are ALWAYS shown (the "Show Western" toggle is
   // moot); otherwise they obey "Show Western titles". Coords come from the
   // active layout (CHANGE A/C); items without a coord are skipped.
+  // CHANGE 2: a Western title can now be the anchor (anchorSet holds strings for
+  // Western, numbers for Eastern — no collision in one mixed Set). When the
+  // Western layer is hidden we still surface an *anchored* Western title here.
   let westTrace = null;
-  if(WEST && (westOnlyEff || showWestern) && westItems.length){
-    const wshow=[], wx=[], wy=[];
-    for(const it of westItems){ const c=coordW(it); if(!c) continue;
-      wshow.push(it); wx.push(c[0]); wy.push(c[1]); }
+  const westLayerOn = WEST && (westOnlyEff || showWestern) && westItems.length;
+  if(WEST && westItems.length && (westLayerOn || westItems.some(it=>anchorSet.has(it.t)))){
+    // BUGFIX: Western now carry derived genres (it.g), so they genre-dim/genre-hide
+    // EXACTLY like Eastern via genreActive(it) — no more special-casing.
+    //  - keepWest: a Western title we never hide (current anchor or the selected halo).
+    //  - onlyNearHide (top-N hide): hide Western not in the top-N nearSet.
+    //  - genre filter: !genreActive(it) -> HIDE when hideFiltered is on, else DIM.
+    const wshow=[], wx=[], wy=[], wop=[];
+    for(const it of westItems){
+      if(!westLayerOn && !anchorSet.has(it.t)) continue;   // hidden layer: anchors only
+      const keepWest = anchorSet.has(it.t) || selectedKey === it.t;
+      // top-N hide: Western not in the top-N nearest (and not anchored) drop out.
+      if(onlyNearHide && !keepWest && !(nearSet && nearSet.has(it.t))) continue;
+      const matches = genreActive(it) || keepWest;
+      // genre hide: hide on + non-matching -> drop out (except kept).
+      if(hideFiltered && !matches) continue;
+      const c=coordW(it); if(!c) continue;
+      // genre dim: hide off + non-matching -> faint (mirror Eastern's dim opacity).
+      wshow.push(it); wx.push(c[0]); wy.push(c[1]); wop.push(matches?0.9:0.12); }
     if(wshow.length){
       westTrace = { type:"scattergl", mode:"markers", name:"Western (LLM-tagged)",
         x: wx, y: wy,
-        marker:{ symbol:"triangle-up", size: westOnlyEff?10:9, color:WEST_COL,
-          line:{width:0.8, color:'#16150f'}, opacity:0.9 },
-        text: wshow.map(westHoverFor), hoverinfo:"text" };
+        marker:{ symbol:"triangle-up",
+          size: wshow.map(it=> (nearSet && nearSet.has(it.t)) ? 16 : (westOnlyEff?10:9)),
+          color:WEST_COL,
+          line:{ width: wshow.map(it=> (nearSet && nearSet.has(it.t)) ? 2.6 : 0.8),
+                 color: wshow.map(it=> (nearSet && nearSet.has(it.t)) ? '#bdeee7' : '#16150f') },
+          opacity:wop },
+        text: wshow.map(westHoverFor), hoverinfo:"text", customdata:cdW(wshow) };
+    }
+  }
+
+  // CHANGE 1: a dedicated "Anchor" trace, drawn LAST so it sits on top, marking
+  // every current anchor in a vivid magenta open-dot. Coords pulled the SAME way
+  // the rest of the map resolves them: Eastern anchor -> coordE, Western anchor
+  // -> coordW. An anchor with no coord in the active layout is simply skipped.
+  let anchorTrace = null;
+  {
+    const ax=[], ay=[], atxt=[], acd=[];
+    for(const key of anchorIds){
+      let c=null, nm="";
+      if(typeof key === 'number'){ const t=byId.get(key); if(t){ c=coordE(t); nm=dispName(t); } }
+      else { const it=westByTitle.get(key); if(it){ c=coordW(it); nm=it.t; } }
+      if(!c) continue;   // no coord in the active layout => hidden
+      ax.push(c[0]); ay.push(c[1]); atxt.push(`<b>${esc(nm)}</b><br>★ anchor`);
+      acd.push([key, (typeof key==='number')?0:1]);   // FEATURE B: route anchor clicks too
+    }
+    if(ax.length){
+      anchorTrace = { type:"scattergl", mode:"markers", name:"Anchor",
+        x:ax, y:ay,
+        marker:{ symbol:"circle-open-dot", size:18, color:"#ff5ec7",
+          line:{width:2, color:"#ffffff"} },
+        text:atxt, hoverinfo:"text", customdata:acd };
+    }
+  }
+
+  // FEATURE A: a dedicated "Selected" trace (the row clicked in any list), drawn
+  // LAST so it sits on top of EVERYTHING (incl. the Anchor trace). A bright white
+  // open-circle halo around the single selectedKey. Coord resolved on the active
+  // layout via coordE (Eastern id) / coordW (Western title); skipped if no coord.
+  let selTrace = null;
+  if(selectedKey !== null){
+    let c=null, nm="";
+    if(typeof selectedKey === 'number'){ const t=byId.get(selectedKey); if(t){ c=coordE(t); nm=dispName(t); } }
+    else { const it=westByTitle.get(selectedKey); if(it){ c=coordW(it); nm=it.t; } }
+    if(c){
+      selTrace = { type:"scattergl", mode:"markers", name:"Selected",
+        x:[c[0]], y:[c[1]],
+        marker:{ symbol:"circle-open", size:26, color:"#ffffff",
+          line:{width:3, color:"#ffffff"} },
+        text:[`<b>${esc(nm)}</b><br>◎ selected`], hoverinfo:"text" };
     }
   }
 
@@ -1016,9 +1327,12 @@ function drawPlot(){
   if(dimTrace) traces.push(dimTrace);
   traces.push(baseTrace, lovedGlow, lovedTrace, disTrace, readTrace);
   if(westTrace) traces.push(westTrace);
+  if(anchorTrace) traces.push(anchorTrace);   // CHANGE 1: on top of everything
+  if(selTrace) traces.push(selTrace);          // FEATURE A: on top of the anchor too
   const layout = {
     paper_bgcolor:COL.bg, plot_bgcolor:COL.bg,
     font:{color:COL.text, family:"system-ui,-apple-system,'Segoe UI',sans-serif"},
+    dragmode:"pan",   // one-finger drag pans (touch) instead of box-select
     margin:{l:52,r:12,t:14,b:44},
     xaxis:{title: westOnlyEff
         ? "PC1 · Western-only view  (horror · apocalyptic  ⟷  crime · noir)"
@@ -1033,8 +1347,8 @@ function drawPlot(){
     legend:{orientation:"h", y:1.04, x:0, font:{color:COL.text}, bgcolor:'rgba(0,0,0,0)'},
     showlegend:true
   };
-  if(!plotInit){ Plotly.newPlot("plot",traces,layout,{responsive:true,displaylogo:false}); plotInit=true; }
-  else { Plotly.react("plot",traces,layout,{responsive:true,displaylogo:false}); }
+  if(!plotInit){ Plotly.newPlot("plot",traces,layout,{responsive:true,displaylogo:false,scrollZoom:true}); plotInit=true; }
+  else { Plotly.react("plot",traces,layout,{responsive:true,displaylogo:false,scrollZoom:true}); }
 }
 function colorBarLabel(){
   return {anchor:"anchor closeness", taste:"taste-fit", blend:"blend", score:"model score"}[colorBy];
@@ -1042,15 +1356,31 @@ function colorBarLabel(){
 
 /* ---------- ranked list (anchor / taste / blend / score) ---------- */
 function rankedList(N, includeRead){
-  const anchorSet = new Set(anchorIds);
+  const anchorSet = new Set(anchorIds);   // mixed: numbers (Eastern) + strings (Western)
   const arr=[];
   for(const t of titles){
     if(anchorSet.has(t.id)) continue;
     if(dropHidden(t.id)) continue;                 // CHANGE 1: exclude pure-romance drops
     if(!includeRead && isRead(t.id)) continue;
     if(!genreActive(t)) continue;
-    arr.push({id:t.id, val:rankVal(t), anchor:simCache.get(t.id),
+    arr.push({id:t.id, west:false, val:rankVal(t), anchor:simCache.get(t.id),
               taste:tasteFit(t), score:t.s});
+  }
+  // WESTERN AS FIRST-CLASS: Western items join the same pool — ALWAYS, no
+  // genreAll gate. Western now carry DERIVED genres (it.g), so genreActive(it)
+  // filters them exactly like Eastern: included when the active genre subset
+  // intersects their derived genres, excluded otherwise (e.g. only Romance
+  // selected -> dark Western drop out — correct).
+  //  - colorBy==="score": only those with a cross-domain score (it.s != null).
+  //  - anchor exclusion: skip a Western title that is itself an anchor.
+  //  - read exclusion: skip read Western via westReadOf (unless includeRead).
+  for(const it of westItems){
+    if(anchorSet.has(it.t)) continue;
+    if(!includeRead && westReadOf(it.t)) continue;
+    if(!genreActive(it)) continue;
+    if(colorBy === "score" && it.s == null) continue;   // no cross-domain score -> not rankable under model-score mode
+    arr.push({id:it.t, west:true, val:westRankVal(it), anchor:westSim.get(it.t),
+              taste:tasteFit(it), score:it.s});
   }
   arr.sort((a,b)=>b.val-a.val);
   return arr.slice(0,N);
@@ -1059,10 +1389,14 @@ function renderNearest(){
   const N = Math.max(1, parseInt(document.getElementById("topN").value)||25);
   const list = rankedList(N, false);
   const el = document.getElementById("nearestList"); el.innerHTML="";
-  for(const o of list) el.appendChild(rowEl(byId.get(o.id), o, false));
+  // WESTERN AS FIRST-CLASS: mixed pool — Eastern via rowEl, Western via westNearRowEl.
+  for(const o of list){
+    if(o.west){ const it=westByTitle.get(o.id); if(it) el.appendChild(westNearRowEl(it, o)); }
+    else el.appendChild(rowEl(byId.get(o.id), o, false));
+  }
   const cb = colorBarLabel();
   document.getElementById("anchorStat").textContent =
-    `Anchor = ${anchorIds.map(id=>dispName(byId.get(id))).join(", ")} · `
+    `Anchor = ${anchorIds.map(anchorName).join(", ")} · `
     + `top ${list.length} by ${cb} · read excluded`
     + (activeGenres.size<GENRES.length? ` · genre-filtered`:``);
   applyControlsCollapse();   // keep the collapsed Options summary in sync
@@ -1080,7 +1414,7 @@ function rowEl(t, rankObj, isLib){
   const matchNote = t._match ? `<div class="matchnote">matched: ${esc(t._match)}</div>` : "";
   d.innerHTML = `<div class="head">
       ${isLib?readToggle:""}
-      <div class="meta"><div class="ttl">${esc(dispName(t))} <span class="cc">${t.c}${t.as?(' · '+t.as):''}</span></div>
+      <div class="meta"><div class="ttl">${esc(dispName(t))} <span class="cc">${t.c}${t.as?(' · '+t.as):''}</span> ${readLinkHtml(t.e||t.r||dispName(t), t.id, false)}</div>
         ${matchNote}
         <div>${gpills(t)}</div>
         <div class="tt">${esc(t.tt)}</div></div>
@@ -1094,6 +1428,39 @@ function rowEl(t, rankObj, isLib){
     const ex = d.querySelector(".expand");
     const open = ex.classList.toggle("open");
     if(open) fillExpand(ex, t, isLib);
+    // FEATURE A: clicking a list row (My Library OR Anchor nearest) halos it on
+    // the map. ADDITIVE — expand still works exactly as before.
+    // FIX 2: toggle — clicking the already-selected row clears the halo.
+    if(!suppressSel){ selectedKey = (selectedKey === t.id) ? null : t.id; drawPlot(); }
+  });
+  return d;
+}
+
+// WESTERN AS FIRST-CLASS: a Western row inside the Anchor nearest list. Mirrors
+// rowEl's structure but marks the title with a teal ▲ + "Western" badge, shows the
+// Western tag string, and on click sets selectedKey to the Western TITLE (halo),
+// exactly like the Western library row does. Reuses fillWestExpand for the body.
+function westNearRowEl(it, rankObj){
+  const d = document.createElement("div"); d.className="item"; d.dataset.west=it.t;
+  // Under model-score mode the shown number is it.s (a cross-domain estimate),
+  // so flag it "(est.)" to make the Western score's provenance clear.
+  const estStr = (colorBy==="score") ? ' <small style="color:'+WEST_COL+'">(est.)</small>' : '';
+  const simStr = rankObj ? `<div class="sim">${(rankObj.val).toFixed(3)}${estStr}
+      <small>a${rankObj.anchor!==undefined&&rankObj.anchor!==null?rankObj.anchor.toFixed(2):'–'} ·
+      t${rankObj.taste.toFixed(2)}</small></div>` : "";
+  const tagStr = (it.tags||[]).map(p=>p[0]).join(", ");
+  d.innerHTML = `<div class="head">
+      <div class="meta"><div class="ttl">${esc(it.t)}
+        <span class="cc" style="color:${WEST_COL}">▲ Western</span> ${readLinkHtml(it.t, null, true)}</div>
+        <div class="tt">${esc(tagStr)}</div></div>
+      ${simStr}
+    </div>
+    <div class="expand" data-wexp="${esc(it.t)}"></div>`;
+  d.querySelector(".head").addEventListener("click", e=>{
+    const ex=d.querySelector(".expand");
+    if(ex.classList.toggle("open")) fillWestExpand(ex, it);
+    // halo this Western title on the map — same selectedKey wiring as westRowEl.
+    if(!suppressSel){ selectedKey = (selectedKey === it.t) ? null : it.t; drawPlot(); }
   });
   return d;
 }
@@ -1123,6 +1490,7 @@ function fillExpand(ex, t, isLib){
       </div>
       <textarea data-note="${t.id}" placeholder="note…" style="margin-top:8px">${esc(e.note||"")}</textarea>`;
   }
+  h += `<div>${readLinkHtml(t.e||t.r||dispName(t), t.id, false)}</div>`;
   if(t.syn) h += `<div class="syn">${esc(t.syn)}</div>`;
   else h += `<div class="synmeta">No synopsis available.</div>`;
   const artists = t.ar||[];
@@ -1177,14 +1545,22 @@ function artistTitlesHtml(t){
 
 /* ---------- anchor chips & search ---------- */
 function renderChips(){
+  // CHANGE 2: anchorIds may hold Eastern ids (number) and Western titles (string).
+  // Encode the key + its kind in data-attrs so removal can rebuild it precisely.
   const el=document.getElementById("anchorChips"); el.innerHTML="";
-  for(const id of anchorIds){
-    const t=byId.get(id); const c=document.createElement("div"); c.className="chip";
-    c.innerHTML=`<b>${esc(dispName(t))}</b> <span class="cc">${t.c}</span> <span class="x" data-id="${id}">✕</span>`;
+  for(const key of anchorIds){
+    const west = (typeof key !== 'number');
+    const c=document.createElement("div"); c.className="chip";
+    const tri = west ? ` <span class="cc" style="color:${WEST_COL}">▲ Western</span>` : "";
+    const cc = west ? "" : ` <span class="cc">${esc(anchorCountry(key))}</span>`;
+    c.innerHTML=`<b>${esc(anchorName(key))}</b>${cc}${tri} `
+      + `<span class="x" data-key="${esc(String(key))}" data-west="${west?1:0}">✕</span>`;
     el.appendChild(c);
   }
   el.querySelectorAll(".x").forEach(x=>x.onclick=()=>{
-    const id=+x.dataset.id; anchorIds=anchorIds.filter(a=>a!==id);
+    const west = x.dataset.west==="1";
+    const key = west ? x.dataset.key : +x.dataset.key;
+    anchorIds = anchorIds.filter(a=> !(a===key));
     if(anchorIds.length===0) anchorIds=[DATA.berserkId]; refreshAnchor();
   });
 }
@@ -1206,17 +1582,38 @@ function searchTitles(q, limit){
   const out = primary.concat(secondary);
   return limit? out.slice(0,limit) : out;
 }
+// CHANGE 2: anchor search also matches Western titles (title substring), so a
+// Western title can be picked as the anchor/centroid. Returns lean records
+// {kind:'e'|'w', key, name, country, match} ranked Eastern-primary, then
+// Eastern-synonym, then Western. (Western items have no synonyms in the data.)
+function searchAnchors(q, limit){
+  q=(q||"").trim().toLowerCase(); if(!q) return [];
+  const east = searchTitles(q, 0).map(t=>(
+    {kind:'e', key:t.id, name:dispName(t), country:t.c, match:t._match||null}));
+  const west = [];
+  for(const it of westItems){
+    const nm = it.t;
+    if(String(nm).toLowerCase().includes(q)){
+      west.push({kind:'w', key:nm, name:nm, country:'Western', match:null});
+    }
+  }
+  const out = east.concat(west);
+  return limit? out.slice(0,limit) : out;
+}
 function wireAnchorSearch(){
   const inp=document.getElementById("anchorSearch"), sg=document.getElementById("anchorSugg");
   inp.addEventListener("input",()=>{
-    const res=searchTitles(inp.value,40);
+    const res=searchAnchors(inp.value,40);
     if(!res.length){ sg.style.display="none"; return; }
     sg.innerHTML=""; sg.style.display="block";
-    for(const t of res){
+    for(const r of res){
       const d=document.createElement("div"); d.className="item"; d.style.cursor="pointer";
-      const mh = t._match ? `<div class="matchnote">matched: ${esc(t._match)}</div>` : "";
-      d.innerHTML=`<div class="head"><div class="meta"><div class="ttl">${esc(dispName(t))} <span class="cc">${t.c}</span></div>${mh}</div></div>`;
-      d.onclick=()=>{ if(!anchorIds.includes(t.id)) anchorIds.push(t.id);
+      const mh = r.match ? `<div class="matchnote">matched: ${esc(r.match)}</div>` : "";
+      const cc = r.kind==='w'
+        ? `<span class="cc" style="color:${WEST_COL}">▲ Western</span>`
+        : `<span class="cc">${esc(r.country)}</span>`;
+      d.innerHTML=`<div class="head"><div class="meta"><div class="ttl">${esc(r.name)} ${cc}</div>${mh}</div></div>`;
+      d.onclick=()=>{ if(!anchorIds.includes(r.key)) anchorIds.push(r.key);
         inp.value=""; sg.style.display="none"; refreshAnchor(); };
       sg.appendChild(d);
     }
@@ -1252,7 +1649,7 @@ let controlsOpen = (localStorage.getItem(LS_CONTROLS_OPEN) === "1");
 // Compact summary shown when collapsed: anchor set + top-N + active toggles.
 function optSummary(){
   const N = Math.max(1, parseInt(document.getElementById("topN").value)||25);
-  const anchors = anchorIds.map(id=>dispName(byId.get(id))).join(", ");
+  const anchors = anchorIds.map(anchorName).join(", ");
   let s = `${anchors} · top ${N}`;
   if(idfOn) s += " · IDF";
   if(westernOnly) s += " · Western-only";
@@ -1366,7 +1763,7 @@ function westRowEl(it){
   const readToggle = `<div class="rd ${westReadOf(it.t)?'on':''}" data-act="wread" title="toggle read">${westReadOf(it.t)?'✓':'○'}</div>`;
   d.innerHTML = `<div class="head">
       ${readToggle}
-      <div class="meta"><div class="ttl">${esc(it.t)} <span class="cc">${esc(src)}</span></div>
+      <div class="meta"><div class="ttl">${esc(it.t)} <span class="cc">${esc(src)}</span> ${readLinkHtml(it.t, null, true)}</div>
         <div class="tt">${esc((it.tags||[]).map(p=>p[0]).join(", "))}</div></div>
       ${verdictTag}
     </div>
@@ -1375,6 +1772,9 @@ function westRowEl(it){
     if(e.target.dataset.act==="wread"){ setWestEnt(it.t,{read:!westReadOf(it.t)}); westRefresh(); return; }
     const ex=d.querySelector(".expand");
     if(ex.classList.toggle("open")) fillWestExpand(ex, it);
+    // FEATURE A: halo this Western title on the map. ADDITIVE.
+    // FIX 2: toggle — clicking the already-selected row clears the halo.
+    if(!suppressSel){ selectedKey = (selectedKey === it.t) ? null : it.t; drawPlot(); }
   });
   return d;
 }
@@ -1394,6 +1794,7 @@ function fillWestExpand(ex, it){
         ${starRow(it.t,['Pacing','pacing'],e.pacing)}
       </div>
       <textarea data-wnote="${esc(it.t)}" placeholder="note…" style="margin-top:8px">${esc(e.note||"")}</textarea>`;
+  h += `<div>${readLinkHtml(it.t, null, true)}</div>`;
   if(it.ev && !e.overall) h += `<div class="synmeta">est. verdict (theme-projected): <b>${esc(it.ev)}</b> — LLM guess, not a model prediction.</div>`;
   if(it.desc) h += `<div class="syn">${esc(it.desc)}</div>`;
   else h += `<div class="synmeta">No synopsis available.</div>`;
@@ -1573,15 +1974,63 @@ function esc(s){ return (""+(s==null?"":s)).replace(/[&<>"]/g,c=>({"&":"&amp;","
 function csv(s){ s=(""+s); return /[",\n]/.test(s)? '"'+s.replace(/"/g,'""')+'"' : s; }
 
 /* ---------- wire UI ---------- */
-document.querySelectorAll(".tab").forEach(tab=>tab.onclick=()=>{
+// FEATURE B: activate a tab by its data-tab name (reused by the map-click router).
+function activateTab(name){
+  const tab = document.querySelector('.tab[data-tab="'+name+'"]');
+  if(!tab) return;
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
   document.querySelectorAll(".tabpane").forEach(p=>p.classList.remove("active"));
   tab.classList.add("active");
-  document.getElementById("pane-"+tab.dataset.tab).classList.add("active");
-  if(tab.dataset.tab==="lib") renderLib();
-  if(tab.dataset.tab==="tags") renderTags();
-  if(tab.dataset.tab==="west") renderWest();
-});
+  const pane=document.getElementById("pane-"+name); if(pane) pane.classList.add("active");
+  if(name==="lib") renderLib();
+  if(name==="tags") renderTags();
+  if(name==="west") renderWest();
+}
+document.querySelectorAll(".tab").forEach(tab=>tab.onclick=()=>activateTab(tab.dataset.tab));
+
+// FEATURE B: open (expand) a list row's synopsis/tags without toggling it shut if
+// already open. Triggers the same fill logic the user's click would.
+function expandRow(d){
+  if(!d) return;
+  const ex = d.querySelector(".expand");
+  if(ex && !ex.classList.contains("open")){ suppressSel=true; d.querySelector(".head").click(); suppressSel=false; }
+}
+// FEATURE B: route a map click to the right tab + row. dir 'w' (Western) or 'e'.
+function focusFromMap(key, isWest){
+  // FIX 2: clicking the already-selected point just clears the halo (no re-navigate).
+  if(key === selectedKey){ selectedKey = null; drawPlot(); return; }
+  if(isWest){
+    selectedKey = key;
+    activateTab("west");
+    // FIX 1: write the Western title into the search bar (mirrors the Eastern branch)
+    // so the list filters to it. Assign .value directly — do NOT dispatch 'input'
+    // (that would trip the clear-on-edit check in the search handler).
+    const ws=document.getElementById("westLibSearch");
+    if(ws){ ws.value = String(key); }
+    const om=document.getElementById("westOnlyMarked"); if(om && om.checked) om.checked=false;
+    renderWest();
+    const d=document.querySelector('#westList .item[data-west="'+cssEsc(String(key))+'"]');
+    if(d){ d.scrollIntoView({block:"center"}); expandRow(d); }
+    drawPlot();
+  } else {
+    selectedKey = key;
+    activateTab("lib");
+    // filter My Library to this exact title so it surfaces even if it was past the
+    // 300-row browse cap or filtered out, then re-render and focus it.
+    const t=byId.get(key);
+    const sb=document.getElementById("libSearch");
+    if(sb && t){ sb.value = dispName(t); }
+    const om=document.getElementById("libOnlyMarked"); if(om && om.checked) om.checked=false;
+    if(activeGenres.size<GENRES.length){ activeGenres=new Set(GENRES); renderGenreFilters(); }
+    renderLib();
+    const d=document.querySelector('#libList .item[data-id="'+key+'"]');
+    if(d){ d.scrollIntoView({block:"center"}); expandRow(d); }
+    drawPlot();
+  }
+}
+// minimal CSS.escape fallback (Western titles can contain quotes/brackets).
+function cssEsc(s){ return (window.CSS && CSS.escape) ? CSS.escape(s)
+  : String(s).replace(/["\\\]\[]/g, "\\$&"); }
 document.getElementById("colorBy").onchange=e=>{ colorBy=e.target.value; drawPlot(); renderNearest(); };
 document.getElementById("highlightTop").onchange=()=>drawPlot();
 document.getElementById("topN").addEventListener("input",()=>{ drawPlot(); renderNearest(); });
@@ -1591,7 +2040,16 @@ document.getElementById("exportJson").onclick=exportJson;
 document.getElementById("exportCsv").onclick=exportCsv;
 document.getElementById("importBtn").onclick=()=>document.getElementById("importFile").click();
 document.getElementById("importFile").onchange=e=>{ if(e.target.files[0]) importJson(e.target.files[0]); };
-document.getElementById("libSearch").addEventListener("input",renderLib);
+document.getElementById("libSearch").addEventListener("input",e=>{
+  // FIX 3: if the user edits/deletes the exact selected (Eastern) title, clear the halo.
+  // Fires only on real 'input' (user typing); focusFromMap assigns .value, which
+  // doesn't dispatch 'input', so it won't trip this.
+  if(typeof selectedKey === 'number'){
+    const t=byId.get(selectedKey);
+    if(!t || e.target.value !== dispName(t)){ selectedKey = null; drawPlot(); }
+  }
+  renderLib();
+});
 document.getElementById("libOnlyMarked").onchange=renderLib;
 document.getElementById("tagSearch").addEventListener("input",renderTags);
 document.getElementById("clearVotes").onclick=()=>{ votes={}; saveVotes(); rebuildPref();
@@ -1601,7 +2059,14 @@ document.getElementById("clearVotes").onclick=()=>{ votes={}; saveVotes(); rebui
   const sw=document.getElementById("showWestern");
   if(sw) sw.onchange=()=>{ showWestern=sw.checked; drawPlot(); };
   const wls=document.getElementById("westLibSearch");
-  if(wls) wls.addEventListener("input",renderWest);
+  if(wls) wls.addEventListener("input",e=>{
+    // FIX 3: if the user edits/deletes the exact selected (Western) title, clear the halo.
+    // Fires only on real 'input'; focusFromMap assigns .value (no 'input' dispatch).
+    if(typeof selectedKey === 'string' && e.target.value !== selectedKey){
+      selectedKey = null; drawPlot();
+    }
+    renderWest();
+  });
   const wom=document.getElementById("westOnlyMarked");
   if(wom) wom.onchange=renderWest;
 }
@@ -1629,6 +2094,37 @@ document.getElementById("clearVotes").onclick=()=>{ votes={}; saveVotes(); rebui
       drawPlot(); };   // layout-only switch; sim unchanged
   }
 }
+// READ SOURCE: wire template inputs + presets. Persist + re-render visible rows
+// so existing "↗ Read" links pick up the new template immediately.
+{
+  const eIn=document.getElementById("readSrcE");
+  const wIn=document.getElementById("readSrcW");
+  // re-render whichever lists are currently built so links rebuild with new URLs
+  const refreshLinks=()=>{
+    try{ renderNearest(); }catch(_){}
+    try{ renderLib(); }catch(_){}
+    try{ renderWest(); }catch(_){}
+  };
+  if(eIn){
+    eIn.value = readSrcE;
+    eIn.addEventListener("input",()=>{ readSrcE = eIn.value || READ_SRC_E_DEFAULT;
+      localStorage.setItem(LS_READ_SRC_E, eIn.value); refreshLinks(); });
+  }
+  if(wIn){
+    wIn.value = readSrcW;
+    wIn.addEventListener("input",()=>{ readSrcW = wIn.value || READ_SRC_W_DEFAULT;
+      localStorage.setItem(LS_READ_SRC_W, wIn.value); refreshLinks(); });
+  }
+  const setPresetE=(tpl)=>{ readSrcE = tpl;
+    if(eIn) eIn.value = tpl;
+    localStorage.setItem(LS_READ_SRC_E, tpl); refreshLinks(); };
+  const pm=document.getElementById("readPresetMangadex");
+  if(pm) pm.onclick=()=>setPresetE("https://mangadex.org/titles?q={q}");
+  const pc=document.getElementById("readPresetComick");
+  if(pc) pc.onclick=()=>setPresetE("https://comick.io/search?q={q}");
+  const pa=document.getElementById("readPresetAnilist");
+  if(pa) pa.onclick=()=>setPresetE("https://anilist.co/manga/{id}");
+}
 wireAnchorSearch();
 // CHANGE 3: genre-filter collapse headers (both tabs share one open/closed state)
 document.querySelectorAll('.gfhead').forEach(h=>h.onclick=()=>{
@@ -1650,6 +2146,21 @@ document.querySelectorAll('.gfhead').forEach(h=>h.onclick=()=>{
 rebuildPref();
 renderGenreFilters();
 refreshAnchor();   // draws the plot once (incl. the Western trace) + nearest
+// FEATURE B: map point -> list. Resolve the clicked title via customdata
+// ([key, isWestern]) and route to the right tab + row. plotInit is true now
+// because refreshAnchor() already ran drawPlot() once.
+{
+  const plotEl=document.getElementById("plot");
+  if(plotEl && plotEl.on){
+    plotEl.on("plotly_click", ev=>{
+      const p = ev && ev.points && ev.points[0];
+      if(!p || !p.customdata) return;
+      const cd = p.customdata;               // [key, isWestern]
+      const key = cd[0], isWest = cd[1]===1;
+      focusFromMap(key, isWest);
+    });
+  }
+}
 libStat();
 if(WEST){ westStat(); }
 else {

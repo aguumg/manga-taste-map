@@ -24756,5 +24756,511 @@
     ],
     "berserk_cos": 0.274,
     "mode0_cos": 0.277
+  },
+  "Eternal (Black Mask)": {
+    "title": "Eternal (Black Mask)",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Revenge",
+        0.9
+      ],
+      [
+        "Female Protagonist",
+        0.7
+      ],
+      [
+        "Tragedy",
+        0.7
+      ],
+      [
+        "Magic",
+        0.7
+      ],
+      [
+        "Gore",
+        0.9
+      ],
+      [
+        "Military",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ],
+      [
+        "Anti-Hero",
+        0.7
+      ]
+    ],
+    "note": "shieldmaiden vs warlock vengeance, Black Mask dark fantasy",
+    "description": "shieldmaiden vs warlock vengeance, Black Mask dark fantasy",
+    "coords": [
+      0.2901,
+      0.4033
+    ],
+    "nearest_eastern": [
+      [
+        "Hero Killer",
+        0.515
+      ],
+      [
+        "I'm Not That Kind of Talent",
+        0.457
+      ],
+      [
+        "I Want to Love You Till Your Dying Day",
+        0.438
+      ],
+      [
+        "Pumpkin Night",
+        0.435
+      ],
+      [
+        "Tyrant of the Tower Defense Game",
+        0.434
+      ],
+      [
+        NaN,
+        0.416
+      ],
+      [
+        "Solitary Lady",
+        0.409
+      ],
+      [
+        "The Legend of the Northern Blade",
+        0.405
+      ]
+    ],
+    "berserk_cos": 0.368,
+    "mode0_cos": 0.27
+  },
+  "Viking: The Long Cold Fire": {
+    "title": "Viking: The Long Cold Fire",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Crime",
+        0.7
+      ],
+      [
+        "Gore",
+        0.9
+      ],
+      [
+        "Anti-Hero",
+        0.7
+      ],
+      [
+        "Military",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ],
+      [
+        "Revenge",
+        0.9
+      ],
+      [
+        "Historical",
+        0.7
+      ],
+      [
+        "Swordplay",
+        0.7
+      ]
+    ],
+    "note": "Brandon/Klein (Image), stylish ultraviolent 9th-c looting brothers",
+    "description": "Brandon/Klein (Image), stylish ultraviolent 9th-c looting brothers",
+    "coords": [
+      0.3949,
+      0.3954
+    ],
+    "nearest_eastern": [
+      [
+        NaN,
+        0.421
+      ],
+      [
+        "Hero Killer",
+        0.407
+      ],
+      [
+        "The Legend of the Northern Blade",
+        0.406
+      ],
+      [
+        "Golden Kamuy",
+        0.401
+      ],
+      [
+        "The Heroic Legend of Arslan",
+        0.397
+      ],
+      [
+        "Kingdom",
+        0.383
+      ],
+      [
+        "Blade of the Immortal",
+        0.379
+      ],
+      [
+        NaN,
+        0.377
+      ]
+    ],
+    "berserk_cos": 0.321,
+    "mode0_cos": 0.256
+  },
+  "Sword Daughter": {
+    "title": "Sword Daughter",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Revenge",
+        0.9
+      ],
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Tragedy",
+        0.7
+      ],
+      [
+        "Female Protagonist",
+        0.7
+      ],
+      [
+        "Swordplay",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ],
+      [
+        "Historical",
+        0.7
+      ],
+      [
+        "Anti-Hero",
+        0.7
+      ],
+      [
+        "Travel",
+        0.7
+      ]
+    ],
+    "note": "Brian Wood father-daughter Iceland revenge",
+    "description": "Brian Wood father-daughter Iceland revenge",
+    "coords": [
+      0.2103,
+      0.3633
+    ],
+    "nearest_eastern": [
+      [
+        "Hero Killer",
+        0.506
+      ],
+      [
+        NaN,
+        0.469
+      ],
+      [
+        "The Ember Knight",
+        0.437
+      ],
+      [
+        "The Legend of the Northern Blade",
+        0.421
+      ],
+      [
+        "Grandmaster of Demonic Cultivation: Mo Dao Zu Shi",
+        0.407
+      ],
+      [
+        "Vinland Saga",
+        0.4
+      ],
+      [
+        "Within The Villainess",
+        0.395
+      ],
+      [
+        "Blade of the Immortal",
+        0.385
+      ]
+    ],
+    "berserk_cos": 0.329,
+    "mode0_cos": 0.272
+  },
+  "Helheim": {
+    "title": "Helheim",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Gore",
+        0.9
+      ],
+      [
+        "Zombie",
+        0.7
+      ],
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Cosmic Horror",
+        0.7
+      ],
+      [
+        "Body Horror",
+        0.7
+      ],
+      [
+        "Tragedy",
+        0.7
+      ],
+      [
+        "Revenge",
+        0.9
+      ],
+      [
+        "Curses",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ],
+      [
+        "Demons",
+        0.7
+      ]
+    ],
+    "note": "Cullen Bunn: Vikings + zombies + witches, horror",
+    "description": "Cullen Bunn: Vikings + zombies + witches, horror",
+    "coords": [
+      0.3518,
+      0.5003
+    ],
+    "nearest_eastern": [
+      [
+        "Devilman",
+        0.458
+      ],
+      [
+        "Shiver: Junji Ito Selected Stories",
+        0.406
+      ],
+      [
+        "Berserk",
+        0.4
+      ],
+      [
+        "Leviathan",
+        0.395
+      ],
+      [
+        "Uzumaki: Spiral into Horror",
+        0.394
+      ],
+      [
+        "Dissolving Classroom",
+        0.383
+      ],
+      [
+        "I'm Not That Kind of Talent",
+        0.375
+      ],
+      [
+        "After God",
+        0.361
+      ]
+    ],
+    "berserk_cos": 0.4,
+    "mode0_cos": 0.241
+  },
+  "The Darkness: Lodbrok's Hand": {
+    "title": "The Darkness: Lodbrok's Hand",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Gore",
+        0.9
+      ],
+      [
+        "Demons",
+        0.7
+      ],
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Anti-Hero",
+        0.7
+      ],
+      [
+        "Curses",
+        0.7
+      ],
+      [
+        "Tragedy",
+        0.7
+      ],
+      [
+        "Swordplay",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ]
+    ],
+    "note": "Top Cow Darkness artifact, Viking one-shot, gory",
+    "description": "Top Cow Darkness artifact, Viking one-shot, gory",
+    "coords": [
+      0.3742,
+      0.3983
+    ],
+    "nearest_eastern": [
+      [
+        "I'm Not That Kind of Talent",
+        0.495
+      ],
+      [
+        "The Legend of the Northern Blade",
+        0.409
+      ],
+      [
+        "Hero Killer",
+        0.409
+      ],
+      [
+        "Pick Me Up",
+        0.387
+      ],
+      [
+        "Berserk",
+        0.386
+      ],
+      [
+        "Blade of the Immortal",
+        0.386
+      ],
+      [
+        "Devilman",
+        0.381
+      ],
+      [
+        "Myst, Might, Mayhem",
+        0.376
+      ]
+    ],
+    "berserk_cos": 0.386,
+    "mode0_cos": 0.277
+  },
+  "Heathen": {
+    "title": "Heathen",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "War",
+        0.9
+      ],
+      [
+        "Magic",
+        0.7
+      ],
+      [
+        "Mythology",
+        0.7
+      ],
+      [
+        "Female Protagonist",
+        0.7
+      ],
+      [
+        "Travel",
+        0.7
+      ],
+      [
+        "Survival",
+        0.7
+      ],
+      [
+        "Tragedy",
+        0.7
+      ],
+      [
+        "Swordplay",
+        0.7
+      ]
+    ],
+    "note": "Alterici (Vault): shieldmaiden rescues a valkyrie, Norse",
+    "description": "Alterici (Vault): shieldmaiden rescues a valkyrie, Norse",
+    "coords": [
+      0.1896,
+      0.1578
+    ],
+    "nearest_eastern": [
+      [
+        "I Want to Love You Till Your Dying Day",
+        0.423
+      ],
+      [
+        "Tyrant of the Tower Defense Game",
+        0.394
+      ],
+      [
+        "The Spark in Your Eyes",
+        0.382
+      ],
+      [
+        "Rave Master",
+        0.382
+      ],
+      [
+        "Nausicaä of the Valley of the Wind",
+        0.38
+      ],
+      [
+        "Yona of the Dawn",
+        0.37
+      ],
+      [
+        "Girls' Last Tour",
+        0.37
+      ],
+      [
+        "Becoming the Monarch",
+        0.369
+      ]
+    ],
+    "berserk_cos": 0.337,
+    "mode0_cos": 0.236
   }
 }
