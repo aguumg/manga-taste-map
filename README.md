@@ -125,3 +125,13 @@ The map became a full explorer:
 Western titles carry *derived genres* (from their tags), so the genre filter treats them exactly like Eastern. Built and debugged live — the Western-genre-exclusion bug only surfaced from a console screenshot.
 
 *Built across one long session: asking better questions, killing two approaches that didn't survive their own validation, and being honest about a 0.67.*
+
+---
+
+## Part 3 — the reading shelf, and a bug that hid in plain sight
+
+The obvious next thing was a place to keep *what to read*. A **Reading Shelf** — to-read, reading, paused, done — where every title links back to its dot on the map. One distinction mattered: **paused is not disliked.** "I bounced off it" and "I hated it" are different facts, so they're different states; only the second one feeds the model.
+
+Then a useful failure. I kept fixing the shelf's map-links, rebuilding, verifying every title resolved — *Demon Slayer → Kimetsu no Yaiba*, *Hell's Paradise → Jigokuraku* — and the owner kept reporting them broken. We were both right. My new build was correct; his browser was running the old state. The shelf persists to `localStorage`, and the load step kept the **stored** entries verbatim — so every fix I shipped to the seed was silently overridden by a copy saved from older edits. The lesson is old and keeps being true: **the artifact you test is not always the artifact the user runs.** The fix: on load, refresh the *computed* fields (the map links, read URLs) from each new build, while keeping the *human* fields (status, notes).
+
+Two checks now guard the lazy version of that mistake. Two independent sweeps (MAL's top lists, then eight "best dark manga" lists) both came back with the same answer — **every strong-fit title was already in the corpus**, so the bottleneck was never discovery, it was *using* the thing. And a **Playwright** harness drives the whole app headless before anything ships: it clicks every tab, adds a title, follows a link to the map, and even plants a stale shelf to prove the reload heals it. I trust those runs more than I trust "looks fine to me."
