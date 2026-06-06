@@ -22,12 +22,93 @@ cosine == the Python centroid cosine EXACTLY.
 Output: outputs/taste_map_app.html   (overwrites; static taste_map.html kept)
 """
 import json
+import re as _re_shelf
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 from model import build_feature_matrix, BERSERK_ID
+
+
+def _norm_title(s):
+    s = (s or "").lower()
+    s = _re_shelf.sub(r"[^a-z0-9]+", " ", s).strip()
+    return s
+
+
+def _slug(s):
+    return _re_shelf.sub(r"[^a-z0-9]+", "-", (s or "").lower()).strip("-")
+
+
+# Reading Shelf: arbitrary reading-queue seed (many titles are anime/comics NOT
+# in the corpus). Statuses: toread / reading / paused / done. Each entry has an
+# editable note + optional read URL. Build-time we attach `cid` (corpus title id)
+# and/or `wk` (Western key) when the title matches, so the app can offer "→ map".
+SHELF_SEED = [
+  # --- DONE / caught-up (his own) ---
+  {"title":"Overgeared","status":"done","source":"mine","note":"Finished the webtoon; text novel exists but not the same","url":"https://w99.overgeared.club/overgeared-chapter-290/"},
+  {"title":"Eternally Regressing Knight","status":"done","source":"mine","note":"Caught up (~ch73)","url":"https://w2.regressingknight.com/eternally-regressing-knight-chapter-73/"},
+  {"title":"Pick Me Up: Infinite Gacha","status":"done","source":"mine","note":"Caught up (~ch165)","url":"https://w1.pickmeupgacha.com/pick-me-up-infinite-gacha-chapter-165/"},
+  {"title":"Surviving the Game as a Barbarian","status":"done","source":"mine","note":"Caught up (~ch120)","url":"https://asuracomic.net/series/surviving-the-game-as-a-barbarian-ffa1cc42/chapter/120"},
+  {"title":"Murim RPG Simulation","status":"done","source":"mine","note":"S2 finale","url":"https://www.webtoons.com/en/action/murim-rpg-simulation/s2-episode-144-season-2-finale/viewer?title_no=3779&episode_no=144"},
+  {"title":"Taming Master","status":"done","source":"mine","note":"Caught up (~ch164); renews ~weekly","url":"https://xbato.com/title/90733-taming-master-official/3780444-ch_164"},
+  {"title":"The Lone Necromancer","status":"done","source":"mine","note":"Caught up (~ch203)","url":"https://w1.thelonenecromancer.site/manga/the-lone-necromancer-chapter-203/"},
+  {"title":"Berserk","status":"done","source":"mine","note":"All-time favorite","url":""},
+  {"title":"Claymore","status":"done","source":"mine","note":"All-time favorite","url":""},
+  {"title":"Blade of the Immortal","status":"done","source":"mine","note":"All-time favorite (La espada del inmortal)","url":""},
+  {"title":"Vagabond","status":"done","source":"mine","note":"Loved — like the early bloody mangas","url":""},
+  {"title":"Solo Leveling","status":"done","source":"mine","note":"Favorite","url":""},
+  {"title":"Demon Slayer","status":"done","source":"mine","note":"Favorite","url":""},
+  {"title":"Hell's Paradise","status":"done","source":"mine","note":"Watched all; caught up at S3 (not out)","url":""},
+  {"title":"Ajin: Demi-Human","status":"done","source":"mine","note":"Anime complete — very good","url":""},
+  {"title":"Attack on Titan","status":"done","source":"mine","note":"Anime complete — very good","url":""},
+  # --- READING (in progress) ---
+  {"title":"The Greatest Estate Developer","status":"reading","source":"mine","note":"~ch57","url":"https://greatestestatedeveloper.org/manga/the-greatest-estate-developer-chapter-57/"},
+  {"title":"Skeleton Soldier Couldn't Protect the Dungeon","status":"reading","source":"mine","note":"~ch27","url":"https://skeleton-soldier.online/manga/skeleton-soldier-couldnt-protect-the-dungeon-chapter-27/"},
+  {"title":"SSS-Class Suicide Hunter","status":"reading","source":"mine","note":"~ch23","url":"https://www.toongod.org/webtoon/sss-class-suicide-hunter/chapter-23/"},
+  {"title":"Solo Max-Level Newbie","status":"reading","source":"mine","note":"~ch14","url":"https://solomaxlevel.club/manga/solo-max-level-newbie-chapter-14/"},
+  {"title":"Reincarnation of the Suicidal Battle God","status":"reading","source":"mine","note":"~ch4 (early — watch for OP-MC boredom)","url":"https://reincarnationofthesuicidalbattlegod.club/manga/reincarnation-of-the-suicidal-battle-god-chapter-4/"},
+  # --- PAUSED / inconclusive ---
+  {"title":"Memorize","status":"paused","source":"mine","note":"Stopped ~ch1-3, inconclusive","url":"https://xbato.com/title/99274-memorize-official/1936054-ch_3"},
+  {"title":"Omniscient Reader's Viewpoint","status":"paused","source":"mine","note":"Started, got bored — but reputedly one of the best; revisit","url":"https://www.webtoons.com/en/action/omniscient-reader/list?title_no=2154"},
+  {"title":"Bleach","status":"paused","source":"mine","note":"Anime: loved it, dropped when MC goes to hell/dies/revives-from-future; wanted more fights","url":""},
+  {"title":"Lone Wolf and Cub","status":"paused","source":"mine","note":"Few chapters, dropped","url":""},
+  {"title":"Jormungand","status":"paused","source":"mine","note":"Anime: liked it, stopped","url":""},
+  {"title":"Goblin Slayer","status":"paused","source":"mine","note":"Anime: good but got bored","url":""},
+  {"title":"Golden Kamuy","status":"paused","source":"mine","note":"1 ep, too talky","url":""},
+  {"title":"Absolute Sword Sense","status":"paused","source":"mine","note":"~ch23; loved talking-swords premise, bored in barbarian-master training arc","url":"https://asuracomic.net/series/absolute-sword-sense-a96416f4/chapter/23"},
+  {"title":"Nano Machine","status":"paused","source":"mine","note":"Dropped — MC too OP, everything too easy -> boring [flagged dislike candidate]","url":"https://asuracomic.net/series/nano-machine-af0c03db/chapter/136"},
+  {"title":"Golgo 13","status":"paused","source":"mine","note":"Few eps; old, MC too OP, too easy [flagged dislike candidate]","url":""},
+  {"title":"Made in Abyss","status":"paused","source":"mine","note":"Expected traumatic/dark, found it cozy/tender — mismatch [flagged dislike candidate]","url":""},
+  # --- TO-READ: friend recs ---
+  {"title":"Steins;Gate","status":"toread","source":"friend","note":"Friend rec — time travel","url":""},
+  {"title":"Frieren: Beyond Journey's End","status":"toread","source":"friend","note":"Friend rec","url":""},
+  {"title":"Fate/Zero","status":"toread","source":"friend","note":"Friend rec — manga adaptation","url":"https://es.novelcool.com/chapter/Cap-tulo-1/2880616/"},
+  {"title":"Puella Magi Madoka Magica","status":"toread","source":"friend","note":"Friend rec","url":""},
+  {"title":"Saya no Uta","status":"toread","source":"friend","note":"Friend rec — manga 'Song of Saya' (Nitroplus horror)","url":"https://batcave.biz/25689-song-of-saya-2010.html"},
+  # --- TO-READ: CBR viking list ---
+  {"title":"Eternal","status":"toread","source":"cbr-viking","note":"CBR viking — shieldmaiden vs warlock, battle + family (Lindsay/Zawadzki)","url":""},
+  {"title":"Viking: The Long Cold Fire","status":"toread","source":"cbr-viking","note":"CBR viking — two brothers, 9th-c, dark humor","url":""},
+  {"title":"Sword Daughter","status":"toread","source":"cbr-viking","note":"CBR viking — Brian Wood, shieldmaiden vengeance","url":""},
+  {"title":"Helheim","status":"toread","source":"cbr-viking","note":"CBR viking — Cullen Bunn, horror, zombies/witches","url":""},
+  {"title":"Black Road","status":"toread","source":"cbr-viking","note":"CBR viking — Brian Wood, Norway Christianization, vengeance","url":""},
+  {"title":"The Darkness: Lodbrok's Hand","status":"toread","source":"cbr-viking","note":"CBR viking — mythic Darkness one-shot","url":""},
+  {"title":"Heathen","status":"toread","source":"cbr-viking","note":"CBR viking — Norse fantasy, shieldmaiden + valkyrie","url":""},
+  # --- TO-READ: curated from 8 best-of lists, ranked STRONG fit (2026-06-06) ---
+  {"title":"Oyasumi PunPun","status":"toread","source":"curated","note":"TOP BET — depression spiral, abuse survivor→abuser; pure suffering, zero power fantasy.","url":""},
+  {"title":"Monster","status":"toread","source":"curated","note":"Urasawa slow-burn dread; dark moral weight; finished masterpiece.","url":""},
+  {"title":"Homunculus","status":"toread","source":"curated","note":"Psychological body-horror; MC unravels; devastating, finished.","url":""},
+  {"title":"Dorohedoro","status":"toread","source":"curated","note":"Gory dark-fantasy in a brutal megacity; finished.","url":""},
+  {"title":"Parasyte","status":"toread","source":"curated","note":"Body-horror; MC suffers and grows the hard way; tight, finished.","url":""},
+  {"title":"I Am a Hero","status":"toread","source":"curated","note":"Best-in-class zombie horror; unstable MC; real terror.","url":""},
+  {"title":"Blood on the Tracks","status":"toread","source":"curated","note":"Creeping psychological horror of an abusive mother.","url":""},
+  {"title":"Sweet Home","status":"toread","source":"curated","note":"Monster apocalypse; suicidal recluse loses everything; gory, finished.","url":""},
+  {"title":"Uzumaki","status":"toread","source":"curated","note":"Ito spiral cosmic horror; grotesque, inescapable, finished.","url":""},
+  {"title":"Second Life Ranker","status":"toread","source":"curated","note":"Tower-climb revenge; twin betrayed/killed; earned grind.","url":""},
+  {"title":"Tomie","status":"toread","source":"curated","note":"Ito horror; murder/regeneration; disturbing.","url":""},
+  {"title":"Gantz","status":"toread","source":"curated","note":"Brutal alien death-game; high mortality, real stakes.","url":""},
+]
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
@@ -412,6 +493,68 @@ def main():
     # no entry (e.g. demo::/genre:: helpers) default to 1.0 (no reweight).
     idf_by_index = [round(float(idf_weights.get(name, 1.0)), 4) for name in feat_cols]
 
+    # Reading Shelf: link each seed title to a corpus id (cid) and/or Western key
+    # (wk) by normalized-title match, so the app can offer a "→ map" button. We
+    # index BOTH the english and romaji names (dispName prefers english, falls
+    # back to romaji), so a seed like "Berserk"/"Vagabond" matches under either.
+    # Index english + romaji + alternate/scanlation titles (synonyms). This lets
+    # "Demon Slayer" match "Kimetsu no Yaiba" and "Hell's Paradise" match
+    # "Jigokuraku" via the synonym list, not just the exact primary name.
+    _corpus_by_norm = {}
+    for _t in titles:
+        _names = [_t.get("e"), _t.get("r")] + list(_t.get("alt") or [])
+        for _name in _names:
+            _nm = _norm_title(_name)
+            if _nm and _nm not in _corpus_by_norm:
+                _corpus_by_norm[_nm] = _t["id"]
+    _west_by_norm = {}
+    for _w in (western["items"] if western else []):
+        _nm = _norm_title(_w.get("t"))
+        if _nm and _nm not in _west_by_norm:
+            _west_by_norm[_nm] = _w["t"]
+
+    def _match_corpus(_n):
+        # exact normalized match (incl. synonyms), then a word-boundary prefix
+        # fallback so "demon slayer" -> "demon slayer kimetsu no yaiba". The
+        # trailing space stops "eternal" from hitting "eternally regressing
+        # knight"; the length floor avoids tiny generic prefixes.
+        if _n in _corpus_by_norm:
+            return _corpus_by_norm[_n]
+        if len(_n) >= 6:
+            _pfx = _n + " "
+            for _cn, _cid in _corpus_by_norm.items():
+                if _cn.startswith(_pfx):
+                    return _cid
+        return None
+
+    def _match_west(_n):
+        # exact, then word-boundary prefix so the shelf "Eternal" links to the
+        # cataloged "Eternal (Black Mask)" without a duplicate dot.
+        if _n in _west_by_norm:
+            return _west_by_norm[_n]
+        if len(_n) >= 6:
+            _pfx = _n + " "
+            for _wn, _wt in _west_by_norm.items():
+                if _wn.startswith(_pfx):
+                    return _wt
+        return None
+
+    shelf_seed = []
+    for _e in SHELF_SEED:
+        _n = _norm_title(_e["title"])
+        # Western reading-list picks (CBR viking) must never link to an Eastern
+        # manga that happens to share a name ("Helheim", "Black Road"): they can
+        # only resolve to a Western map dot. Eastern/friend picks match the
+        # corpus by exact primary, synonym, or word-boundary prefix.
+        _is_west_pick = _e["source"] == "cbr-viking"
+        shelf_seed.append({
+            "sid": _slug(_e["title"]),
+            "title": _e["title"], "status": _e["status"], "source": _e["source"],
+            "note": _e["note"], "url": _e["url"],
+            "cid": None if _is_west_pick else _match_corpus(_n),
+            "wk": _match_west(_n),
+        })
+
     payload = {
         "tags": feat_cols,
         "tagCat": tag_cat,
@@ -431,6 +574,7 @@ def main():
         "layoutIdf": layout_idf,      # unified IDF-weighted coords (same keys)
         "layoutWestern": layout_western,  # Western-ONLY coords {"w<title>": [x,y]}
         "idfByIndex": idf_by_index,   # IDF weight per feature index (len == nFeat)
+        "shelfSeed": shelf_seed,      # Reading Shelf seed (arbitrary queue; cid/wk linked)
     }
     blob = json.dumps(payload, separators=(",", ":"), ensure_ascii=False,
                       allow_nan=False)
@@ -498,7 +642,9 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   body{overflow-x:hidden}
   #app{display:flex;height:100vh;width:100vw;overflow:hidden}
   #left{flex:1 1 auto;min-width:0;display:flex;flex-direction:column}
-  #plot{flex:1 1 auto;min-height:0;background:var(--bg-deep)}
+  #plot{flex:1 1 auto;min-height:0;background:var(--bg-deep);touch-action:none}
+  /* let Plotly own touch gestures (pinch-zoom / drag-pan) instead of the browser */
+  #plot .plot-container,#plot .svg-container,#plot .main-svg,#plot .nsewdrag{touch-action:none}
   #right{width:454px;flex:0 0 454px;background:var(--bg-panel);
     border-left:1px solid var(--line);display:flex;flex-direction:column;
     box-shadow:-6px 0 22px rgba(0,0,0,.5)}
@@ -576,6 +722,19 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
   .item .sim small{display:block;color:var(--text-dim);font-size:9.5px}
   .item .ttl{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
   .cc{color:var(--text-dim);font-size:11px;font-weight:400}
+  /* Reading Shelf (arbitrary queue) */
+  .shelf-badge{display:inline-block;border:1px solid var(--line);border-radius:10px;
+    padding:1px 7px;font-size:10px;color:var(--text-dim);vertical-align:middle}
+  .shelf-grphead{padding:9px 18px 4px;color:var(--gold);font-size:11px;font-weight:600;
+    text-transform:uppercase;letter-spacing:.07em;border-bottom:1px solid var(--line)}
+  .shelf-row .head{align-items:center;cursor:default}
+  .shelf-row select{width:auto;padding:4px 6px;font-size:11px}
+  .shelf-row .snote{margin-top:6px}
+  .shelf-x{cursor:pointer;color:var(--oxblood);font-weight:700;flex:0 0 auto;padding:0 4px}
+  .shelf-x:hover{color:var(--gold-soft)}
+  .shelf-alt{color:var(--text-dim);font-size:11px;font-weight:400}
+  .shelf-nomap{color:var(--text-dim);font-size:11px;opacity:.7;flex:0 0 auto;padding:0 4px;font-style:italic}
+  .shelf-row.flash{box-shadow:0 0 0 2px var(--gold) inset;transition:box-shadow .2s}
   /* READ SOURCE: subtle gold per-title link */
   .readlink{color:var(--gold);font-size:10.5px;text-decoration:none;opacity:.78;
     white-space:nowrap;flex:0 0 auto;margin-left:6px;font-weight:500}
@@ -693,6 +852,7 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       <div class="tab" data-tab="lib">My Library</div>
       <div class="tab" data-tab="tags">Tag Preferences</div>
       <div class="tab tab-west" data-tab="west">Western</div>
+      <div class="tab" data-tab="shelf">Reading Shelf</div>
     </div>
 
     <!-- ANCHOR TAB -->
@@ -802,6 +962,20 @@ HTML_TEMPLATE = r"""<!DOCTYPE html>
       <div class="stat" id="westStat"></div>
       <div class="results" id="westList"></div>
     </div>
+
+    <!-- READING SHELF TAB (arbitrary reading queue; many titles not in corpus) -->
+    <div class="tabpane" id="pane-shelf">
+      <div class="pad">
+        <div class="hint" style="margin-top:0">Your reading queue — arbitrary titles (anime / comics / webtoons), most of them not in the map corpus. Set a status, edit the note, follow the ↗ link; if a title matches a corpus or Western item a “→ map” button focuses it on the map.</div>
+        <div class="row" style="gap:6px;margin-top:8px;margin-bottom:8px">
+          <input id="shelfAdd" type="text" placeholder="+ add a title to your shelf" style="flex:1">
+          <button class="btn primary" id="shelfAddBtn">Add</button>
+        </div>
+        <div class="row" id="shelfFilters" style="gap:6px;flex-wrap:wrap;margin-bottom:6px"></div>
+      </div>
+      <div class="stat" id="shelfStat"></div>
+      <div class="results" id="shelfList"></div>
+    </div>
   </div>
 </div>
 
@@ -812,6 +986,7 @@ const LS_LIB = "taste_library_v2";
 const LS_LIB_V1 = "taste_library_v1";
 const LS_VOTES = "taste_tagvotes_v1";
 const LS_WEST = "taste_western_v1";
+const LS_SHELF = "taste_shelf_v1";   // Reading Shelf (arbitrary reading queue)
 const LS_GENRE_OPEN = "ui_genre_open";   // CHANGE 3: collapsible genre filter state
 const LS_CONTROLS_OPEN = "ui_controls_open";   // collapsible whole-options block (Anchor tab)
 // READ SOURCE: per-title "↗ Read" link templates. {q}=URL-encoded title, {id}=AniList id.
@@ -865,6 +1040,24 @@ const westItems = WEST ? WEST.items : [];
 // Each Western item now carries `.v` (sparse, Eastern j-index basis) + `.norm`,
 // just like an Eastern title — so it can be used as an anchor/centroid.
 const westByTitle = new Map(westItems.map(it => [it.t, it]));
+// Normalized-title -> key maps so the Reading Shelf can auto-link a title to its
+// map dot AT RUNTIME (mirrors the Python build-time matcher: exact, synonym, then
+// word-boundary prefix). Lets manually-added shelf titles get a "→ map" too.
+const _normShelf = s => (s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+const corpusByNorm = new Map();
+for(const t of titles){ for(const nm of [t.e, t.r, ...(t.alt||[])]){ const k=_normShelf(nm); if(k && !corpusByNorm.has(k)) corpusByNorm.set(k, t.id); } }
+const westByNorm = new Map();
+for(const it of westItems){ const k=_normShelf(it.t); if(k && !westByNorm.has(k)) westByNorm.set(k, it.t); }
+function matchShelfTitle(title){
+  const n=_normShelf(title);
+  if(corpusByNorm.has(n)) return {cid:corpusByNorm.get(n), wk:null};
+  if(westByNorm.has(n))   return {cid:null, wk:westByNorm.get(n)};
+  if(n.length>=6){ const pfx=n+" ";
+    for(const [cn,cid] of corpusByNorm){ if(cn.startsWith(pfx)) return {cid, wk:null}; }
+    for(const [wn,wt] of westByNorm){ if(wn.startsWith(pfx)) return {cid:null, wk:wt}; }
+  }
+  return {cid:null, wk:null};
+}
 // Resolve an anchor key (number => Eastern id, string => Western title) to the
 // underlying title-like object (both expose .v / .norm). null if unknown.
 function anchorVec(key){
@@ -919,6 +1112,39 @@ const westVerdictOf = title => (westLib[title] && westLib[title].overall) || nul
 const westReadOf = title => !!(westLib[title] && westLib[title].read);
 let showWestern = true;   // "Show Western titles" toggle (default ON)
 
+/* ---------- Reading Shelf (arbitrary reading queue; own store) --------------
+   Holds ARBITRARY titles (many are anime/comics NOT in the corpus). Each entry:
+     {sid, title, status, source, note, url, cid, wk}
+   cid = corpus title id (number) or null; wk = Western key (string) or null —
+   both baked at build time so a row can offer a "→ map" button. Seeded from
+   DATA.shelfSeed on first run; MERGE on later runs (keep user edits, append any
+   new seed sid). Persisted under LS_SHELF and included in Export/Import. */
+const SHELF_STATUS_ORDER = ["toread","reading","paused","done"];
+const SHELF_STATUS_LABEL = {toread:"To-read", reading:"Reading", paused:"Paused", done:"Done"};
+const SHELF_SOURCE_LABEL = {mine:"mine", friend:"friend", "cbr-viking":"CBR-viking", curated:"curated"};
+const shelfSeed = DATA.shelfSeed || [];
+let shelf = loadShelf();
+function shelfFromSeed(e){
+  return {sid:e.sid, title:e.title, status:e.status, source:e.source,
+    note:e.note||"", url:e.url||"", cid:(e.cid==null?null:e.cid), wk:(e.wk==null?null:e.wk)};
+}
+function loadShelf(){
+  let stored = null;
+  try{ const raw = localStorage.getItem(LS_SHELF); if(raw) stored = JSON.parse(raw); }catch(e){}
+  let out;
+  if(Array.isArray(stored)){
+    // keep stored entries (user edits win), then append any seed sid not present
+    out = stored.slice();
+    const have = new Set(out.map(x=>x.sid));
+    for(const e of shelfSeed){ if(!have.has(e.sid)){ out.push(shelfFromSeed(e)); } }
+  } else {
+    out = shelfSeed.map(shelfFromSeed);
+  }
+  localStorage.setItem(LS_SHELF, JSON.stringify(out));
+  return out;
+}
+function saveShelf(){ localStorage.setItem(LS_SHELF, JSON.stringify(shelf)); }
+
 /* ---------- precomputed map layouts (CHANGE A/B/C) ---------------------------
    Every plotted (x,y) is resolved from these embedded objects:
      Eastern id    -> LAYOUT["e"+id]
@@ -936,6 +1162,7 @@ const HAS_LAYOUT = Object.keys(LAYOUT).length > 0;
 
 const LS_IDF = "ui_idf_weight";        // persist IDF toggle
 const LS_WONLY = "ui_western_only";     // persist Western-only toggle
+const LS_SESSION = "ui_session_v1";     // persist full session: anchors, top-N, hide/dim, genres, lens, selection, tab
 let idfOn = (localStorage.getItem(LS_IDF) === "1");
 let westernOnly = (localStorage.getItem(LS_WONLY) === "1");
 
@@ -1349,6 +1576,7 @@ function drawPlot(){
   };
   if(!plotInit){ Plotly.newPlot("plot",traces,layout,{responsive:true,displaylogo:false,scrollZoom:true}); plotInit=true; }
   else { Plotly.react("plot",traces,layout,{responsive:true,displaylogo:false,scrollZoom:true}); }
+  saveSession();   // persist anchors + all control state on every redraw
 }
 function colorBarLabel(){
   return {anchor:"anchor closeness", taste:"taste-fit", blend:"blend", score:"model score"}[colorBy];
@@ -1829,6 +2057,118 @@ function fillWestExpand(ex, it){
     wta.addEventListener("click",ev=>ev.stopPropagation()); }
 }
 
+/* ---------- Reading Shelf tab (arbitrary reading queue; own store) ---------- */
+let shelfFilter = "all";   // "all" or one of SHELF_STATUS_ORDER
+function shelfRefresh(){ renderShelf(); }
+function shelfStat(){
+  const elS=document.getElementById("shelfStat"); if(!elS) return;
+  const c={toread:0,reading:0,paused:0,done:0};
+  for(const e of shelf){ if(e.status in c) c[e.status]++; }
+  elS.textContent = `${shelf.length} titles · ${c.toread} to-read · ${c.reading} reading · `
+    + `${c.paused} paused · ${c.done} done`;
+}
+function renderShelfFilters(){
+  const el=document.getElementById("shelfFilters"); if(!el) return;
+  const c={toread:0,reading:0,paused:0,done:0};
+  for(const e of shelf){ if(e.status in c) c[e.status]++; }
+  const mk=(key,label,n)=>`<button class="btn sm${shelfFilter===key?' primary':''}" `
+    + `data-shfilter="${key}">${esc(label)}${n!=null?` (${n})`:""}</button>`;
+  let h = mk("all","All",shelf.length);
+  for(const st of SHELF_STATUS_ORDER) h += mk(st, SHELF_STATUS_LABEL[st], c[st]);
+  el.innerHTML = h;
+  el.querySelectorAll("button[data-shfilter]").forEach(b=>b.onclick=()=>{
+    shelfFilter = b.dataset.shfilter; renderShelf();
+  });
+}
+function shelfRowEl(e){
+  const d=document.createElement("div"); d.className="item shelf-row"; d.dataset.sid=e.sid;
+  // status <select>
+  let opts="";
+  for(const st of SHELF_STATUS_ORDER)
+    opts += `<option value="${st}"${e.status===st?" selected":""}>${esc(SHELF_STATUS_LABEL[st])}</option>`;
+  const srcLabel = SHELF_SOURCE_LABEL[e.source] || e.source || "";
+  const badge = srcLabel ? `<span class="shelf-badge">${esc(srcLabel)}</span>` : "";
+  const readlink = e.url
+    ? `<a class="readlink" href="${esc(e.url)}" target="_blank" rel="noopener" title="Open">↗</a>`
+    : "";
+  const mapBtn = (e.cid!=null)
+    ? `<button class="btn sm" data-shmap="e">→ map</button>`
+    : (e.wk!=null ? `<button class="btn sm" data-shmap="w">→ map</button>`
+    : `<span class="shelf-nomap" title="not in the dataset yet">· not on map</span>`);
+  // Show the database's title when it differs from the shelf title (alternate
+  // official translation), e.g. "Doom Breaker" for "Reincarnation of the Suicidal…".
+  let altname="";
+  if(e.cid!=null){ const t=byId.get(e.cid); const nm=t?dispName(t):""; if(nm && _normShelf(nm)!==_normShelf(e.title)) altname=nm; }
+  else if(e.wk!=null && _normShelf(e.wk)!==_normShelf(e.title)) altname=e.wk;
+  const altspan = altname ? ` <span class="shelf-alt">(maps to: ${esc(altname)})</span>` : "";
+  d.innerHTML = `<div class="head">
+      <div class="meta">
+        <div class="ttl">${esc(e.title)}${altspan} ${badge} ${readlink}</div>
+      </div>
+      <select data-shstatus title="status">${opts}</select>
+      ${mapBtn}
+      <span class="shelf-x" data-shdel title="remove">✕</span>
+    </div>
+    <input class="snote" type="text" data-shnote placeholder="note…" value="${esc(e.note||"")}">`;
+  // status change
+  d.querySelector("select[data-shstatus]").onchange=ev=>{
+    ev.stopPropagation();
+    e.status = ev.target.value; saveShelf(); renderShelf();
+  };
+  // note edit (persist on change/blur)
+  const ni=d.querySelector("input[data-shnote]");
+  ni.addEventListener("change",()=>{ e.note=ni.value; saveShelf(); });
+  ni.addEventListener("click",ev=>ev.stopPropagation());
+  // → map
+  const mb=d.querySelector("button[data-shmap]");
+  if(mb) mb.onclick=ev=>{
+    ev.stopPropagation();
+    if(mb.dataset.shmap==="e" && e.cid!=null) focusFromMap(e.cid,false);
+    else if(mb.dataset.shmap==="w" && e.wk!=null) focusFromMap(e.wk,true);
+  };
+  // ✕ remove
+  d.querySelector(".shelf-x").onclick=ev=>{
+    ev.stopPropagation();
+    shelf = shelf.filter(x=>x!==e); saveShelf(); renderShelf();
+  };
+  return d;
+}
+function renderShelf(){
+  const el=document.getElementById("shelfList"); if(!el) return;
+  el.innerHTML="";
+  renderShelfFilters();
+  const srcRank = s => { const i=["mine","friend","cbr-viking"].indexOf(s);
+    return i<0 ? 99 : i; };
+  let shown=0;
+  for(const st of SHELF_STATUS_ORDER){
+    if(shelfFilter!=="all" && shelfFilter!==st) continue;
+    const group = shelf.filter(e=>e.status===st);
+    if(!group.length) continue;
+    group.sort((a,b)=>{ const r=srcRank(a.source)-srcRank(b.source);
+      return r!==0 ? r : a.title.toLowerCase().localeCompare(b.title.toLowerCase()); });
+    const hd=document.createElement("div"); hd.className="shelf-grphead";
+    hd.textContent = `${SHELF_STATUS_LABEL[st]} (${group.length})`;
+    el.appendChild(hd);
+    for(const e of group){ el.appendChild(shelfRowEl(e)); shown++; }
+  }
+  if(!shown) el.innerHTML=`<div class="item cc" style="padding:14px 18px">Nothing here yet.</div>`;
+  shelfStat();
+}
+function shelfAdd(){
+  const inp=document.getElementById("shelfAdd"); if(!inp) return;
+  const val=inp.value.trim(); if(!val) return;
+  const m=matchShelfTitle(val);              // auto-link to a map dot if we have it
+  const sid=slug(val)+"-"+shelf.length;
+  shelf.push({sid, title:val, status:"toread",
+    source:"mine", note:"", url:"", cid:m.cid, wk:m.wk});
+  saveShelf(); inp.value="";
+  shelfFilter="all";                         // ensure the new (To-read) row is visible
+  renderShelf();
+  const row=document.querySelector('#shelfList .shelf-row[data-sid="'+cssEsc(sid)+'"]');
+  if(row){ row.scrollIntoView({block:"center"}); row.classList.add("flash");
+    setTimeout(()=>row.classList.remove("flash"),1200); }
+}
+
 /* ---------- tag preferences tab ---------- */
 function renderTags(){
   const q=document.getElementById("tagSearch").value.trim().toLowerCase();
@@ -1920,7 +2260,8 @@ function exportJson(){
   download("taste_library_v2.json", JSON.stringify({
     version:"taste_library_v2", exported:new Date().toISOString(),
     library:lib, tagVotes:votes, tagVotesByName:votesExport(),
-    western: westLib   // Western library (own corpus); empty {} if untouched
+    western: westLib,   // Western library (own corpus); empty {} if untouched
+    shelf: shelf        // Reading Shelf (arbitrary reading queue)
   }, null, 2), "application/json");
 }
 function exportCsv(){
@@ -1960,10 +2301,14 @@ function importJson(file){
           if(westEmpty(westLib[k])) delete westLib[k]; }
         saveWest(); nWest = Object.keys(westLib).length;
       }
+      // Reading Shelf (additive; older exports won't have it)
+      if(Array.isArray(obj.shelf)){ shelf = obj.shelf; saveShelf(); }
       refreshAnchor(); renderLib(); renderTags(); libStat();
       if(WEST) westRefresh();
+      renderShelf();
       alert("Imported "+Object.keys(lib).length+" Eastern entries, "
-        +Object.keys(votes).length+" tag votes, "+nWest+" Western entries.");
+        +Object.keys(votes).length+" tag votes, "+nWest+" Western entries, "
+        +shelf.length+" shelf titles.");
     }catch(e){ alert("Import failed: "+e.message); }
   };
   fr.readAsText(file);
@@ -1972,6 +2317,8 @@ function importJson(file){
 /* ---------- helpers ---------- */
 function esc(s){ return (""+(s==null?"":s)).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
 function csv(s){ s=(""+s); return /[",\n]/.test(s)? '"'+s.replace(/"/g,'""')+'"' : s; }
+// Reading Shelf: title -> slug (mirrors the Python _slug; for new-entry sids).
+function slug(s){ return (""+(s==null?"":s)).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,""); }
 
 /* ---------- wire UI ---------- */
 // FEATURE B: activate a tab by its data-tab name (reused by the map-click router).
@@ -1985,6 +2332,8 @@ function activateTab(name){
   if(name==="lib") renderLib();
   if(name==="tags") renderTags();
   if(name==="west") renderWest();
+  if(name==="shelf") renderShelf();
+  saveSession();   // remember the active tab across refreshes
 }
 document.querySelectorAll(".tab").forEach(tab=>tab.onclick=()=>activateTab(tab.dataset.tab));
 
@@ -2070,6 +2419,13 @@ document.getElementById("clearVotes").onclick=()=>{ votes={}; saveVotes(); rebui
   const wom=document.getElementById("westOnlyMarked");
   if(wom) wom.onchange=renderWest;
 }
+// Reading Shelf: add-title button + Enter key
+{
+  const ab=document.getElementById("shelfAddBtn");
+  if(ab) ab.onclick=shelfAdd;
+  const ai=document.getElementById("shelfAdd");
+  if(ai) ai.addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); shelfAdd(); } });
+}
 // CHANGE B: IDF distinctive-theme weighting. Re-layout (active layout switches
 // to layoutIdf) AND reweight the anchor cosine -> recompute sim + redraw + rerank.
 {
@@ -2142,7 +2498,54 @@ document.querySelectorAll('.gfhead').forEach(h=>h.onclick=()=>{
   };
 }
 
+/* ---------- session persistence: anchors + every control survive a refresh.
+   Stored under LS_SESSION as one blob and restored before the first render, so
+   the map boots in exactly the state the user left it. IDF + Western-only keep
+   their own keys; this covers anchors, selection, top-N highlight + N, hide/dim,
+   the genre subset, the score lens and the active tab. ---------- */
+function saveSession(){
+  try{
+    const g=id=>document.getElementById(id);
+    const at=document.querySelector(".tab.active");
+    localStorage.setItem(LS_SESSION, JSON.stringify({
+      anchorIds, colorBy, selectedKey, showWestern,
+      activeGenres:[...activeGenres],
+      highlightTop: !!(g("highlightTop") && g("highlightTop").checked),
+      topN: g("topN") ? g("topN").value : "25",
+      genreHide: !!(g("genreHide") && g("genreHide").checked),
+      westOnlyMarked: !!(g("westOnlyMarked") && g("westOnlyMarked").checked),
+      shelfFilter,
+      tab: at ? at.dataset.tab : null
+    }));
+  }catch(_){}
+}
+function restoreSession(){
+  let o=null;
+  try{ const raw=localStorage.getItem(LS_SESSION); if(raw) o=JSON.parse(raw); }catch(_){ o=null; }
+  if(!o || typeof o!=="object") return null;
+  if(Array.isArray(o.anchorIds)){
+    const v=o.anchorIds.filter(k=>(typeof k==="number"&&byId.has(k))||(typeof k==="string"&&westByTitle.has(k)));
+    anchorIds = v.length ? v : [DATA.berserkId];   // drop stale ids; never leave it empty
+  }
+  if(typeof o.colorBy==="string") colorBy=o.colorBy;
+  if(o.selectedKey===null||(typeof o.selectedKey==="number"&&byId.has(o.selectedKey))||(typeof o.selectedKey==="string"&&westByTitle.has(o.selectedKey)))
+    selectedKey=o.selectedKey;
+  if(typeof o.showWestern==="boolean"){ showWestern=o.showWestern; const sw=document.getElementById("showWestern"); if(sw) sw.checked=showWestern; }
+  if(Array.isArray(o.activeGenres)){
+    const gv=o.activeGenres.filter(x=>GENRES.includes(x));
+    activeGenres = gv.length ? new Set(gv) : new Set(GENRES);
+  }
+  const chk=(id,val)=>{ const e=document.getElementById(id); if(e && typeof val==="boolean") e.checked=val; };
+  chk("highlightTop", o.highlightTop);
+  chk("genreHide", o.genreHide);
+  chk("westOnlyMarked", o.westOnlyMarked);
+  if(o.topN!=null){ const tn=document.getElementById("topN"); if(tn) tn.value=o.topN; }
+  if(typeof o.shelfFilter==="string") shelfFilter=o.shelfFilter;
+  return (typeof o.tab==="string") ? o.tab : null;
+}
+
 /* ---------- boot ---------- */
+const _savedTab = restoreSession();   // apply saved state BEFORE first render
 rebuildPref();
 renderGenreFilters();
 refreshAnchor();   // draws the plot once (incl. the Western trace) + nearest
@@ -2162,6 +2565,7 @@ refreshAnchor();   // draws the plot once (incl. the Western trace) + nearest
   }
 }
 libStat();
+shelfStat();
 if(WEST){ westStat(); }
 else {
   // no Western data: hide the tab + the map toggle so the UI stays clean
@@ -2176,6 +2580,8 @@ function hideToggleIf(id, cond){
 }
 hideToggleIf("idfWeight", !(IDF_BY_INDEX && HAS_IDF_LAYOUT));
 hideToggleIf("westernOnly", !(WEST && HAS_WEST_LAYOUT));
+// restore the last-active tab (default "anchor" already active, needs no action)
+if(_savedTab && _savedTab!=="anchor") activateTab(_savedTab);
 </script>
 </body>
 </html>

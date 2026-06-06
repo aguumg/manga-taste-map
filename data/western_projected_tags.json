@@ -25262,5 +25262,244 @@
     ],
     "berserk_cos": 0.337,
     "mode0_cos": 0.236
+  },
+  "Golgo 13": {
+    "title": "Golgo 13",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Assassins",
+        1.0
+      ],
+      [
+        "Anti-Hero",
+        0.8
+      ],
+      [
+        "Crime",
+        0.7
+      ],
+      [
+        "Espionage",
+        0.6
+      ],
+      [
+        "Politics",
+        0.6
+      ],
+      [
+        "Guns",
+        0.7
+      ],
+      [
+        "Tragedy",
+        0.2
+      ]
+    ],
+    "note": "Duke Togo, codename Golgo 13, is the world's most expensive professional sniper — a stone-faced mercenary who never misses and never explains. Each volume is a self-contained Cold-War-era hit: geopolitics, betrayal, and one impossible shot. Running since 1968, among the longest manga ever. (Agus dropped it: the MC is so overpowered the tension evaporates.)",
+    "description": "Duke Togo, codename Golgo 13, is the world's most expensive professional sniper — a stone-faced mercenary who never misses and never explains. Each volume is a self-contained Cold-War-era hit: geopolitics, betrayal, and one impossible shot. Running since 1968, among the longest manga ever. (Agus dropped it: the MC is so overpowered the tension evaporates.)",
+    "coords": [
+      0.183,
+      0.2294
+    ],
+    "nearest_eastern": [
+      [
+        "CANDY AND CIGARETTES",
+        0.415
+      ],
+      [
+        NaN,
+        0.413
+      ],
+      [
+        "Killer Peter",
+        0.406
+      ],
+      [
+        "GUNSLINGER GIRL",
+        0.397
+      ],
+      [
+        "Kindergarten Wars",
+        0.383
+      ],
+      [
+        "From the Red Fog",
+        0.378
+      ],
+      [
+        "Talentless Nana",
+        0.359
+      ],
+      [
+        "Sakamoto Days",
+        0.358
+      ]
+    ],
+    "berserk_cos": 0.114,
+    "mode0_cos": 0.203
+  },
+  "Fate/Zero": {
+    "title": "Fate/Zero",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Tragedy",
+        0.8
+      ],
+      [
+        "Magic",
+        0.9
+      ],
+      [
+        "Philosophy",
+        0.7
+      ],
+      [
+        "Anti-Hero",
+        0.7
+      ],
+      [
+        "Assassins",
+        0.5
+      ],
+      [
+        "Battle Royale",
+        0.7
+      ],
+      [
+        "Politics",
+        0.5
+      ],
+      [
+        "Mythology",
+        0.6
+      ],
+      [
+        "Gods",
+        0.5
+      ]
+    ],
+    "note": "Manga adaptation of Urobuchi's novels. The Fourth Holy Grail War: seven mages each summon a Servant — a heroic spirit from history or myth — and fight to the death for a wish-granting Grail. Kiritsugu Emiya, the 'Magus Killer,' wages it as cold utilitarian warfare, willing to damn his own soul to win. Bleak, tactical, tragic.",
+    "description": "Manga adaptation of Urobuchi's novels. The Fourth Holy Grail War: seven mages each summon a Servant — a heroic spirit from history or myth — and fight to the death for a wish-granting Grail. Kiritsugu Emiya, the 'Magus Killer,' wages it as cold utilitarian warfare, willing to damn his own soul to win. Bleak, tactical, tragic.",
+    "coords": [
+      0.3282,
+      0.3002
+    ],
+    "nearest_eastern": [
+      [
+        "The Faraway Paladin",
+        0.43
+      ],
+      [
+        "Hell’s Paradise: Jigokuraku",
+        0.415
+      ],
+      [
+        "Your Throne",
+        0.402
+      ],
+      [
+        "I'm Standing on a Million Lives",
+        0.4
+      ],
+      [
+        "X",
+        0.395
+      ],
+      [
+        "The Max Level Hero Strikes Back!",
+        0.385
+      ],
+      [
+        "I'm Not That Kind of Talent",
+        0.378
+      ],
+      [
+        "Kubera",
+        0.371
+      ]
+    ],
+    "berserk_cos": 0.317,
+    "mode0_cos": 0.285
+  },
+  "Saya no Uta": {
+    "title": "Saya no Uta",
+    "known": true,
+    "est_verdict": null,
+    "tags": [
+      [
+        "Body Horror",
+        1.0
+      ],
+      [
+        "Gore",
+        0.9
+      ],
+      [
+        "Tragedy",
+        0.8
+      ],
+      [
+        "Cosmic Horror",
+        0.8
+      ],
+      [
+        "Psychosexual",
+        0.6
+      ],
+      [
+        "Survival",
+        0.4
+      ],
+      [
+        "Philosophy",
+        0.5
+      ]
+    ],
+    "note": "Manga ('Song of Saya', from Nitroplus/Urobuchi's horror). After a crash and brain surgery, Fuminori perceives the whole world — people, food, buildings — as pulsating viscera. The lone exception is Saya, a girl who looks human to him but is something far worse. A grotesque body-horror romance about madness, perception, and love past the edge of sanity.",
+    "description": "A tale about Yorick Brown, the last man on Earth. The entire series was collected into ten trade paperbacks, and various compendiums and hardcovers. Trade Paperbacks Unmanned (#1-5) Cycles (#6-10) One Small Step (#11-17) Safeword (#18-23) Ring of Truth (#24-31) Girl on Girl (#32-36) Paper Dolls (#37-42) Kimono Dragons (#43-48) Motherland (#49-54) Whys and Wherefores (#55-60) Compendium Y: The Last Man Compendium Book One (#1-31) Y: The Last Man Compendium Book Two (#32-60) Hardcovers Book One (#1-10) Book Two (#11-23) Book Three (#24-36) Book Four (#37-48) Book Five (#49-60) Y: The Last Man Om",
+    "coords": [
+      0.1686,
+      0.5873
+    ],
+    "nearest_eastern": [
+      [
+        "Shiver: Junji Ito Selected Stories",
+        0.536
+      ],
+      [
+        "Uzumaki: Spiral into Horror",
+        0.489
+      ],
+      [
+        NaN,
+        0.472
+      ],
+      [
+        "Devilman",
+        0.461
+      ],
+      [
+        "Gyo",
+        0.452
+      ],
+      [
+        "Fragments of Horror",
+        0.452
+      ],
+      [
+        "Pupa",
+        0.423
+      ],
+      [
+        "Tokyo Ghoul",
+        0.42
+      ]
+    ],
+    "berserk_cos": 0.317,
+    "mode0_cos": 0.183
   }
 }

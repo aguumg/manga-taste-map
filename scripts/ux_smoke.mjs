@@ -1,0 +1,79 @@
+// Headless smoke test: load the app, click around, assert no JS errors.
+import { chromium } from 'playwright';
+import { pathToFileURL } from 'url';
+
+const APP = process.argv[2] || 'outputs/taste_map_app.html';
+const url = pathToFileURL(APP).href;
+const errors = [];
+const browser = await chromium.launch();
+const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+page.on('console', m => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
+page.on('pageerror', e => errors.push('pageerror: ' + e.message));
+
+const log = [];
+const ok = (c, m) => { const line = (c ? 'PASS' : 'FAIL') + '  ' + m; log.push(line); console.log(line); };
+
+await page.goto(url, { waitUntil: 'load' });
+await page.waitForTimeout(1500); // let Plotly draw
+
+// 1. plot rendered
+const plotKids = await page.locator('#plot .plotly').count();
+ok(plotKids > 0, `plot rendered (#plot .plotly count=${plotKids})`);
+
+// 2. tabs switch panes
+for (const t of ['lib', 'tags', 'west', 'shelf', 'anchor']) {
+  await page.click(`.tab[data-tab="${t}"]`);
+  await page.waitForTimeout(150);
+  const active = await page.locator(`#pane-${t}.active`).count();
+  ok(active === 1, `tab "${t}" activates its pane`);
+}
+
+// 3. shelf content
+await page.click('.tab[data-tab="shelf"]');
+await page.waitForTimeout(200);
+const rows = await page.locator('#shelfList .shelf-row').count();
+ok(rows >= 40, `shelf rows render (${rows})`);
+const mapBtns = await page.locator('#shelfList button[data-shmap]').count();
+ok(mapBtns >= 40, `→map buttons present (${mapBtns})`);
+const nomap = await page.locator('#shelfList .shelf-nomap').count();
+ok(nomap === 0, `every shelf title links to a map dot (off-map=${nomap})`);
+const altText = await page.locator('#shelfList .shelf-alt').first().innerText().catch(() => '');
+ok(/maps to/.test(altText), `"(maps to: …)" shown for renamed titles ["${altText}"]`);
+
+// 4. add-title feedback: add a known title, expect it to auto-link + flash
+await page.fill('#shelfAdd', 'Chainsaw Man');
+await page.click('#shelfAddBtn');
+await page.waitForTimeout(300);
+const added = await page.locator('#shelfList .shelf-row', { hasText: 'Chainsaw Man' }).count();
+ok(added >= 1, `manually-added title appears (${added})`);
+const addedRow = page.locator('#shelfList .shelf-row', { hasText: 'Chainsaw Man' }).first();
+const addedMap = await addedRow.locator('button[data-shmap]').count();
+ok(addedMap >= 1, `manually-added title auto-linked to map (data-shmap=${addedMap})`);
+
+// 5. → map jump from shelf works (clicks first map button, expect tab change)
+await page.locator('#shelfList button[data-shmap]').first().click();
+await page.waitForTimeout(200);
+const anchorOrLibActive = await page.locator('#pane-lib.active, #pane-west.active').count();
+ok(anchorOrLibActive >= 1, `→map jumps to the linked title's tab`);
+
+// 6. persistence: toggle highlight + reload, expect it remembered
+await page.click('.tab[data-tab="anchor"]');
+await page.waitForTimeout(150);
+// Options panel is collapsed by default — expand it so the checkbox is visible
+const optOpen = await page.locator('#highlightTop').isVisible();
+if (!optOpen) { await page.click('#optHead'); await page.waitForTimeout(200); }
+const hadHighlight = await page.locator('#highlightTop').isChecked();
+await page.locator('#highlightTop').setChecked(!hadHighlight);
+await page.waitForTimeout(300);
+await page.reload({ waitUntil: 'load' });
+await page.waitForTimeout(1200);
+const afterReload = await page.locator('#highlightTop').isChecked();
+ok(afterReload === !hadHighlight, `highlight-top toggle persists across reload (${hadHighlight}->${afterReload})`);
+
+await browser.close();
+console.log(log.join('\n'));
+console.log('\nJS errors captured: ' + errors.length);
+errors.slice(0, 15).forEach(e => console.log('  ' + e));
+const failed = log.filter(l => l.startsWith('FAIL')).length;
+console.log(`\n${failed === 0 && errors.length === 0 ? 'ALL GREEN' : failed + ' failures, ' + errors.length + ' errors'}`);
+process.exit(failed === 0 && errors.length === 0 ? 0 : 1);
